@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Percentage Calculator - Calculate Percentages Online - WebTools</title>
+    <meta name="description" content="Free online percentage calculator. Calculate percentages, find percentage of a number, percentage change, and more. Easy to use with instant results.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .calculator-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .calculator-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .calculator-section:last-child {
+            margin-bottom: 0;
+        }
+        .result-box {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: center;
+        }
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #0d6efd;
+            margin: 0;
+        }
+        .result-label {
+            color: #6c757d;
+            margin: 0;
+            font-size: 0.9rem;
+        }
+        .nav-tabs {
+            margin-bottom: 1rem;
+        }
+        .nav-tabs .nav-link {
+            border: none;
+            color: #6c757d;
+            padding: 0.75rem 1rem;
+        }
+        .nav-tabs .nav-link.active {
+            color: #0d6efd;
+            background: none;
+            border-bottom: 2px solid #0d6efd;
+        }
+        .form-label {
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-percent me-2"></i>Percentage Calculator</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="calculator-container">
+                <!-- Calculator Tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#basic" type="button">
+                            <i class="fas fa-calculator me-2"></i>Basic
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#change" type="button">
+                            <i class="fas fa-chart-line me-2"></i>Change
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="tab" data-bs-target="#increase" type="button">
+                            <i class="fas fa-plus me-2"></i>Increase/Decrease
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Calculator Content -->
+                <div class="tab-content">
+                    <!-- Basic Calculator -->
+                    <div class="tab-pane fade show active" id="basic">
+                        <div class="calculator-section">
+                            <h5 class="mb-3">Basic Percentage Calculation</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Number</label>
+                                    <input type="number" class="form-control" id="basicNumber" value="100">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Percentage</label>
+                                    <input type="number" class="form-control" id="basicPercentage" value="50">
+                                </div>
+                            </div>
+                            <div class="result-box">
+                                <p class="result-value" id="basicResult">50</p>
+                                <p class="result-label">Result</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Percentage Change -->
+                    <div class="tab-pane fade" id="change">
+                        <div class="calculator-section">
+                            <h5 class="mb-3">Percentage Change</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Original Value</label>
+                                    <input type="number" class="form-control" id="changeOriginal" value="100">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">New Value</label>
+                                    <input type="number" class="form-control" id="changeNew" value="150">
+                                </div>
+                            </div>
+                            <div class="result-box">
+                                <p class="result-value" id="changeResult">50%</p>
+                                <p class="result-label">Percentage Change</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Increase/Decrease -->
+                    <div class="tab-pane fade" id="increase">
+                        <div class="calculator-section">
+                            <h5 class="mb-3">Increase/Decrease by Percentage</h5>
+                            <div class="row g-3">
+                                <div class="col-md-6">
+                                    <label class="form-label">Original Value</label>
+                                    <input type="number" class="form-control" id="modifyOriginal" value="100">
+                                </div>
+                                <div class="col-md-6">
+                                    <label class="form-label">Percentage</label>
+                                    <input type="number" class="form-control" id="modifyPercentage" value="20">
+                                </div>
+                            </div>
+                            <div class="btn-group w-100 mt-3">
+                                <button class="btn btn-outline-primary" id="increaseBtn">
+                                    <i class="fas fa-plus me-2"></i>Increase
+                                </button>
+                                <button class="btn btn-outline-primary" id="decreaseBtn">
+                                    <i class="fas fa-minus me-2"></i>Decrease
+                                </button>
+                            </div>
+                            <div class="result-box">
+                                <p class="result-value" id="modifyResult">120</p>
+                                <p class="result-label">Result</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Percentage Calculator</h5>
+                <p>Calculate various percentage-related problems:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Find percentage of a number</li>
+                    <li>Calculate percentage change between two values</li>
+                    <li>Increase or decrease a value by percentage</li>
+                    <li>Instant results with real-time calculations</li>
+                    <li>Perfect for financial, academic, or everyday calculations</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Basic Calculator
+            const basicNumber = document.getElementById('basicNumber');
+            const basicPercentage = document.getElementById('basicPercentage');
+            const basicResult = document.getElementById('basicResult');
+
+            function calculateBasic() {
+                const number = parseFloat(basicNumber.value) || 0;
+                const percentage = parseFloat(basicPercentage.value) || 0;
+                const result = (number * percentage) / 100;
+                basicResult.textContent = result.toFixed(2);
+            }
+
+            [basicNumber, basicPercentage].forEach(input => {
+                input.addEventListener('input', calculateBasic);
+            });
+
+            // Percentage Change
+            const changeOriginal = document.getElementById('changeOriginal');
+            const changeNew = document.getElementById('changeNew');
+            const changeResult = document.getElementById('changeResult');
+
+            function calculateChange() {
+                const original = parseFloat(changeOriginal.value) || 0;
+                const newValue = parseFloat(changeNew.value) || 0;
+                if (original === 0) {
+                    changeResult.textContent = 'N/A';
+                    return;
+                }
+                const change = ((newValue - original) / original) * 100;
+                const sign = change > 0 ? '+' : '';
+                changeResult.textContent = `${sign}${change.toFixed(2)}%`;
+            }
+
+            [changeOriginal, changeNew].forEach(input => {
+                input.addEventListener('input', calculateChange);
+            });
+
+            // Increase/Decrease
+            const modifyOriginal = document.getElementById('modifyOriginal');
+            const modifyPercentage = document.getElementById('modifyPercentage');
+            const modifyResult = document.getElementById('modifyResult');
+            const increaseBtn = document.getElementById('increaseBtn');
+            const decreaseBtn = document.getElementById('decreaseBtn');
+
+            function calculateModification(increase = true) {
+                const original = parseFloat(modifyOriginal.value) || 0;
+                const percentage = parseFloat(modifyPercentage.value) || 0;
+                const factor = increase ? (1 + percentage / 100) : (1 - percentage / 100);
+                const result = original * factor;
+                modifyResult.textContent = result.toFixed(2);
+            }
+
+            increaseBtn.addEventListener('click', () => calculateModification(true));
+            decreaseBtn.addEventListener('click', () => calculateModification(false));
+            [modifyOriginal, modifyPercentage].forEach(input => {
+                input.addEventListener('input', () => calculateModification(true));
+            });
+
+            // Initialize calculations
+            calculateBasic();
+            calculateChange();
+            calculateModification(true);
+        });
+    </script>
+</body>
+</html> 

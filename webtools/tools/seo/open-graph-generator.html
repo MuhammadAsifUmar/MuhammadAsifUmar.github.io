@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Graph Generator - Create Social Media Meta Tags - WebTools</title>
+    <meta name="description" content="Free online Open Graph meta tags generator. Create meta tags for better social media sharing on Facebook, Twitter, LinkedIn, and other platforms.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet">
+    <style>
+        .generator-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .input-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .result-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .preview-section {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .preview-card {
+            max-width: 500px;
+            margin: 0 auto;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .preview-image {
+            width: 100%;
+            height: 260px;
+            background-color: #e9ecef;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .preview-content {
+            padding: 1rem;
+        }
+        .preview-title {
+            font-size: 1.25rem;
+            font-weight: 500;
+            color: #1a0dab;
+            margin-bottom: 0.5rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .preview-description {
+            color: #545454;
+            font-size: 0.875rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .preview-url {
+            color: #006621;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .code-output {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .character-count {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+        .character-count.warning {
+            color: #ffc107;
+        }
+        .character-count.danger {
+            color: #dc3545;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-share-alt me-2"></i>Open Graph Generator</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="generator-container">
+                <!-- Input Section -->
+                <div class="input-section">
+                    <h5 class="mb-3">Configure Open Graph Tags</h5>
+                    
+                    <!-- Basic Information -->
+                    <div class="mb-4">
+                        <h6 class="mb-3">Basic Information</h6>
+                        <div class="mb-3">
+                            <label class="form-label">Title</label>
+                            <input type="text" class="form-control" id="ogTitle" placeholder="Enter title">
+                            <div class="character-count" id="titleCount">0/95 characters</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Description</label>
+                            <textarea class="form-control" id="ogDescription" rows="3" placeholder="Enter description"></textarea>
+                            <div class="character-count" id="descriptionCount">0/200 characters</div>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">URL</label>
+                            <input type="url" class="form-control" id="ogUrl" placeholder="https://example.com/page">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Image URL</label>
+                            <input type="url" class="form-control" id="ogImage" placeholder="https://example.com/image.jpg">
+                            <small class="text-muted">Recommended size: 1200x630 pixels</small>
+                        </div>
+                    </div>
+
+                    <!-- Additional Options -->
+                    <div class="mb-4">
+                        <h6 class="mb-3">Additional Options</h6>
+                        <div class="mb-3">
+                            <label class="form-label">Site Name</label>
+                            <input type="text" class="form-control" id="ogSiteName" placeholder="Your Website Name">
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Type</label>
+                            <select class="form-select" id="ogType">
+                                <option value="website">Website</option>
+                                <option value="article">Article</option>
+                                <option value="product">Product</option>
+                                <option value="profile">Profile</option>
+                                <option value="book">Book</option>
+                                <option value="music">Music</option>
+                                <option value="video">Video</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Locale</label>
+                            <select class="form-select" id="ogLocale">
+                                <option value="en_US">English (US)</option>
+                                <option value="en_GB">English (UK)</option>
+                                <option value="es_ES">Spanish</option>
+                                <option value="fr_FR">French</option>
+                                <option value="de_DE">German</option>
+                                <option value="it_IT">Italian</option>
+                                <option value="pt_BR">Portuguese (Brazil)</option>
+                                <option value="ja_JP">Japanese</option>
+                                <option value="ko_KR">Korean</option>
+                                <option value="zh_CN">Chinese (Simplified)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Twitter Card Options -->
+                    <div class="mb-3">
+                        <h6 class="mb-3">Twitter Card Options</h6>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="includeTwitter" checked>
+                            <label class="form-check-label" for="includeTwitter">
+                                Include Twitter Card tags
+                            </label>
+                        </div>
+                        <div class="mt-3">
+                            <label class="form-label">Card Type</label>
+                            <select class="form-select" id="twitterCard">
+                                <option value="summary_large_image">Large Image</option>
+                                <option value="summary">Summary</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview Section -->
+                <div class="preview-section mb-3">
+                    <h5 class="mb-3">Social Media Preview</h5>
+                    <div class="preview-card">
+                        <div class="preview-image" id="previewImage">
+                            <i class="fas fa-image fa-3x text-muted"></i>
+                        </div>
+                        <div class="preview-content">
+                            <div class="preview-title" id="previewTitle">Your Title Will Appear Here</div>
+                            <div class="preview-description" id="previewDescription">Your description will appear here. Make it engaging and informative to attract more clicks when shared on social media.</div>
+                            <div class="preview-url" id="previewUrl">example.com</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section">
+                    <h5 class="mb-3">Generated Meta Tags</h5>
+                    <div class="code-output">
+                        <pre><code class="language-html" id="codeOutput"></code></pre>
+                    </div>
+                    <button class="btn btn-outline-primary mt-3" id="copyBtn">
+                        <i class="fas fa-copy me-2"></i>Copy Meta Tags
+                    </button>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Open Graph Generator</h5>
+                <p class="mb-0">Open Graph meta tags control how your content appears when shared on social media:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Create meta tags for Facebook, Twitter, LinkedIn, and other platforms</li>
+                    <li>Customize title, description, and image for social sharing</li>
+                    <li>Live preview of how your content will appear</li>
+                    <li>Support for multiple languages and content types</li>
+                    <li>Includes Twitter Card meta tags</li>
+                </ul>
+                <p class="mt-2 mb-0"><small>Note: Different social media platforms may display your content slightly differently.</small></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-markup.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Input elements
+            const ogTitle = document.getElementById('ogTitle');
+            const ogDescription = document.getElementById('ogDescription');
+            const ogUrl = document.getElementById('ogUrl');
+            const ogImage = document.getElementById('ogImage');
+            const ogSiteName = document.getElementById('ogSiteName');
+            const ogType = document.getElementById('ogType');
+            const ogLocale = document.getElementById('ogLocale');
+            const includeTwitter = document.getElementById('includeTwitter');
+            const twitterCard = document.getElementById('twitterCard');
+
+            // Preview elements
+            const previewTitle = document.getElementById('previewTitle');
+            const previewDescription = document.getElementById('previewDescription');
+            const previewUrl = document.getElementById('previewUrl');
+            const previewImage = document.getElementById('previewImage');
+
+            // Output elements
+            const codeOutput = document.getElementById('codeOutput');
+            const copyBtn = document.getElementById('copyBtn');
+            const titleCount = document.getElementById('titleCount');
+            const descriptionCount = document.getElementById('descriptionCount');
+
+            // Update character counts
+            function updateCharacterCount(element, count, limit) {
+                const chars = element.value.length;
+                count.textContent = `${chars}/${limit} characters`;
+                count.className = 'character-count';
+                
+                if (chars > limit) {
+                    count.classList.add('danger');
+                } else if (chars > limit * 0.8) {
+                    count.classList.add('warning');
+                }
+            }
+
+            // Update preview
+            function updatePreview() {
+                previewTitle.textContent = ogTitle.value || 'Your Title Will Appear Here';
+                previewDescription.textContent = ogDescription.value || 'Your description will appear here. Make it engaging and informative to attract more clicks when shared on social media.';
+                previewUrl.textContent = ogUrl.value ? new URL(ogUrl.value).hostname : 'example.com';
+                
+                if (ogImage.value) {
+                    previewImage.innerHTML = '';
+                    previewImage.style.backgroundImage = `url(${ogImage.value})`;
+                } else {
+                    previewImage.innerHTML = '<i class="fas fa-image fa-3x text-muted"></i>';
+                    previewImage.style.backgroundImage = 'none';
+                }
+            }
+
+            // Generate meta tags
+            function generateMetaTags() {
+                let tags = [
+                    '<!-- Open Graph / Facebook -->',
+                    '<meta property="og:type" content="' + ogType.value + '">',
+                    '<meta property="og:url" content="' + (ogUrl.value || '') + '">',
+                    '<meta property="og:title" content="' + (ogTitle.value || '') + '">',
+                    '<meta property="og:description" content="' + (ogDescription.value || '') + '">',
+                    ogImage.value ? '<meta property="og:image" content="' + ogImage.value + '">' : '',
+                    ogSiteName.value ? '<meta property="og:site_name" content="' + ogSiteName.value + '">' : '',
+                    '<meta property="og:locale" content="' + ogLocale.value + '">'
+                ];
+
+                if (includeTwitter.checked) {
+                    tags = tags.concat([
+                        '',
+                        '<!-- Twitter -->',
+                        '<meta name="twitter:card" content="' + twitterCard.value + '">',
+                        '<meta name="twitter:url" content="' + (ogUrl.value || '') + '">',
+                        '<meta name="twitter:title" content="' + (ogTitle.value || '') + '">',
+                        '<meta name="twitter:description" content="' + (ogDescription.value || '') + '">',
+                        ogImage.value ? '<meta name="twitter:image" content="' + ogImage.value + '">' : ''
+                    ]);
+                }
+
+                codeOutput.textContent = tags.filter(tag => tag).join('\n');
+                Prism.highlightElement(codeOutput);
+            }
+
+            // Event listeners
+            [ogTitle, ogDescription, ogUrl, ogImage, ogSiteName, ogType, ogLocale].forEach(input => {
+                input.addEventListener('input', () => {
+                    updatePreview();
+                    generateMetaTags();
+                });
+            });
+
+            [includeTwitter, twitterCard].forEach(input => {
+                input.addEventListener('change', generateMetaTags);
+            });
+
+            ogTitle.addEventListener('input', () => {
+                updateCharacterCount(ogTitle, titleCount, 95);
+            });
+
+            ogDescription.addEventListener('input', () => {
+                updateCharacterCount(ogDescription, descriptionCount, 200);
+            });
+
+            // Copy functionality
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(codeOutput.textContent).then(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy Meta Tags';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

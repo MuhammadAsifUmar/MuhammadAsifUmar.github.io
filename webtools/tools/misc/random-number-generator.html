@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Number Generator - Generate Random Numbers - WebTools</title>
+    <meta name="description" content="Free online random number generator. Generate random numbers with custom ranges, decimals, and sequences. Perfect for games, statistics, and decision making.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .generator-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .options-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .result-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+        .result-number {
+            font-size: 3rem;
+            font-weight: bold;
+            color: #0d6efd;
+            margin-bottom: 0.5rem;
+            font-family: monospace;
+        }
+        .history-section {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .history-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .history-item:last-child {
+            border-bottom: none;
+        }
+        .history-number {
+            font-weight: 500;
+            font-family: monospace;
+        }
+        .history-timestamp {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-dice me-2"></i>Random Number Generator</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="generator-container">
+                <!-- Options Section -->
+                <div class="options-section">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Minimum Value</label>
+                            <input type="number" class="form-control" id="minValue" value="1">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Maximum Value</label>
+                            <input type="number" class="form-control" id="maxValue" value="100">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Decimal Places</label>
+                            <select class="form-select" id="decimalPlaces">
+                                <option value="0" selected>0 (Integer)</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Generate</label>
+                            <select class="form-select" id="generateCount">
+                                <option value="1" selected>1 number</option>
+                                <option value="5">5 numbers</option>
+                                <option value="10">10 numbers</option>
+                                <option value="20">20 numbers</option>
+                            </select>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="uniqueNumbers">
+                                <label class="form-check-label" for="uniqueNumbers">
+                                    Generate unique numbers only
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section">
+                    <div class="result-number" id="resultNumber">0</div>
+                    <button class="btn btn-primary" id="generateBtn">
+                        <i class="fas fa-sync-alt me-2"></i>Generate
+                    </button>
+                </div>
+
+                <!-- History Section -->
+                <div class="history-section">
+                    <h5 class="mb-3">Generated Numbers</h5>
+                    <div id="history"></div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Random Number Generator</h5>
+                <p>Generate random numbers with various options:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Custom range with minimum and maximum values</li>
+                    <li>Decimal places for precise numbers</li>
+                    <li>Generate multiple numbers at once</li>
+                    <li>Option for unique numbers only</li>
+                    <li>History of generated numbers</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const minValue = document.getElementById('minValue');
+            const maxValue = document.getElementById('maxValue');
+            const decimalPlaces = document.getElementById('decimalPlaces');
+            const generateCount = document.getElementById('generateCount');
+            const uniqueNumbers = document.getElementById('uniqueNumbers');
+            const generateBtn = document.getElementById('generateBtn');
+            const resultNumber = document.getElementById('resultNumber');
+            const history = document.getElementById('history');
+
+            // Generate a random number between min and max
+            function generateRandomNumber(min, max, decimals) {
+                const random = Math.random() * (max - min) + min;
+                return Number(random.toFixed(decimals));
+            }
+
+            // Generate multiple random numbers
+            function generateNumbers() {
+                const min = parseFloat(minValue.value);
+                const max = parseFloat(maxValue.value);
+                const decimals = parseInt(decimalPlaces.value);
+                const count = parseInt(generateCount.value);
+                const unique = uniqueNumbers.checked;
+
+                if (isNaN(min) || isNaN(max)) {
+                    alert('Please enter valid numbers');
+                    return;
+                }
+
+                if (min >= max) {
+                    alert('Maximum value must be greater than minimum value');
+                    return;
+                }
+
+                if (unique && (max - min + 1) < count) {
+                    alert('Range is too small to generate unique numbers');
+                    return;
+                }
+
+                const numbers = [];
+                const attempts = unique ? 1000 : count; // Prevent infinite loop
+
+                for (let i = 0; i < attempts && numbers.length < count; i++) {
+                    const number = generateRandomNumber(min, max, decimals);
+                    if (!unique || !numbers.includes(number)) {
+                        numbers.push(number);
+                    }
+                }
+
+                // Update display
+                resultNumber.textContent = numbers.join(', ');
+
+                // Add to history
+                const timestamp = new Date().toLocaleTimeString();
+                const historyItem = document.createElement('div');
+                historyItem.className = 'history-item';
+                historyItem.innerHTML = `
+                    <span class="history-number">${numbers.join(', ')}</span>
+                    <span class="history-timestamp">${timestamp}</span>
+                `;
+                history.insertBefore(historyItem, history.firstChild);
+
+                // Limit history items
+                while (history.children.length > 10) {
+                    history.removeChild(history.lastChild);
+                }
+            }
+
+            // Event listeners
+            generateBtn.addEventListener('click', generateNumbers);
+
+            // Generate initial number
+            generateNumbers();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,1202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebTools - Free Online Tools for Everyone</title>
+    <meta name="description" content="Collection of free online tools for developers, designers, and digital marketers. Image tools, text tools, converters, calculators, and more.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, #0d6efd 0%, #0dcaf0 100%);
+            color: white;
+            padding: 4rem 0;
+            margin-bottom: 2rem;
+        }
+        .hero h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        .hero p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        /* Category Navigation */
+        .category-nav {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .category-nav .nav-link {
+            color: #6c757d;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: all 0.2s;
+        }
+        .category-nav .nav-link:hover {
+            background: #f8f9fa;
+            color: #0d6efd;
+        }
+        .category-nav .nav-link.active {
+            background: #0d6efd;
+            color: white;
+        }
+        /* Tool Cards */
+        .tool-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            height: 100%;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: 1px solid #dee2e6;
+        }
+        .tool-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .tool-card .tool-icon {
+            font-size: 2rem;
+            color: #0d6efd;
+            margin-bottom: 1rem;
+        }
+        .tool-card h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+        .tool-card p {
+            color: #6c757d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        /* Category Sections */
+        .category-section {
+            margin-bottom: 3rem;
+        }
+        .category-section h2 {
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #dee2e6;
+        }
+        /* Search Bar */
+        .search-bar {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+        .search-bar .input-group {
+            background: white;
+            border-radius: 50px;
+            padding: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .search-bar input {
+            border: none;
+            box-shadow: none !important;
+            padding-left: 1rem;
+        }
+        .search-bar .btn {
+            border-radius: 50px;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+        /* Popular Tools Badge */
+        .popular-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #dc3545;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            z-index: 1;
+        }
+        
+        /* Favorite Button */
+        .favorite-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: none;
+            border: none;
+            color: #6c757d;
+            font-size: 1.25rem;
+            z-index: 2;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .favorite-btn:hover {
+            color: #ffc107;
+        }
+        .favorite-btn.active {
+            color: #ffc107;
+        }
+
+        /* Recently Used Section */
+        .recently-used {
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .recently-used .tool-list {
+            display: flex;
+            gap: 1rem;
+            overflow-x: auto;
+            padding: 0.5rem;
+        }
+        .recently-used .tool-item {
+            flex: 0 0 auto;
+            padding: 0.5rem 1rem;
+            background: #f8f9fa;
+            border-radius: 5px;
+            color: #6c757d;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        .recently-used .tool-item:hover {
+            background: #e9ecef;
+            color: #0d6efd;
+        }
+
+        /* Advanced Search */
+        .search-filters {
+            display: none;
+            background: white;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .search-filters.show {
+            display: block;
+        }
+        
+        /* Tool Card Improvements */
+        .tool-card {
+            position: relative;
+        }
+        .tool-features {
+            list-style: none;
+            padding-left: 0;
+            margin-bottom: 1rem;
+        }
+        .tool-features li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 0.25rem;
+        }
+        .tool-features li:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #0d6efd;
+        }
+        .tool-stats {
+            display: flex;
+            gap: 1rem;
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #dee2e6;
+        }
+        .tool-stats span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        /* Quick Access Toolbar */
+        .quick-access-toolbar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: white;
+        }
+        .quick-access-items {
+            scrollbar-width: thin;
+            scrollbar-color: #dee2e6 transparent;
+        }
+        .quick-access-items::-webkit-scrollbar {
+            height: 6px;
+        }
+        .quick-access-items::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .quick-access-items::-webkit-scrollbar-thumb {
+            background-color: #dee2e6;
+            border-radius: 3px;
+        }
+        .quick-access-item {
+            flex: 0 0 auto;
+            padding: 0.5rem 1rem;
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            text-decoration: none;
+            color: inherit;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .quick-access-item:hover {
+            border-color: #0d6efd;
+            background: #f8f9fa;
+        }
+        .quick-access-item i {
+            color: #0d6efd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container text-center">
+            <h1>Free Online Tools for Everyone</h1>
+            <p class="mb-4">Discover our collection of free online tools for developers, designers, and digital marketers.</p>
+            <!-- Search Bar -->
+            <div class="search-bar">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search tools..." id="toolSearch">
+                    <button class="btn btn-light" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Category Navigation -->
+        <nav class="category-nav">
+            <ul class="nav nav-pills flex-wrap justify-content-center">
+                <li class="nav-item">
+                    <a class="nav-link active" href="#all">All Tools</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#converter">Converter</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#qr">QR Code</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#social">Social</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#seo">SEO</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#text">Text</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#image">Image</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#developer">Developer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#math">Math</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#misc">Misc</a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- After Hero Section -->
+        <div class="container">
+            <!-- Recently Used Tools -->
+            <div class="recently-used">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h5 class="mb-0"><i class="fas fa-history me-2"></i>Recently Used</h5>
+                    <button class="btn btn-link btn-sm" id="clearRecent">Clear History</button>
+                </div>
+                <div class="tool-list" id="recentTools">
+                    <!-- Will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Quick Access Toolbar -->
+            <div class="quick-access-toolbar bg-white rounded-3 p-3 mb-4 shadow-sm">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6 class="mb-0"><i class="fas fa-clock me-2"></i>Quick Access</h6>
+                    <div class="toolbar-actions">
+                        <button class="btn btn-sm btn-outline-primary me-2" id="viewAllRecent">
+                            View All
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" id="clearQuickAccess">
+                            Clear
+                        </button>
+                    </div>
+                </div>
+                <div class="quick-access-items d-flex gap-2 overflow-auto py-2" id="quickAccessItems">
+                    <!-- Quick access items will be populated by JavaScript -->
+                </div>
+            </div>
+
+            <!-- Popular Tools Section -->
+            <div class="popular-tools mb-4">
+                <h5 class="mb-3"><i class="fas fa-star me-2"></i>Popular Tools</h5>
+                <div class="row g-4">
+                    <div class="col-md-3">
+                        <a href="tools/qr/qr-generator.html" class="text-decoration-none">
+                            <div class="tool-card">
+                                <div class="popular-badge">Top Rated</div>
+                                <div class="tool-icon">
+                                    <i class="fas fa-qrcode"></i>
+                                </div>
+                                <h3>QR Generator</h3>
+                                <small class="text-muted">4.9/5 · 2.1K users</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="tools/qr/qr-reader.html" class="text-decoration-none">
+                            <div class="tool-card">
+                                <div class="popular-badge">New</div>
+                                <div class="tool-icon">
+                                    <i class="fas fa-camera"></i>
+                                </div>
+                                <h3>QR Reader</h3>
+                                <small class="text-muted">4.8/5 · 1.5K users</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="tools/converter/file-size-converter.html" class="text-decoration-none">
+                            <div class="tool-card">
+                                <div class="popular-badge">Popular</div>
+                                <div class="tool-icon">
+                                    <i class="fas fa-hdd"></i>
+                                </div>
+                                <h3>File Size Converter</h3>
+                                <small class="text-muted">4.8/5 · 1.8K users</small>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col-md-3">
+                        <a href="tools/math/age-calculator.html" class="text-decoration-none">
+                            <div class="tool-card">
+                                <div class="popular-badge">Trending</div>
+                                <div class="tool-icon">
+                                    <i class="fas fa-birthday-cake"></i>
+                                </div>
+                                <h3>Age Calculator</h3>
+                                <small class="text-muted">4.7/5 · 1.2K users</small>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Advanced Search -->
+            <div class="search-bar mb-4">
+                <div class="input-group">
+                    <input type="text" class="form-control" placeholder="Search tools..." id="toolSearch">
+                    <button class="btn btn-light" type="button" id="advancedSearchBtn">
+                        <i class="fas fa-sliders-h"></i>
+                    </button>
+                    <button class="btn btn-primary" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+                <div class="search-filters mt-3" id="searchFilters">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Category</label>
+                            <select class="form-select" id="categoryFilter">
+                                <option value="">All Categories</option>
+                                <option value="converter">Converter</option>
+                                <option value="qr">QR Code</option>
+                                <option value="social">Social</option>
+                                <option value="seo">SEO</option>
+                                <option value="text">Text</option>
+                                <option value="developer">Developer</option>
+                                <option value="math">Math</option>
+                                <option value="image">Image</option>
+                                <option value="misc">Misc</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Sort By</label>
+                            <select class="form-select" id="sortFilter">
+                                <option value="popular">Most Popular</option>
+                                <option value="recent">Recently Added</option>
+                                <option value="name">Name (A-Z)</option>
+                                <option value="rating">Highest Rated</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Show Only</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="favoritesFilter">
+                                <label class="form-check-label" for="favoritesFilter">Favorites</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="recentFilter">
+                                <label class="form-check-label" for="recentFilter">Recently Used</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="newFilter">
+                                <label class="form-check-label" for="newFilter">New Tools</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Converter Tools Section -->
+        <section class="tool-section mb-5">
+            <h2 class="section-title"><i class="fas fa-exchange-alt me-2"></i>Converter Tools</h2>
+            <p class="section-description">Powerful conversion tools for various units and formats.</p>
+            
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <div class="tool-card">
+                        <button class="favorite-btn" data-tool="file-size-converter">
+                            <i class="far fa-star"></i>
+                        </button>
+                        <div class="popular-badge">Popular</div>
+                        <div class="tool-card-body">
+                            <i class="fas fa-hdd tool-icon"></i>
+                            <h3>File Size Converter</h3>
+                            <p>Convert between bytes, KB, MB, GB, TB, and PB with advanced features:</p>
+                            <ul class="tool-features">
+                                <li>Binary/Decimal base selection</li>
+                                <li>Batch conversion support</li>
+                                <li>Size comparison with storage devices</li>
+                                <li>Common file size references</li>
+                            </ul>
+                            <div class="tool-stats">
+                                <span><i class="fas fa-users"></i> 1.2K users</span>
+                                <span><i class="fas fa-star"></i> 4.8/5</span>
+                            </div>
+                            <a href="tools/converter/file-size-converter.html" class="btn btn-primary">Convert File Sizes</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="tool-card">
+                        <button class="favorite-btn" data-tool="temperature-converter">
+                            <i class="far fa-star"></i>
+                        </button>
+                        <div class="popular-badge">Popular</div>
+                        <div class="tool-card-body">
+                            <i class="fas fa-thermometer-half tool-icon"></i>
+                            <h3>Temperature Converter</h3>
+                            <p>Convert between Celsius, Fahrenheit, and Kelvin with enhanced features:</p>
+                            <ul class="tool-features">
+                                <li>Visual temperature scale</li>
+                                <li>Batch temperature conversion</li>
+                                <li>Water state analysis</li>
+                                <li>Human comfort level indicator</li>
+                            </ul>
+                            <div class="tool-stats">
+                                <span><i class="fas fa-users"></i> 1.2K users</span>
+                                <span><i class="fas fa-star"></i> 4.8/5</span>
+                            </div>
+                            <a href="tools/converter/temperature-converter.html" class="btn btn-primary">Convert Temperatures</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="tool-card">
+                        <button class="favorite-btn" data-tool="time-converter">
+                            <i class="far fa-star"></i>
+                        </button>
+                        <div class="popular-badge">Popular</div>
+                        <div class="tool-card-body">
+                            <i class="fas fa-clock tool-icon"></i>
+                            <h3>Time Converter</h3>
+                            <p>Convert between seconds, minutes, hours, days, weeks, and more:</p>
+                            <ul class="tool-features">
+                                <li>Real-time conversion</li>
+                                <li>Common time unit references</li>
+                                <li>Quick conversion table</li>
+                                <li>Copy results instantly</li>
+                            </ul>
+                            <div class="tool-stats">
+                                <span><i class="fas fa-users"></i> 1.2K users</span>
+                                <span><i class="fas fa-star"></i> 4.8/5</span>
+                            </div>
+                            <a href="tools/converter/time-converter.html" class="btn btn-primary">Convert Time Units</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="tool-card">
+                        <button class="favorite-btn" data-tool="currency-converter">
+                            <i class="far fa-star"></i>
+                        </button>
+                        <div class="popular-badge">Popular</div>
+                        <div class="tool-card-body">
+                            <i class="fas fa-dollar-sign tool-icon"></i>
+                            <h3>Currency Converter</h3>
+                            <p>Convert between major world currencies:</p>
+                            <ul class="tool-features">
+                                <li>Real-time exchange rates</li>
+                                <li>Major currency support</li>
+                                <li>Popular currency pairs</li>
+                                <li>Quick currency swapping</li>
+                            </ul>
+                            <div class="tool-stats">
+                                <span><i class="fas fa-users"></i> 1.2K users</span>
+                                <span><i class="fas fa-star"></i> 4.8/5</span>
+                            </div>
+                            <a href="tools/converter/currency-converter.html" class="btn btn-primary">Convert Currencies</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="tool-card">
+                        <button class="favorite-btn" data-tool="number-system-converter">
+                            <i class="far fa-star"></i>
+                        </button>
+                        <div class="popular-badge">Popular</div>
+                        <div class="tool-card-body">
+                            <i class="fas fa-calculator tool-icon"></i>
+                            <h3>Number System Converter</h3>
+                            <p>Convert between binary, decimal, hexadecimal, and octal:</p>
+                            <ul class="tool-features">
+                                <li>Real-time conversion</li>
+                                <li>Step-by-step explanation</li>
+                                <li>Multiple base support</li>
+                                <li>Copy in any format</li>
+                            </ul>
+                            <div class="tool-stats">
+                                <span><i class="fas fa-users"></i> 1.2K users</span>
+                                <span><i class="fas fa-star"></i> 4.8/5</span>
+                            </div>
+                            <a href="tools/converter/number-system-converter.html" class="btn btn-primary">Convert Numbers</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="tool-card">
+                        <button class="favorite-btn" data-tool="text-encoder">
+                            <i class="far fa-star"></i>
+                        </button>
+                        <div class="popular-badge">Popular</div>
+                        <div class="tool-card-body">
+                            <i class="fas fa-code tool-icon"></i>
+                            <h3>Text Encoder/Decoder</h3>
+                            <p>Convert text between different encodings:</p>
+                            <ul class="tool-features">
+                                <li>Base64 encoding/decoding</li>
+                                <li>URL encoding/decoding</li>
+                                <li>HTML entity conversion</li>
+                                <li>Unicode escapes</li>
+                            </ul>
+                            <div class="tool-stats">
+                                <span><i class="fas fa-users"></i> 1.2K users</span>
+                                <span><i class="fas fa-star"></i> 4.8/5</span>
+                            </div>
+                            <a href="tools/converter/text-encoder.html" class="btn btn-primary">Encode/Decode Text</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="tool-card">
+                        <button class="favorite-btn" data-tool="image-format-converter">
+                            <i class="far fa-star"></i>
+                        </button>
+                        <div class="popular-badge">Popular</div>
+                        <div class="tool-card-body">
+                            <i class="fas fa-image tool-icon"></i>
+                            <h3>Image Format Converter</h3>
+                            <p>Convert images between different formats:</p>
+                            <ul class="tool-features">
+                                <li>PNG, JPEG, WebP support</li>
+                                <li>Quality control</li>
+                                <li>Live preview</li>
+                                <li>Drag and drop support</li>
+                            </ul>
+                            <div class="tool-stats">
+                                <span><i class="fas fa-users"></i> 1.2K users</span>
+                                <span><i class="fas fa-star"></i> 4.8/5</span>
+                            </div>
+                            <a href="tools/converter/image-format-converter.html" class="btn btn-primary">Convert Images</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Social Tools Section -->
+        <section class="category-section" id="social">
+            <h2><i class="fas fa-share-alt me-2"></i>Social Media Tools</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <a href="tools/social/image-resizer.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-crop"></i>
+                            </div>
+                            <h3>Social Media Image Resizer</h3>
+                            <p>Resize images for various social media platforms with perfect dimensions.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/social/post-generator.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-pencil-alt"></i>
+                            </div>
+                            <h3>Post Generator</h3>
+                            <p>Create engaging social media posts with hashtag suggestions and character limits.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/social/analytics-tool.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-chart-line"></i>
+                            </div>
+                            <h3>Analytics Tool</h3>
+                            <p>Track and analyze social media performance metrics and engagement.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEO Tools Section -->
+        <section class="category-section" id="seo">
+            <h2><i class="fas fa-search me-2"></i>SEO Tools</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <a href="tools/seo/meta-tags-generator.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-tags"></i>
+                            </div>
+                            <h3>Meta Tags Generator</h3>
+                            <p>Generate optimized meta tags for better search engine visibility.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/seo/robots-txt-generator.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-robot"></i>
+                            </div>
+                            <h3>Robots.txt Generator</h3>
+                            <p>Create robots.txt files to control search engine crawling.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/seo/sitemap-generator.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-sitemap"></i>
+                            </div>
+                            <h3>XML Sitemap Generator</h3>
+                            <p>Generate XML sitemaps for better search engine indexing.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Text Tools Section -->
+        <section class="category-section" id="text">
+            <h2><i class="fas fa-font me-2"></i>Text Tools</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <a href="tools/text/word-counter.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-font"></i>
+                            </div>
+                            <h3>Word Counter</h3>
+                            <p>Count words, characters, and paragraphs in your text.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/text/case-converter.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-text-height"></i>
+                            </div>
+                            <h3>Text Case Converter</h3>
+                            <p>Convert text between different cases (upper, lower, title).</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/text/lorem-ipsum.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-text-width"></i>
+                            </div>
+                            <h3>Lorem Ipsum Generator</h3>
+                            <p>Generate Lorem Ipsum placeholder text.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Developer Tools Section -->
+        <section class="category-section" id="developer">
+            <h2><i class="fas fa-code me-2"></i>Developer Tools</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <a href="tools/developer/json-formatter.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-brackets-curly"></i>
+                            </div>
+                            <h3>JSON Formatter</h3>
+                            <p>Format, validate, and beautify JSON data with syntax highlighting.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/developer/css-flexbox-generator.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-th"></i>
+                            </div>
+                            <h3>CSS Flexbox Generator</h3>
+                            <p>Create and visualize CSS Flexbox layouts with live preview.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/developer/timezone-converter.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <h3>Timezone Converter</h3>
+                            <p>Convert time between different timezones with world clock feature.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Math Tools Section -->
+        <section class="category-section" id="math">
+            <h2><i class="fas fa-calculator me-2"></i>Math Tools</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <a href="tools/math/scientific-calculator.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-calculator"></i>
+                            </div>
+                            <h3>Scientific Calculator</h3>
+                            <p>Advanced calculator with scientific functions and unit conversions.</p>
+                            <ul class="tool-features">
+                                <li>Scientific functions</li>
+                                <li>Unit conversions</li>
+                                <li>History tracking</li>
+                                <li>Memory functions</li>
+                            </ul>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/math/percentage-calculator.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-percent"></i>
+                            </div>
+                            <h3>Percentage Calculator</h3>
+                            <p>Calculate percentages, percentage changes, and more.</p>
+                            <ul class="tool-features">
+                                <li>Basic percentage calculations</li>
+                                <li>Percentage change</li>
+                                <li>Markup/Discount</li>
+                                <li>Percentage distribution</li>
+                            </ul>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/math/age-calculator.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-birthday-cake"></i>
+                            </div>
+                            <h3>Age Calculator</h3>
+                            <p>Calculate exact age and time between dates.</p>
+                            <ul class="tool-features">
+                                <li>Precise age calculation</li>
+                                <li>Date difference</li>
+                                <li>Age in different units</li>
+                                <li>Next birthday countdown</li>
+                            </ul>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/math/bmi-calculator.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-weight"></i>
+                            </div>
+                            <h3>BMI Calculator</h3>
+                            <p>Calculate Body Mass Index (BMI) and get health insights.</p>
+                            <ul class="tool-features">
+                                <li>BMI calculation</li>
+                                <li>Health category</li>
+                                <li>Weight recommendations</li>
+                                <li>Metric/Imperial units</li>
+                            </ul>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- QR Code Tools Section -->
+        <section class="category-section" id="qr">
+            <h2><i class="fas fa-qrcode me-2"></i>QR Code Tools</h2>
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="tool-card">
+                        <button class="favorite-btn" data-tool="qr-generator">
+                            <i class="far fa-star"></i>
+                        </button>
+                        <div class="popular-badge">Popular</div>
+                        <div class="tool-card-body">
+                            <i class="fas fa-qrcode tool-icon"></i>
+                            <h3>QR Code Generator</h3>
+                            <p>Create customized QR codes for various purposes:</p>
+                            <ul class="tool-features">
+                                <li>Multiple QR code types (URL, Text, Contact, WiFi, Email)</li>
+                                <li>Custom colors and sizes</li>
+                                <li>Error correction levels</li>
+                                <li>Download as PNG or SVG</li>
+                            </ul>
+                            <div class="tool-stats">
+                                <span><i class="fas fa-users"></i> 2.1K users</span>
+                                <span><i class="fas fa-star"></i> 4.9/5</span>
+                            </div>
+                            <a href="tools/qr/qr-generator.html" class="btn btn-primary">Generate QR Code</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="tool-card">
+                        <button class="favorite-btn" data-tool="qr-reader">
+                            <i class="far fa-star"></i>
+                        </button>
+                        <div class="popular-badge">New</div>
+                        <div class="tool-card-body">
+                            <i class="fas fa-camera tool-icon"></i>
+                            <h3>QR Code Reader</h3>
+                            <p>Scan and decode QR codes instantly:</p>
+                            <ul class="tool-features">
+                                <li>Camera scanning support</li>
+                                <li>Image upload and drag-drop</li>
+                                <li>Scan history tracking</li>
+                                <li>One-click copy and open links</li>
+                            </ul>
+                            <div class="tool-stats">
+                                <span><i class="fas fa-users"></i> 1.5K users</span>
+                                <span><i class="fas fa-star"></i> 4.8/5</span>
+                            </div>
+                            <a href="tools/qr/qr-reader.html" class="btn btn-primary">Read QR Code</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Image Tools Section -->
+        <section class="category-section" id="image">
+            <h2><i class="fas fa-image me-2"></i>Image Tools</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <a href="tools/image/image-to-png.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <h3>Image to PNG Converter</h3>
+                            <p>Convert your images to PNG format easily.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/image/image-to-jpg.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <h3>Image to JPG Converter</h3>
+                            <p>Convert images to JPG/JPEG format.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/image/webp-converter.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-image"></i>
+                            </div>
+                            <h3>WebP Converter</h3>
+                            <p>Convert images to and from WebP format.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Misc Tools Section -->
+        <section class="category-section" id="misc">
+            <h2><i class="fas fa-tools me-2"></i>Misc Tools</h2>
+            <div class="row g-4">
+                <div class="col-md-4">
+                    <a href="tools/misc/random-number-generator.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-dice"></i>
+                            </div>
+                            <h3>Random Number Generator</h3>
+                            <p>Generate random numbers with custom ranges and options.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/misc/uuid-generator.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-fingerprint"></i>
+                            </div>
+                            <h3>UUID Generator</h3>
+                            <p>Generate random UUIDs (v4) with formatting options.</p>
+                        </div>
+                    </a>
+                </div>
+                <div class="col-md-4">
+                    <a href="tools/misc/password-generator.html" class="text-decoration-none">
+                        <div class="tool-card">
+                            <div class="tool-icon">
+                                <i class="fas fa-key"></i>
+                            </div>
+                            <h3>Password Generator</h3>
+                            <p>Create strong, secure passwords with custom options.</p>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Tool search functionality
+            const toolSearch = document.getElementById('toolSearch');
+            const toolCards = document.querySelectorAll('.tool-card');
+
+            toolSearch.addEventListener('input', (e) => {
+                const searchTerm = e.target.value.toLowerCase();
+                
+                toolCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    const isMatch = title.includes(searchTerm) || description.includes(searchTerm);
+                    
+                    card.closest('.col-md-4').style.display = isMatch ? 'block' : 'none';
+                });
+            });
+
+            // Category navigation
+            const navLinks = document.querySelectorAll('.category-nav .nav-link');
+            
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    link.classList.add('active');
+                    
+                    const targetId = link.getAttribute('href').slice(1);
+                    if (targetId === 'all') {
+                        document.querySelectorAll('.category-section').forEach(section => {
+                            section.style.display = 'block';
+                        });
+                    } else {
+                        document.querySelectorAll('.category-section').forEach(section => {
+                            section.style.display = section.id === targetId ? 'block' : 'none';
+                        });
+                    }
+                });
+            });
+
+            // Advanced Search Toggle
+            const advancedSearchBtn = document.getElementById('advancedSearchBtn');
+            const searchFilters = document.getElementById('searchFilters');
+            
+            advancedSearchBtn.addEventListener('click', () => {
+                searchFilters.classList.toggle('show');
+            });
+
+            // Favorites System
+            const favoriteButtons = document.querySelectorAll('.favorite-btn');
+            let favorites = JSON.parse(localStorage.getItem('favorites') || '[]');
+
+            favoriteButtons.forEach(btn => {
+                const toolId = btn.dataset.tool;
+                if (favorites.includes(toolId)) {
+                    btn.classList.add('active');
+                    btn.querySelector('i').classList.replace('far', 'fas');
+                }
+
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const icon = btn.querySelector('i');
+                    
+                    if (favorites.includes(toolId)) {
+                        favorites = favorites.filter(id => id !== toolId);
+                        btn.classList.remove('active');
+                        icon.classList.replace('fas', 'far');
+                    } else {
+                        favorites.push(toolId);
+                        btn.classList.add('active');
+                        icon.classList.replace('far', 'fas');
+                    }
+                    
+                    localStorage.setItem('favorites', JSON.stringify(favorites));
+                });
+            });
+
+            // Recently Used Tools
+            let recentTools = JSON.parse(localStorage.getItem('recentTools') || '[]');
+            const recentToolsList = document.getElementById('recentTools');
+            const clearRecentBtn = document.getElementById('clearRecent');
+
+            function updateRecentTools() {
+                recentToolsList.innerHTML = recentTools.map(tool => `
+                    <a href="${tool.url}" class="tool-item">
+                        <i class="${tool.icon} me-2"></i>${tool.name}
+                    </a>
+                `).join('');
+            }
+
+            document.querySelectorAll('.tool-card a').forEach(link => {
+                link.addEventListener('click', () => {
+                    const card = link.closest('.tool-card');
+                    const tool = {
+                        name: card.querySelector('h3').textContent,
+                        url: link.href,
+                        icon: card.querySelector('.tool-icon i').className
+                    };
+
+                    recentTools = [tool, ...recentTools.filter(t => t.url !== tool.url)].slice(0, 10);
+                    localStorage.setItem('recentTools', JSON.stringify(recentTools));
+                    updateRecentTools();
+                });
+            });
+
+            clearRecentBtn.addEventListener('click', () => {
+                recentTools = [];
+                localStorage.removeItem('recentTools');
+                updateRecentTools();
+            });
+
+            // Initialize recent tools
+            updateRecentTools();
+
+            // Enhanced Search with Filters
+            const categoryFilter = document.getElementById('categoryFilter');
+            const sortFilter = document.getElementById('sortFilter');
+            const favoritesFilter = document.getElementById('favoritesFilter');
+            const recentFilter = document.getElementById('recentFilter');
+
+            function filterTools() {
+                const searchTerm = toolSearch.value.toLowerCase();
+                const category = categoryFilter.value;
+                const showFavorites = favoritesFilter.checked;
+                const showRecent = recentFilter.checked;
+
+                toolCards.forEach(card => {
+                    const title = card.querySelector('h3').textContent.toLowerCase();
+                    const description = card.querySelector('p').textContent.toLowerCase();
+                    const cardCategory = card.closest('section').id;
+                    const toolId = card.querySelector('.favorite-btn')?.dataset.tool;
+                    const isRecent = recentTools.some(tool => tool.url.includes(toolId));
+                    
+                    const matchesSearch = title.includes(searchTerm) || description.includes(searchTerm);
+                    const matchesCategory = !category || cardCategory === category;
+                    const matchesFavorites = !showFavorites || favorites.includes(toolId);
+                    const matchesRecent = !showRecent || isRecent;
+
+                    card.closest('.col-md-4').style.display = 
+                        matchesSearch && matchesCategory && matchesFavorites && matchesRecent ? 'block' : 'none';
+                });
+            }
+
+            // Add event listeners for filters
+            [categoryFilter, sortFilter, favoritesFilter, recentFilter].forEach(filter => {
+                filter.addEventListener('change', filterTools);
+            });
+
+            // Update existing search event listener
+            toolSearch.addEventListener('input', filterTools);
+
+            // Quick Access Toolbar functionality
+            const quickAccessItems = document.getElementById('quickAccessItems');
+            const clearQuickAccess = document.getElementById('clearQuickAccess');
+            const viewAllRecent = document.getElementById('viewAllRecent');
+
+            function updateQuickAccess() {
+                const recentTools = JSON.parse(localStorage.getItem('recentTools') || '[]');
+                quickAccessItems.innerHTML = recentTools.map(tool => `
+                    <a href="${tool.url}" class="quick-access-item">
+                        <i class="${tool.icon} me-2"></i>${tool.name}
+                    </a>
+                `).join('') || '<p class="text-muted mb-0">No recent tools</p>';
+            }
+
+            clearQuickAccess.addEventListener('click', () => {
+                localStorage.removeItem('recentTools');
+                updateQuickAccess();
+            });
+
+            viewAllRecent.addEventListener('click', () => {
+                // Show all recent tools in a modal or expand the section
+                // This can be implemented based on your needs
+            });
+
+            // Initialize quick access
+            updateQuickAccess();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Format Converter - Convert Between Image Formats - WebTools</title>
+    <meta name="description" content="Free online image format converter. Convert images between PNG, JPG, WebP, and other formats with quality control and preview.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .converter-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .options-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .result-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .drop-zone {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s;
+        }
+        .drop-zone:hover {
+            border-color: #0d6efd;
+        }
+        .drop-zone.drag-over {
+            border-color: #0d6efd;
+            background: #e7f1ff;
+        }
+        .preview-container {
+            max-width: 100%;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+        .preview-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+        .format-info {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .format-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .format-item:last-child {
+            border-bottom: none;
+        }
+        .format-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        .format-description {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        .image-info {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-image me-2"></i>Image Format Converter</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="converter-container">
+                <!-- Input Section -->
+                <div class="options-section">
+                    <div class="drop-zone" id="dropZone">
+                        <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                        <h5>Drag & Drop Image Here</h5>
+                        <p class="text-muted">or click to select file</p>
+                        <input type="file" id="fileInput" accept="image/*" class="d-none">
+                    </div>
+                    <div class="image-info" id="imageInfo"></div>
+                </div>
+
+                <!-- Preview Section -->
+                <div class="preview-container" id="previewContainer" style="display: none;">
+                    <img id="previewImage" class="preview-image">
+                </div>
+
+                <!-- Conversion Options -->
+                <div class="options-section" id="conversionOptions" style="display: none;">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Output Format</label>
+                            <select class="form-select" id="outputFormat">
+                                <option value="image/png">PNG</option>
+                                <option value="image/jpeg">JPEG</option>
+                                <option value="image/webp">WebP</option>
+                                <option value="image/gif">GIF</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6" id="qualityContainer">
+                            <label class="form-label">Quality (JPEG/WebP)</label>
+                            <input type="range" class="form-range" id="quality" min="0" max="100" value="90">
+                            <div class="text-end" id="qualityValue">90%</div>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary" id="convertBtn">
+                                <i class="fas fa-sync-alt me-2"></i>Convert Image
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Format Information -->
+                <div class="format-info">
+                    <h5 class="mb-3">Format Information</h5>
+                    <div class="format-item">
+                        <div class="format-title">PNG (Portable Network Graphics)</div>
+                        <div class="format-description">Lossless compression, supports transparency. Best for images with text, logos, and sharp edges.</div>
+                    </div>
+                    <div class="format-item">
+                        <div class="format-title">JPEG (Joint Photographic Experts Group)</div>
+                        <div class="format-description">Lossy compression, smaller file size. Best for photographs and complex images with many colors.</div>
+                    </div>
+                    <div class="format-item">
+                        <div class="format-title">WebP</div>
+                        <div class="format-description">Modern format with both lossy and lossless compression. Supports transparency and animation.</div>
+                    </div>
+                    <div class="format-item">
+                        <div class="format-title">GIF (Graphics Interchange Format)</div>
+                        <div class="format-description">Supports animation and transparency. Limited to 256 colors, best for simple animations.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Image Format Converter</h5>
+                <p>Convert images between different formats:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Support for PNG, JPEG, WebP, and GIF formats</li>
+                    <li>Quality control for lossy formats</li>
+                    <li>Live preview before conversion</li>
+                    <li>Drag and drop support</li>
+                    <li>Detailed format information and recommendations</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+            const conversionOptions = document.getElementById('conversionOptions');
+            const outputFormat = document.getElementById('outputFormat');
+            const quality = document.getElementById('quality');
+            const qualityValue = document.getElementById('qualityValue');
+            const qualityContainer = document.getElementById('qualityContainer');
+            const convertBtn = document.getElementById('convertBtn');
+            const imageInfo = document.getElementById('imageInfo');
+
+            let currentFile = null;
+
+            // Handle drag and drop
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, (e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                });
+            });
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.add('drag-over');
+                });
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, () => {
+                    dropZone.classList.remove('drag-over');
+                });
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                const file = e.dataTransfer.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    handleFile(file);
+                }
+            });
+
+            // Handle file selection
+            dropZone.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                const file = e.target.files[0];
+                if (file) {
+                    handleFile(file);
+                }
+            });
+
+            // Handle file processing
+            function handleFile(file) {
+                currentFile = file;
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    previewImage.src = e.target.result;
+                    previewContainer.style.display = 'block';
+                    conversionOptions.style.display = 'block';
+                    updateImageInfo(file);
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // Update image information
+            function updateImageInfo(file) {
+                const size = (file.size / 1024).toFixed(2);
+                const img = new Image();
+                img.onload = () => {
+                    imageInfo.textContent = `File: ${file.name} | Size: ${size}KB | Dimensions: ${img.width}x${img.height}px | Type: ${file.type}`;
+                };
+                img.src = URL.createObjectURL(file);
+            }
+
+            // Handle quality input
+            quality.addEventListener('input', () => {
+                qualityValue.textContent = `${quality.value}%`;
+            });
+
+            // Handle format change
+            outputFormat.addEventListener('change', () => {
+                const format = outputFormat.value;
+                qualityContainer.style.display = 
+                    (format === 'image/jpeg' || format === 'image/webp') ? 'block' : 'none';
+            });
+
+            // Convert image
+            convertBtn.addEventListener('click', () => {
+                if (!currentFile) return;
+
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                const img = new Image();
+
+                img.onload = () => {
+                    canvas.width = img.width;
+                    canvas.height = img.height;
+                    ctx.drawImage(img, 0, 0);
+
+                    const format = outputFormat.value;
+                    const options = {};
+                    
+                    if (format === 'image/jpeg' || format === 'image/webp') {
+                        options.quality = quality.value / 100;
+                    }
+
+                    canvas.toBlob((blob) => {
+                        const url = URL.createObjectURL(blob);
+                        const a = document.createElement('a');
+                        const ext = format.split('/')[1];
+                        a.href = url;
+                        a.download = `converted.${ext}`;
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                        URL.revokeObjectURL(url);
+                    }, format, options);
+                };
+
+                img.src = URL.createObjectURL(currentFile);
+            });
+        });
+    </script>
+</body>
+</html> 

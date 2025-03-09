@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebP Converter - WebTools</title>
+    <meta name="description" content="Free online WebP converter. Convert images to and from WebP format. Support for PNG, JPG, and other formats with quality control.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+        .drop-zone.dragover {
+            border-color: #007bff;
+            background: #e7f1ff;
+        }
+        #uploadIcon {
+            font-size: 3rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            margin: 1rem 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .conversion-controls {
+            max-width: 400px;
+            margin: 1rem auto;
+            padding: 1.5rem;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        .format-switch {
+            margin-bottom: 2rem;
+        }
+        .quality-control {
+            background: #f8f9fa;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .file-info {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            margin: 1rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+        .file-info-item {
+            text-align: center;
+        }
+        .file-info-item h6 {
+            color: #6c757d;
+            margin-bottom: 0.5rem;
+        }
+        .file-info-item p {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-exchange-alt me-2"></i>WebP Converter</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <!-- Mode Switch -->
+                    <div class="format-switch text-center">
+                        <div class="btn-group" role="group">
+                            <input type="radio" class="btn-check" name="format" id="toWebp" checked>
+                            <label class="btn btn-outline-primary" for="toWebp">
+                                <i class="fas fa-file-image me-2"></i>Convert to WebP
+                            </label>
+                            
+                            <input type="radio" class="btn-check" name="format" id="fromWebp">
+                            <label class="btn btn-outline-primary" for="fromWebp">
+                                <i class="fas fa-image me-2"></i>Convert from WebP
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="drop-zone" id="dropZone">
+                        <i class="fas fa-cloud-upload-alt" id="uploadIcon"></i>
+                        <p class="mb-2">Drag and drop your image here or click to select</p>
+                        <p class="text-muted small" id="formatText">Supports PNG, JPG, and other image formats</p>
+                        <input type="file" id="fileInput" class="d-none" accept="image/*">
+                    </div>
+
+                    <div id="previewContainer" class="text-center d-none">
+                        <img id="previewImage" class="preview-image" alt="Preview">
+                        
+                        <div class="conversion-controls">
+                            <div class="file-info">
+                                <div class="file-info-item">
+                                    <h6>Original Format</h6>
+                                    <p id="originalFormat">-</p>
+                                </div>
+                                <div class="file-info-item">
+                                    <h6>Size</h6>
+                                    <p id="fileSize">-</p>
+                                </div>
+                                <div class="file-info-item">
+                                    <h6>Dimensions</h6>
+                                    <p id="dimensions">-</p>
+                                </div>
+                            </div>
+
+                            <div class="quality-control">
+                                <label for="qualityRange" class="form-label">Quality: <span id="qualityValue">85</span>%</label>
+                                <input type="range" class="form-range" id="qualityRange" min="1" max="100" value="85">
+                                <div class="form-text text-center">Higher quality = larger file size</div>
+                            </div>
+
+                            <div id="outputFormatControl" class="mb-3 d-none">
+                                <label class="form-label">Output Format</label>
+                                <div class="btn-group w-100" role="group">
+                                    <input type="radio" class="btn-check" name="outputFormat" id="pngFormat" checked>
+                                    <label class="btn btn-outline-secondary" for="pngFormat">PNG</label>
+                                    
+                                    <input type="radio" class="btn-check" name="outputFormat" id="jpgFormat">
+                                    <label class="btn btn-outline-secondary" for="jpgFormat">JPG</label>
+                                </div>
+                            </div>
+
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-primary" id="convertBtn">
+                                    <i class="fas fa-sync-alt me-2"></i>Convert Image
+                                </button>
+                                <button class="btn btn-outline-secondary" id="newImageBtn">
+                                    <i class="fas fa-redo me-2"></i>Convert Another Image
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-4">
+                        <h5><i class="fas fa-info-circle me-2"></i>About WebP Format</h5>
+                        <p class="mb-0">WebP is a modern image format that provides superior compression for images on the web. Benefits include:</p>
+                        <ul class="mt-2 mb-0">
+                            <li>Smaller file size compared to PNG and JPEG</li>
+                            <li>Support for both lossless and lossy compression</li>
+                            <li>Alpha channel (transparency) support</li>
+                            <li>Faster loading times for websites</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+            const convertBtn = document.getElementById('convertBtn');
+            const newImageBtn = document.getElementById('newImageBtn');
+            const qualityRange = document.getElementById('qualityRange');
+            const qualityValue = document.getElementById('qualityValue');
+            const toWebp = document.getElementById('toWebp');
+            const fromWebp = document.getElementById('fromWebp');
+            const formatText = document.getElementById('formatText');
+            const outputFormatControl = document.getElementById('outputFormatControl');
+            const originalFormat = document.getElementById('originalFormat');
+            const fileSize = document.getElementById('fileSize');
+            const dimensions = document.getElementById('dimensions');
+            const pngFormat = document.getElementById('pngFormat');
+            
+            let currentFile = null;
+
+            // Update quality value display
+            qualityRange.addEventListener('input', (e) => {
+                qualityValue.textContent = e.target.value;
+            });
+
+            // Handle format switch
+            toWebp.addEventListener('change', () => {
+                formatText.textContent = 'Supports PNG, JPG, and other image formats';
+                outputFormatControl.classList.add('d-none');
+                fileInput.accept = 'image/*';
+            });
+
+            fromWebp.addEventListener('change', () => {
+                formatText.textContent = 'Supports WebP images';
+                outputFormatControl.classList.remove('d-none');
+                fileInput.accept = 'image/webp';
+            });
+
+            // Handle drag and drop events
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                dropZone.classList.add('dragover');
+            }
+
+            function unhighlight(e) {
+                dropZone.classList.remove('dragover');
+            }
+
+            // Format file size
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            // Handle file drop and selection
+            dropZone.addEventListener('drop', handleDrop, false);
+            dropZone.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileSelect);
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            }
+
+            function handleFileSelect(e) {
+                const files = e.target.files;
+                handleFiles(files);
+            }
+
+            function handleFiles(files) {
+                if (files.length > 0) {
+                    currentFile = files[0];
+                    if (currentFile.type.startsWith('image/')) {
+                        // Validate format based on mode
+                        if (fromWebp.checked && !currentFile.type.includes('webp')) {
+                            alert('Please upload a WebP image.');
+                            return;
+                        }
+                        
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            previewImage.src = e.target.result;
+                            previewImage.onload = () => {
+                                // Update file info
+                                originalFormat.textContent = currentFile.type.split('/')[1].toUpperCase();
+                                fileSize.textContent = formatFileSize(currentFile.size);
+                                dimensions.textContent = `${previewImage.naturalWidth} × ${previewImage.naturalHeight}`;
+                            };
+                            dropZone.classList.add('d-none');
+                            previewContainer.classList.remove('d-none');
+                        };
+                        reader.readAsDataURL(currentFile);
+                    } else {
+                        alert('Please upload an image file.');
+                    }
+                }
+            }
+
+            // Convert image
+            convertBtn.addEventListener('click', () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                canvas.width = previewImage.naturalWidth;
+                canvas.height = previewImage.naturalHeight;
+                
+                // Draw image on canvas
+                ctx.drawImage(previewImage, 0, 0);
+                
+                // Determine output format
+                let outputFormat = toWebp.checked ? 'image/webp' : (pngFormat.checked ? 'image/png' : 'image/jpeg');
+                let outputExtension = outputFormat.split('/')[1];
+                
+                // For JPEG/WebP, apply quality setting
+                const quality = qualityRange.value / 100;
+                
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `converted-image.${outputExtension}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, outputFormat, quality);
+            });
+
+            // Reset for new image
+            newImageBtn.addEventListener('click', () => {
+                dropZone.classList.remove('d-none');
+                previewContainer.classList.add('d-none');
+                fileInput.value = '';
+                currentFile = null;
+                originalFormat.textContent = '-';
+                fileSize.textContent = '-';
+                dimensions.textContent = '-';
+                qualityRange.value = 85;
+                qualityValue.textContent = '85';
+            });
+        });
+    </script>
+</body>
+</html> 

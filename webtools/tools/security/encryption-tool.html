@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encryption Tool - AES Encryption/Decryption - WebTools</title>
+    <meta name="description" content="Free online encryption tool. Encrypt and decrypt text using AES encryption. Secure your sensitive data with strong encryption.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- CryptoJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        .encryption-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .input-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .result-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .encrypted-text {
+            font-family: monospace;
+            font-size: 1.1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            word-break: break-all;
+            min-height: 100px;
+        }
+        .password-strength {
+            height: 4px;
+            border-radius: 2px;
+            margin: 0.5rem 0;
+            background: #dee2e6;
+        }
+        .password-strength .progress-bar {
+            height: 100%;
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-shield-alt me-2"></i>Encryption Tool</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="encryption-container">
+                <!-- Mode Switch -->
+                <div class="mode-switch mb-4">
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="mode" id="encryptMode" checked>
+                        <label class="btn btn-outline-primary" for="encryptMode">
+                            <i class="fas fa-lock me-2"></i>Encrypt
+                        </label>
+                        
+                        <input type="radio" class="btn-check" name="mode" id="decryptMode">
+                        <label class="btn btn-outline-primary" for="decryptMode">
+                            <i class="fas fa-unlock me-2"></i>Decrypt
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Input Section -->
+                <div class="input-section">
+                    <h5 class="mb-3">Enter Text</h5>
+                    <textarea class="form-control mb-3" id="inputText" rows="4" placeholder="Enter text to encrypt/decrypt..."></textarea>
+                    
+                    <!-- Password Input -->
+                    <div class="mb-3">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Enter encryption password">
+                        <div class="password-strength">
+                            <div class="progress-bar" id="passwordStrength"></div>
+                        </div>
+                        <small class="text-muted" id="passwordStrengthText">Password strength: -</small>
+                    </div>
+
+                    <!-- Action Button -->
+                    <button class="btn btn-primary" id="actionBtn">
+                        <i class="fas fa-lock me-2"></i>Encrypt Text
+                    </button>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section">
+                    <h5 class="mb-3">Result</h5>
+                    <div class="encrypted-text" id="resultText">Result will appear here</div>
+                    
+                    <!-- Copy Button -->
+                    <button class="btn btn-outline-primary" id="copyBtn">
+                        <i class="fas fa-copy me-2"></i>Copy Result
+                    </button>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Encryption Tool</h5>
+                <p class="mb-0">This tool uses AES (Advanced Encryption Standard) to secure your data:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Strong AES-256 encryption</li>
+                    <li>Password-based encryption</li>
+                    <li>Password strength indicator</li>
+                    <li>Secure local processing</li>
+                    <li>Copy functionality for results</li>
+                </ul>
+                <p class="mt-2 mb-0"><small>Note: All encryption/decryption is performed locally in your browser. No data is transmitted to servers.</small></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Elements
+            const encryptMode = document.getElementById('encryptMode');
+            const decryptMode = document.getElementById('decryptMode');
+            const inputText = document.getElementById('inputText');
+            const password = document.getElementById('password');
+            const actionBtn = document.getElementById('actionBtn');
+            const resultText = document.getElementById('resultText');
+            const copyBtn = document.getElementById('copyBtn');
+            const passwordStrength = document.getElementById('passwordStrength');
+            const passwordStrengthText = document.getElementById('passwordStrengthText');
+
+            // Mode switching
+            function updateMode() {
+                const isEncrypt = encryptMode.checked;
+                actionBtn.innerHTML = `<i class="fas fa-${isEncrypt ? 'lock' : 'unlock'} me-2"></i>${isEncrypt ? 'Encrypt' : 'Decrypt'} Text`;
+                inputText.placeholder = `Enter text to ${isEncrypt ? 'encrypt' : 'decrypt'}...`;
+                resultText.textContent = 'Result will appear here';
+            }
+
+            encryptMode.addEventListener('change', updateMode);
+            decryptMode.addEventListener('change', updateMode);
+
+            // Password strength
+            function checkPasswordStrength(pass) {
+                let strength = 0;
+                const checks = {
+                    length: pass.length >= 12,
+                    uppercase: /[A-Z]/.test(pass),
+                    lowercase: /[a-z]/.test(pass),
+                    numbers: /[0-9]/.test(pass),
+                    symbols: /[^A-Za-z0-9]/.test(pass)
+                };
+
+                strength += checks.length ? 25 : 0;
+                strength += checks.uppercase ? 20 : 0;
+                strength += checks.lowercase ? 20 : 0;
+                strength += checks.numbers ? 20 : 0;
+                strength += checks.symbols ? 15 : 0;
+
+                passwordStrength.style.width = `${strength}%`;
+                passwordStrength.className = 'progress-bar';
+
+                if (strength >= 80) {
+                    passwordStrength.classList.add('bg-success');
+                    passwordStrengthText.textContent = 'Password strength: Strong';
+                } else if (strength >= 60) {
+                    passwordStrength.classList.add('bg-warning');
+                    passwordStrengthText.textContent = 'Password strength: Medium';
+                } else if (strength > 0) {
+                    passwordStrength.classList.add('bg-danger');
+                    passwordStrengthText.textContent = 'Password strength: Weak';
+                } else {
+                    passwordStrengthText.textContent = 'Password strength: -';
+                }
+            }
+
+            // Encrypt/Decrypt functions
+            function encrypt(text, pass) {
+                try {
+                    return CryptoJS.AES.encrypt(text, pass).toString();
+                } catch (e) {
+                    return 'Encryption failed';
+                }
+            }
+
+            function decrypt(encrypted, pass) {
+                try {
+                    const bytes = CryptoJS.AES.decrypt(encrypted, pass);
+                    return bytes.toString(CryptoJS.enc.Utf8);
+                } catch (e) {
+                    return 'Decryption failed. Please check your password and input text.';
+                }
+            }
+
+            // Process text
+            function processText() {
+                const text = inputText.value.trim();
+                const pass = password.value;
+
+                if (!text || !pass) {
+                    resultText.textContent = 'Please enter both text and password';
+                    return;
+                }
+
+                if (encryptMode.checked) {
+                    resultText.textContent = encrypt(text, pass);
+                } else {
+                    const decrypted = decrypt(text, pass);
+                    if (decrypted) {
+                        resultText.textContent = decrypted;
+                    }
+                }
+            }
+
+            // Event listeners
+            actionBtn.addEventListener('click', processText);
+            password.addEventListener('input', () => checkPasswordStrength(password.value));
+
+            copyBtn.addEventListener('click', () => {
+                if (resultText.textContent === 'Result will appear here') return;
+
+                navigator.clipboard.writeText(resultText.textContent).then(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy Result';
+                    }, 2000);
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

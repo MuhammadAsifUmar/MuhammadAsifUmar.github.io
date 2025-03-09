@@ -1,0 +1,481 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Temperature Converter - Convert Between Celsius, Fahrenheit, and Kelvin - WebTools</title>
+    <meta name="description" content="Free online temperature converter. Convert between Celsius, Fahrenheit, and Kelvin with real-time conversion and temperature scale visualization.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .converter-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .options-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .result-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .result-display {
+            font-family: monospace;
+            font-size: 1.5rem;
+            color: #0d6efd;
+            margin-bottom: 0.5rem;
+        }
+        .temperature-scale {
+            position: relative;
+            height: 200px;
+            background: linear-gradient(to top, #0d6efd, #dc3545);
+            border-radius: 8px;
+            margin: 1rem 0;
+        }
+        .scale-marker {
+            position: absolute;
+            left: 0;
+            width: 100%;
+            padding: 0.25rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 4px;
+            text-align: center;
+            font-size: 0.875rem;
+            transform: translateY(-50%);
+            transition: top 0.3s;
+        }
+        .common-temps {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .temp-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .temp-item:last-child {
+            border-bottom: none;
+        }
+        .temp-value {
+            font-family: monospace;
+            color: #0d6efd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-thermometer-half me-2"></i>Temperature Converter</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="converter-container">
+                <!-- Input Section -->
+                <div class="options-section">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Value</label>
+                            <input type="number" class="form-control" id="inputValue" value="0" step="any">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">From</label>
+                            <select class="form-select" id="fromUnit">
+                                <option value="celsius">Celsius (°C)</option>
+                                <option value="fahrenheit">Fahrenheit (°F)</option>
+                                <option value="kelvin">Kelvin (K)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">To</label>
+                            <select class="form-select" id="toUnit">
+                                <option value="celsius">Celsius (°C)</option>
+                                <option value="fahrenheit" selected>Fahrenheit (°F)</option>
+                                <option value="kelvin">Kelvin (K)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section">
+                    <h5>Conversion Result</h5>
+                    <div class="result-display" id="resultDisplay">32°F</div>
+                    <button class="btn btn-outline-primary" id="copyBtn">
+                        <i class="fas fa-copy me-2"></i>Copy Result
+                    </button>
+                </div>
+
+                <!-- Temperature Scale Visualization -->
+                <div class="temperature-scale" id="tempScale">
+                    <div class="scale-marker" id="scaleMarker">0°C</div>
+                </div>
+
+                <!-- Common Temperatures -->
+                <div class="common-temps">
+                    <h5 class="mb-3">Common Temperatures</h5>
+                    <div class="temp-item">
+                        <span>Water Boiling Point</span>
+                        <span class="temp-value">100°C / 212°F / 373.15K</span>
+                    </div>
+                    <div class="temp-item">
+                        <span>Body Temperature</span>
+                        <span class="temp-value">37°C / 98.6°F / 310.15K</span>
+                    </div>
+                    <div class="temp-item">
+                        <span>Room Temperature</span>
+                        <span class="temp-value">20°C / 68°F / 293.15K</span>
+                    </div>
+                    <div class="temp-item">
+                        <span>Water Freezing Point</span>
+                        <span class="temp-value">0°C / 32°F / 273.15K</span>
+                    </div>
+                    <div class="temp-item">
+                        <span>Absolute Zero</span>
+                        <span class="temp-value">-273.15°C / -459.67°F / 0K</span>
+                    </div>
+                </div>
+
+                <!-- Add after the result section -->
+                <div class="options-section mt-3">
+                    <h5>Batch Conversion</h5>
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <textarea class="form-control" id="batchInput" rows="4" placeholder="Enter one temperature per line, e.g.:&#10;32°F&#10;25°C&#10;300K"></textarea>
+                        </div>
+                        <div class="col-12">
+                            <button class="btn btn-primary" id="batchConvertBtn">
+                                <i class="fas fa-list me-2"></i>Convert Batch
+                            </button>
+                        </div>
+                        <div class="col-12">
+                            <div id="batchResults" class="d-none">
+                                <h6>Batch Results:</h6>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead>
+                                            <tr>
+                                                <th>Input</th>
+                                                <th>Celsius</th>
+                                                <th>Fahrenheit</th>
+                                                <th>Kelvin</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="batchResultsBody"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Temperature Analysis -->
+                <div class="options-section mt-3">
+                    <h5>Temperature Analysis</h5>
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Physical States of Water</h6>
+                                    <div id="waterState" class="alert alert-info">
+                                        Water would be in liquid state
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h6 class="card-title">Comfort Level</h6>
+                                    <div id="comfortLevel" class="alert alert-info">
+                                        Temperature is comfortable for humans
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Historical Temperatures -->
+                <div class="format-info mt-3">
+                    <h5 class="mb-3">Notable Temperature Records</h5>
+                    <div class="temp-item">
+                        <span>Highest Temperature on Earth</span>
+                        <span class="temp-value">56.7°C / 134°F (Death Valley, USA, 1913)</span>
+                    </div>
+                    <div class="temp-item">
+                        <span>Lowest Temperature on Earth</span>
+                        <span class="temp-value">-89.2°C / -128.6°F (Vostok Station, Antarctica, 1983)</span>
+                    </div>
+                    <div class="temp-item">
+                        <span>Average Human Body Temperature</span>
+                        <span class="temp-value">37°C / 98.6°F</span>
+                    </div>
+                    <div class="temp-item">
+                        <span>Average Earth Surface Temperature</span>
+                        <span class="temp-value">15°C / 59°F</span>
+                    </div>
+                    <div class="temp-item">
+                        <span>Sun's Surface Temperature</span>
+                        <span class="temp-value">5,500°C / 10,000°F</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Temperature Converter</h5>
+                <p>Convert between temperature units:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Support for Celsius (°C), Fahrenheit (°F), and Kelvin (K)</li>
+                    <li>Real-time conversion with visual temperature scale</li>
+                    <li>Common temperature reference points</li>
+                    <li>Precise calculations with decimal support</li>
+                    <li>Copy results with one click</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputValue = document.getElementById('inputValue');
+            const fromUnit = document.getElementById('fromUnit');
+            const toUnit = document.getElementById('toUnit');
+            const resultDisplay = document.getElementById('resultDisplay');
+            const copyBtn = document.getElementById('copyBtn');
+            const scaleMarker = document.getElementById('scaleMarker');
+            const batchInput = document.getElementById('batchInput');
+            const batchConvertBtn = document.getElementById('batchConvertBtn');
+            const batchResults = document.getElementById('batchResults');
+            const batchResultsBody = document.getElementById('batchResultsBody');
+
+            // Temperature conversion functions
+            const convertTemp = {
+                celsiusToFahrenheit: c => (c * 9/5) + 32,
+                celsiusToKelvin: c => c + 273.15,
+                fahrenheitToCelsius: f => (f - 32) * 5/9,
+                fahrenheitToKelvin: f => (f - 32) * 5/9 + 273.15,
+                kelvinToCelsius: k => k - 273.15,
+                kelvinToFahrenheit: k => (k - 273.15) * 9/5 + 32
+            };
+
+            // Convert temperature
+            function convertTemperature() {
+                const value = parseFloat(inputValue.value);
+                if (isNaN(value)) {
+                    resultDisplay.textContent = '0';
+                    return;
+                }
+
+                let result;
+                if (fromUnit.value === toUnit.value) {
+                    result = value;
+                } else {
+                    const toCelsius = {
+                        celsius: v => v,
+                        fahrenheit: convertTemp.fahrenheitToCelsius,
+                        kelvin: convertTemp.kelvinToCelsius
+                    };
+
+                    const fromCelsius = {
+                        celsius: v => v,
+                        fahrenheit: convertTemp.celsiusToFahrenheit,
+                        kelvin: convertTemp.celsiusToKelvin
+                    };
+
+                    const celsius = toCelsius[fromUnit.value](value);
+                    result = fromCelsius[toUnit.value](celsius);
+                }
+
+                const symbols = {
+                    celsius: '°C',
+                    fahrenheit: '°F',
+                    kelvin: 'K'
+                };
+
+                resultDisplay.textContent = `${result.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 2
+                })}${symbols[toUnit.value]}`;
+
+                updateScaleMarker(result, toUnit.value);
+
+                if (toUnit.value === 'celsius') {
+                    updateAnalysis(result);
+                } else if (fromUnit.value === 'celsius') {
+                    updateAnalysis(value);
+                } else {
+                    const celsius = convertTemp.fahrenheitToCelsius(
+                        fromUnit.value === 'fahrenheit' ? value : convertTemp.kelvinToFahrenheit(value)
+                    );
+                    updateAnalysis(celsius);
+                }
+            }
+
+            // Update temperature scale marker
+            function updateScaleMarker(temp, unit) {
+                let celsius;
+                switch (unit) {
+                    case 'celsius':
+                        celsius = temp;
+                        break;
+                    case 'fahrenheit':
+                        celsius = convertTemp.fahrenheitToCelsius(temp);
+                        break;
+                    case 'kelvin':
+                        celsius = convertTemp.kelvinToCelsius(temp);
+                        break;
+                }
+
+                // Constrain position between -50°C and 100°C
+                const position = ((celsius + 50) / 150) * 100;
+                const constrainedPosition = Math.max(0, Math.min(100, position));
+                scaleMarker.style.top = `${100 - constrainedPosition}%`;
+                scaleMarker.textContent = `${temp.toFixed(1)}${unit === 'kelvin' ? 'K' : '°' + unit.charAt(0).toUpperCase()}`;
+            }
+
+            // Copy result
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(resultDisplay.textContent);
+                copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy Result';
+                }, 2000);
+            });
+
+            // Parse temperature string (e.g., "32°F")
+            function parseTemperature(str) {
+                const match = str.trim().match(/^([-\d.]+)\s*°?([CFK])$/i);
+                if (!match) return null;
+                
+                const value = parseFloat(match[1]);
+                const unit = match[2].toUpperCase();
+                
+                return { value, unit };
+            }
+
+            // Batch conversion
+            batchConvertBtn.addEventListener('click', () => {
+                const lines = batchInput.value.trim().split('\n');
+                batchResultsBody.innerHTML = '';
+                
+                lines.forEach(line => {
+                    const parsed = parseTemperature(line);
+                    if (!parsed) {
+                        batchResultsBody.innerHTML += `
+                            <tr>
+                                <td>${line}</td>
+                                <td colspan="3" class="text-danger">Invalid format</td>
+                            </tr>
+                        `;
+                        return;
+                    }
+
+                    let celsius, fahrenheit, kelvin;
+                    
+                    switch (parsed.unit) {
+                        case 'C':
+                            celsius = parsed.value;
+                            fahrenheit = convertTemp.celsiusToFahrenheit(celsius);
+                            kelvin = convertTemp.celsiusToKelvin(celsius);
+                            break;
+                        case 'F':
+                            fahrenheit = parsed.value;
+                            celsius = convertTemp.fahrenheitToCelsius(fahrenheit);
+                            kelvin = convertTemp.fahrenheitToKelvin(fahrenheit);
+                            break;
+                        case 'K':
+                            kelvin = parsed.value;
+                            celsius = convertTemp.kelvinToCelsius(kelvin);
+                            fahrenheit = convertTemp.kelvinToFahrenheit(kelvin);
+                            break;
+                    }
+                    
+                    batchResultsBody.innerHTML += `
+                        <tr>
+                            <td>${line}</td>
+                            <td>${celsius.toFixed(2)}°C</td>
+                            <td>${fahrenheit.toFixed(2)}°F</td>
+                            <td>${kelvin.toFixed(2)}K</td>
+                        </tr>
+                    `;
+                });
+
+                batchResults.classList.remove('d-none');
+            });
+
+            // Update temperature analysis
+            function updateAnalysis(celsius) {
+                // Water state
+                let waterState;
+                if (celsius <= 0) {
+                    waterState = 'Water would be frozen (ice)';
+                } else if (celsius >= 100) {
+                    waterState = 'Water would be vaporized (steam)';
+                } else {
+                    waterState = 'Water would be in liquid state';
+                }
+                document.getElementById('waterState').textContent = waterState;
+
+                // Comfort level
+                let comfortLevel;
+                if (celsius < 0) {
+                    comfortLevel = 'Very cold - risk of hypothermia';
+                } else if (celsius < 10) {
+                    comfortLevel = 'Cold - jacket needed';
+                } else if (celsius < 20) {
+                    comfortLevel = 'Cool - light jacket recommended';
+                } else if (celsius < 25) {
+                    comfortLevel = 'Comfortable temperature';
+                } else if (celsius < 30) {
+                    comfortLevel = 'Warm - light clothing recommended';
+                } else if (celsius < 35) {
+                    comfortLevel = 'Hot - stay hydrated';
+                } else {
+                    comfortLevel = 'Very hot - risk of hyperthermia';
+                }
+                document.getElementById('comfortLevel').textContent = comfortLevel;
+            }
+
+            // Event listeners
+            inputValue.addEventListener('input', convertTemperature);
+            fromUnit.addEventListener('change', convertTemperature);
+            toUnit.addEventListener('change', convertTemperature);
+
+            // Initial conversion
+            convertTemperature();
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Compressor - WebTools</title>
+    <meta name="description" content="Free online tool to compress images. Reduce file size while maintaining quality. Supports PNG, JPG, and other formats.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+        .drop-zone.dragover {
+            border-color: #007bff;
+            background: #e7f1ff;
+        }
+        .preview-image {
+            max-width: 100%;
+            max-height: 300px;
+            margin: 1rem 0;
+        }
+        #uploadIcon {
+            font-size: 3rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+        .compression-controls {
+            max-width: 400px;
+            margin: 1rem auto;
+        }
+        .file-info {
+            background: #f8f9fa;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+        .comparison-arrow {
+            font-size: 2rem;
+            color: var(--primary-color);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-compress me-2"></i>Image Compressor</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8 mx-auto">
+                    <div class="drop-zone" id="dropZone">
+                        <i class="fas fa-cloud-upload-alt" id="uploadIcon"></i>
+                        <p class="mb-2">Drag and drop your image here or click to select</p>
+                        <p class="text-muted small">Supports PNG, JPG, WebP, and other image formats</p>
+                        <input type="file" id="fileInput" class="d-none" accept="image/*">
+                    </div>
+
+                    <div id="previewContainer" class="text-center d-none">
+                        <img id="previewImage" class="preview-image shadow-sm" alt="Preview">
+                        
+                        <div class="compression-controls">
+                            <div class="mb-3">
+                                <label for="qualityRange" class="form-label">Compression Quality: <span id="qualityValue">80</span>%</label>
+                                <input type="range" class="form-range" id="qualityRange" min="1" max="100" value="80">
+                            </div>
+
+                            <div class="file-info">
+                                <div class="row align-items-center">
+                                    <div class="col text-end">
+                                        <p class="mb-1">Original Size:</p>
+                                        <h5 id="originalSize">0 KB</h5>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-arrow-right comparison-arrow"></i>
+                                    </div>
+                                    <div class="col text-start">
+                                        <p class="mb-1">Compressed Size:</p>
+                                        <h5 id="compressedSize">0 KB</h5>
+                                    </div>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <p class="mb-0">Reduction: <span id="reductionPercent">0</span>%</p>
+                                </div>
+                            </div>
+
+                            <div class="mt-3">
+                                <button class="btn btn-primary" id="compressBtn">
+                                    <i class="fas fa-compress me-2"></i>Compress Image
+                                </button>
+                                <button class="btn btn-outline-secondary ms-2" id="newImageBtn">
+                                    <i class="fas fa-redo me-2"></i>Upload New Image
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-4">
+                        <h5><i class="fas fa-info-circle me-2"></i>About This Tool</h5>
+                        <p class="mb-0">This tool compresses images to reduce file size while maintaining acceptable quality. Features:</p>
+                        <ul class="mt-2 mb-0">
+                            <li>Adjustable compression quality</li>
+                            <li>Real-time size comparison</li>
+                            <li>Supports multiple image formats</li>
+                            <li>Fast and efficient compression</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const previewContainer = document.getElementById('previewContainer');
+            const previewImage = document.getElementById('previewImage');
+            const qualityRange = document.getElementById('qualityRange');
+            const qualityValue = document.getElementById('qualityValue');
+            const originalSize = document.getElementById('originalSize');
+            const compressedSize = document.getElementById('compressedSize');
+            const reductionPercent = document.getElementById('reductionPercent');
+            const compressBtn = document.getElementById('compressBtn');
+            const newImageBtn = document.getElementById('newImageBtn');
+            
+            let originalFile = null;
+
+            // Update quality value display
+            qualityRange.addEventListener('input', (e) => {
+                qualityValue.textContent = e.target.value;
+            });
+
+            // Handle drag and drop events
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                dropZone.classList.add('dragover');
+            }
+
+            function unhighlight(e) {
+                dropZone.classList.remove('dragover');
+            }
+
+            // Handle file drop and selection
+            dropZone.addEventListener('drop', handleDrop, false);
+            dropZone.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileSelect);
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            }
+
+            function handleFileSelect(e) {
+                const files = e.target.files;
+                handleFiles(files);
+            }
+
+            function formatFileSize(bytes) {
+                if (bytes === 0) return '0 Bytes';
+                const k = 1024;
+                const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+                const i = Math.floor(Math.log(bytes) / Math.log(k));
+                return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+            }
+
+            function handleFiles(files) {
+                if (files.length > 0) {
+                    originalFile = files[0];
+                    if (originalFile.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            previewImage.src = e.target.result;
+                            originalSize.textContent = formatFileSize(originalFile.size);
+                            dropZone.classList.add('d-none');
+                            previewContainer.classList.remove('d-none');
+                        };
+                        reader.readAsDataURL(originalFile);
+                    } else {
+                        alert('Please upload an image file.');
+                    }
+                }
+            }
+
+            // Compress image
+            compressBtn.addEventListener('click', () => {
+                const canvas = document.createElement('canvas');
+                const ctx = canvas.getContext('2d');
+                
+                // Set canvas size to match image
+                canvas.width = previewImage.naturalWidth;
+                canvas.height = previewImage.naturalHeight;
+                
+                // Draw image on canvas
+                ctx.drawImage(previewImage, 0, 0);
+                
+                // Compress and download
+                canvas.toBlob((blob) => {
+                    // Update compressed size
+                    compressedSize.textContent = formatFileSize(blob.size);
+                    
+                    // Calculate reduction percentage
+                    const reduction = ((originalFile.size - blob.size) / originalFile.size * 100).toFixed(1);
+                    reductionPercent.textContent = reduction;
+                    
+                    // Download compressed image
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `compressed-${originalFile.name}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, originalFile.type, qualityRange.value / 100);
+            });
+
+            // Reset for new image
+            newImageBtn.addEventListener('click', () => {
+                dropZone.classList.remove('d-none');
+                previewContainer.classList.add('d-none');
+                fileInput.value = '';
+                originalSize.textContent = '0 KB';
+                compressedSize.textContent = '0 KB';
+                reductionPercent.textContent = '0';
+                qualityRange.value = 80;
+                qualityValue.textContent = '80';
+                originalFile = null;
+            });
+        });
+    </script>
+</body>
+</html> 

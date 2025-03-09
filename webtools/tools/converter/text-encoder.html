@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Text Encoder/Decoder - Convert Text Between Different Encodings - WebTools</title>
+    <meta name="description" content="Free online text encoder and decoder. Convert text between Base64, URL encoding, HTML entities, and more with real-time conversion.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .converter-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .options-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .result-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .text-area {
+            font-family: monospace;
+            font-size: 0.875rem;
+            min-height: 120px;
+            resize: vertical;
+        }
+        .encoding-info {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .info-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .info-item:last-child {
+            border-bottom: none;
+        }
+        .info-title {
+            font-weight: 500;
+            margin-bottom: 0.25rem;
+        }
+        .info-description {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-code me-2"></i>Text Encoder/Decoder</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="converter-container">
+                <!-- Input Section -->
+                <div class="options-section">
+                    <div class="row g-3">
+                        <div class="col-12">
+                            <label class="form-label">Input Text</label>
+                            <textarea class="form-control text-area" id="inputText" placeholder="Enter text to encode/decode"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Encoding Method</label>
+                            <select class="form-select" id="encodingMethod">
+                                <option value="base64">Base64</option>
+                                <option value="url">URL Encoding</option>
+                                <option value="html">HTML Entities</option>
+                                <option value="unicode">Unicode Escapes</option>
+                                <option value="binary">Text to Binary</option>
+                                <option value="morse">Morse Code</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Operation</label>
+                            <div class="btn-group w-100" role="group">
+                                <input type="radio" class="btn-check" name="operation" id="encode" checked>
+                                <label class="btn btn-outline-primary" for="encode">Encode</label>
+                                <input type="radio" class="btn-check" name="operation" id="decode">
+                                <label class="btn btn-outline-primary" for="decode">Decode</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section">
+                    <div class="d-flex justify-content-between align-items-center mb-2">
+                        <h5 class="mb-0">Result</h5>
+                        <button class="btn btn-outline-primary" id="copyBtn">
+                            <i class="fas fa-copy me-2"></i>Copy Result
+                        </button>
+                    </div>
+                    <textarea class="form-control text-area" id="outputText" readonly></textarea>
+                </div>
+
+                <!-- Encoding Information -->
+                <div class="encoding-info">
+                    <h5 class="mb-3">Encoding Information</h5>
+                    <div class="info-item">
+                        <div class="info-title">Base64</div>
+                        <div class="info-description">Encodes binary data using ASCII characters (A-Z, a-z, 0-9, +, /). Commonly used for encoding binary data in text-based formats.</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-title">URL Encoding</div>
+                        <div class="info-description">Converts special characters to %XX format. Used in URLs to safely transmit data containing reserved characters.</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-title">HTML Entities</div>
+                        <div class="info-description">Converts special characters to HTML entities (e.g., &amp; for &). Used to display special characters in HTML.</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-title">Unicode Escapes</div>
+                        <div class="info-description">Converts characters to \uXXXX format. Used in programming languages to represent Unicode characters.</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-title">Text to Binary</div>
+                        <div class="info-description">Converts text to binary representation (0s and 1s). Each character is represented by 8 bits.</div>
+                    </div>
+                    <div class="info-item">
+                        <div class="info-title">Morse Code</div>
+                        <div class="info-description">Converts text to dots and dashes. International standard for transmitting text messages.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Text Encoder/Decoder</h5>
+                <p>Convert text between different encodings:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Support for Base64, URL encoding, HTML entities, and more</li>
+                    <li>Real-time encoding/decoding</li>
+                    <li>Detailed encoding information and usage</li>
+                    <li>Copy results with one click</li>
+                    <li>Support for special characters and Unicode</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputText = document.getElementById('inputText');
+            const outputText = document.getElementById('outputText');
+            const encodingMethod = document.getElementById('encodingMethod');
+            const encode = document.getElementById('encode');
+            const copyBtn = document.getElementById('copyBtn');
+
+            // Morse code mapping
+            const morseCode = {
+                'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
+                'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
+                'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
+                'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
+                'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---',
+                '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...',
+                '8': '---..', '9': '----.', ' ': '/'
+            };
+
+            // Convert text
+            function convertText() {
+                const text = inputText.value;
+                const method = encodingMethod.value;
+                const isEncode = encode.checked;
+
+                let result = '';
+                try {
+                    if (isEncode) {
+                        switch (method) {
+                            case 'base64':
+                                result = btoa(text);
+                                break;
+                            case 'url':
+                                result = encodeURIComponent(text);
+                                break;
+                            case 'html':
+                                result = text.replace(/[<>&"']/g, char => ({
+                                    '<': '&lt;',
+                                    '>': '&gt;',
+                                    '&': '&amp;',
+                                    '"': '&quot;',
+                                    "'": '&#39;'
+                                })[char]);
+                                break;
+                            case 'unicode':
+                                result = text.split('').map(char => {
+                                    const hex = char.charCodeAt(0).toString(16).padStart(4, '0');
+                                    return `\\u${hex}`;
+                                }).join('');
+                                break;
+                            case 'binary':
+                                result = text.split('').map(char => {
+                                    return char.charCodeAt(0).toString(2).padStart(8, '0');
+                                }).join(' ');
+                                break;
+                            case 'morse':
+                                result = text.toUpperCase().split('').map(char => {
+                                    return morseCode[char] || char;
+                                }).join(' ');
+                                break;
+                        }
+                    } else {
+                        switch (method) {
+                            case 'base64':
+                                result = atob(text);
+                                break;
+                            case 'url':
+                                result = decodeURIComponent(text);
+                                break;
+                            case 'html':
+                                result = text.replace(/&[#\w]+;/g, entity => {
+                                    const textarea = document.createElement('textarea');
+                                    textarea.innerHTML = entity;
+                                    return textarea.value;
+                                });
+                                break;
+                            case 'unicode':
+                                result = text.replace(/\\u[\dA-F]{4}/gi, match => {
+                                    return String.fromCharCode(parseInt(match.replace(/\\u/g, ''), 16));
+                                });
+                                break;
+                            case 'binary':
+                                result = text.split(' ').map(bin => {
+                                    return String.fromCharCode(parseInt(bin, 2));
+                                }).join('');
+                                break;
+                            case 'morse':
+                                const reverseMorse = Object.fromEntries(
+                                    Object.entries(morseCode).map(([k, v]) => [v, k])
+                                );
+                                result = text.split(' ').map(code => {
+                                    return reverseMorse[code] || code;
+                                }).join('');
+                                break;
+                        }
+                    }
+                } catch (error) {
+                    result = 'Error: Invalid input for selected encoding method';
+                }
+
+                outputText.value = result;
+            }
+
+            // Copy result
+            copyBtn.addEventListener('click', () => {
+                outputText.select();
+                document.execCommand('copy');
+                copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy Result';
+                }, 2000);
+            });
+
+            // Event listeners
+            inputText.addEventListener('input', convertText);
+            encodingMethod.addEventListener('change', convertText);
+            encode.addEventListener('change', convertText);
+            document.getElementById('decode').addEventListener('change', convertText);
+
+            // Initial conversion
+            convertText();
+        });
+    </script>
+</body>
+</html> 

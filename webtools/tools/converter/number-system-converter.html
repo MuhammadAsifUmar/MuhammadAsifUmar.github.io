@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number System Converter - Convert Between Binary, Decimal, Hex, and Octal - WebTools</title>
+    <meta name="description" content="Free online number system converter. Convert between binary, decimal, hexadecimal, and octal numbers with real-time conversion and explanations.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .converter-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .options-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .result-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .result-display {
+            font-family: monospace;
+            font-size: 1.25rem;
+            color: #0d6efd;
+            margin-bottom: 0.5rem;
+            word-break: break-all;
+        }
+        .conversion-steps {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .step-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .step-item:last-child {
+            border-bottom: none;
+        }
+        .step-explanation {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+        .error-message {
+            color: #dc3545;
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-calculator me-2"></i>Number System Converter</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="converter-container">
+                <!-- Input Section -->
+                <div class="options-section">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Input Number</label>
+                            <input type="text" class="form-control" id="inputNumber" placeholder="Enter a number">
+                            <div class="error-message" id="errorMessage"></div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Input Base</label>
+                            <select class="form-select" id="inputBase">
+                                <option value="2">Binary (Base-2)</option>
+                                <option value="8">Octal (Base-8)</option>
+                                <option value="10" selected>Decimal (Base-10)</option>
+                                <option value="16">Hexadecimal (Base-16)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6>Binary (Base-2)</h6>
+                            <div class="result-display" id="binaryResult">0</div>
+                            <button class="btn btn-outline-primary btn-sm copy-btn" data-target="binaryResult">
+                                <i class="fas fa-copy me-2"></i>Copy
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6>Octal (Base-8)</h6>
+                            <div class="result-display" id="octalResult">0</div>
+                            <button class="btn btn-outline-primary btn-sm copy-btn" data-target="octalResult">
+                                <i class="fas fa-copy me-2"></i>Copy
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6>Decimal (Base-10)</h6>
+                            <div class="result-display" id="decimalResult">0</div>
+                            <button class="btn btn-outline-primary btn-sm copy-btn" data-target="decimalResult">
+                                <i class="fas fa-copy me-2"></i>Copy
+                            </button>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6>Hexadecimal (Base-16)</h6>
+                            <div class="result-display" id="hexResult">0</div>
+                            <button class="btn btn-outline-primary btn-sm copy-btn" data-target="hexResult">
+                                <i class="fas fa-copy me-2"></i>Copy
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Conversion Steps -->
+                <div class="conversion-steps">
+                    <h5 class="mb-3">Conversion Steps</h5>
+                    <div id="conversionSteps"></div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Number System Converter</h5>
+                <p>Convert between different number systems:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Support for Binary (Base-2), Octal (Base-8), Decimal (Base-10), and Hexadecimal (Base-16)</li>
+                    <li>Real-time conversion with validation</li>
+                    <li>Step-by-step conversion explanation</li>
+                    <li>Copy results with one click</li>
+                    <li>Error checking and validation</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputNumber = document.getElementById('inputNumber');
+            const inputBase = document.getElementById('inputBase');
+            const errorMessage = document.getElementById('errorMessage');
+            const binaryResult = document.getElementById('binaryResult');
+            const octalResult = document.getElementById('octalResult');
+            const decimalResult = document.getElementById('decimalResult');
+            const hexResult = document.getElementById('hexResult');
+            const conversionSteps = document.getElementById('conversionSteps');
+            const copyButtons = document.querySelectorAll('.copy-btn');
+
+            // Validation patterns
+            const patterns = {
+                2: /^[01]+$/,
+                8: /^[0-7]+$/,
+                10: /^[0-9]+$/,
+                16: /^[0-9A-Fa-f]+$/
+            };
+
+            // Convert number
+            function convertNumber() {
+                const value = inputNumber.value.trim();
+                const base = parseInt(inputBase.value);
+
+                // Validate input
+                if (!value) {
+                    showError('');
+                    updateResults('0', '0', '0', '0');
+                    updateSteps([]);
+                    return;
+                }
+
+                if (!patterns[base].test(value)) {
+                    showError(`Invalid ${getBaseName(base)} number`);
+                    return;
+                }
+
+                // Convert to decimal first
+                const decimal = parseInt(value, base);
+
+                // Convert to other bases
+                const binary = decimal.toString(2);
+                const octal = decimal.toString(8);
+                const hex = decimal.toString(16).toUpperCase();
+
+                // Update results
+                updateResults(binary, octal, decimal, hex);
+
+                // Generate conversion steps
+                const steps = generateSteps(value, base, decimal);
+                updateSteps(steps);
+
+                // Clear error
+                showError('');
+            }
+
+            // Update all results
+            function updateResults(binary, octal, decimal, hex) {
+                binaryResult.textContent = binary;
+                octalResult.textContent = octal;
+                decimalResult.textContent = decimal;
+                hexResult.textContent = hex;
+            }
+
+            // Show error message
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = message ? 'block' : 'none';
+            }
+
+            // Get base name
+            function getBaseName(base) {
+                const names = {
+                    2: 'binary',
+                    8: 'octal',
+                    10: 'decimal',
+                    16: 'hexadecimal'
+                };
+                return names[base];
+            }
+
+            // Generate conversion steps
+            function generateSteps(value, fromBase, decimal) {
+                const steps = [];
+                
+                if (fromBase !== 10) {
+                    // Converting to decimal
+                    steps.push({
+                        title: `Converting ${value} (Base-${fromBase}) to Decimal:`,
+                        explanation: value.split('').reverse().map((digit, i) => {
+                            const val = parseInt(digit, fromBase) * Math.pow(fromBase, i);
+                            return `${digit} × ${fromBase}^${i} = ${val}`;
+                        }).join(' + ') + ` = ${decimal}`
+                    });
+                }
+
+                if (fromBase === 10) {
+                    // Converting from decimal
+                    [2, 8, 16].forEach(toBase => {
+                        let num = decimal;
+                        const digits = [];
+                        const steps = [];
+
+                        while (num > 0) {
+                            const remainder = num % toBase;
+                            digits.unshift(remainder.toString(toBase).toUpperCase());
+                            steps.unshift(`${num} ÷ ${toBase} = ${Math.floor(num/toBase)} remainder ${remainder}`);
+                            num = Math.floor(num / toBase);
+                        }
+
+                        steps.push({
+                            title: `Converting ${decimal} to Base-${toBase}:`,
+                            explanation: steps.join('\n')
+                        });
+                    });
+                }
+
+                return steps;
+            }
+
+            // Update conversion steps
+            function updateSteps(steps) {
+                conversionSteps.innerHTML = steps.map(step => `
+                    <div class="step-item">
+                        <div class="step-title">${step.title}</div>
+                        <div class="step-explanation">${step.explanation}</div>
+                    </div>
+                `).join('');
+            }
+
+            // Copy result
+            copyButtons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = document.getElementById(btn.dataset.target);
+                    navigator.clipboard.writeText(target.textContent);
+                    btn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                    setTimeout(() => {
+                        btn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy';
+                    }, 2000);
+                });
+            });
+
+            // Event listeners
+            inputNumber.addEventListener('input', convertNumber);
+            inputBase.addEventListener('change', convertNumber);
+
+            // Initial conversion
+            convertNumber();
+        });
+    </script>
+</body>
+</html> 

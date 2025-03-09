@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Case Converter - Convert Text Case Online - WebTools</title>
+    <meta name="description" content="Free online text case converter. Convert text to uppercase, lowercase, title case, sentence case, and more. Easy to use and instant results.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .converter-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .text-area {
+            min-height: 200px;
+            resize: vertical;
+        }
+        .case-buttons {
+            gap: 0.5rem;
+        }
+        .btn-case {
+            min-width: 120px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-text-height me-2"></i>Case Converter</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="converter-container">
+                <!-- Text Input -->
+                <div class="mb-3">
+                    <label for="textInput" class="form-label">Enter your text:</label>
+                    <textarea class="form-control text-area" id="textInput" 
+                        placeholder="Type or paste your text here..."></textarea>
+                </div>
+
+                <!-- Case Conversion Buttons -->
+                <div class="d-flex flex-wrap case-buttons mb-3">
+                    <button class="btn btn-outline-primary btn-case" data-case="upper">
+                        <i class="fas fa-arrow-up me-2"></i>UPPERCASE
+                    </button>
+                    <button class="btn btn-outline-primary btn-case" data-case="lower">
+                        <i class="fas fa-arrow-down me-2"></i>lowercase
+                    </button>
+                    <button class="btn btn-outline-primary btn-case" data-case="title">
+                        <i class="fas fa-font me-2"></i>Title Case
+                    </button>
+                    <button class="btn btn-outline-primary btn-case" data-case="sentence">
+                        <i class="fas fa-paragraph me-2"></i>Sentence case
+                    </button>
+                    <button class="btn btn-outline-primary btn-case" data-case="alternating">
+                        <i class="fas fa-random me-2"></i>aLtErNaTiNg
+                    </button>
+                    <button class="btn btn-outline-primary btn-case" data-case="inverse">
+                        <i class="fas fa-exchange-alt me-2"></i>InVeRsE cAsE
+                    </button>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="btn-group">
+                    <button class="btn btn-outline-secondary" id="clearBtn">
+                        <i class="fas fa-eraser me-2"></i>Clear Text
+                    </button>
+                    <button class="btn btn-outline-secondary" id="copyBtn">
+                        <i class="fas fa-copy me-2"></i>Copy Text
+                    </button>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Case Converter</h5>
+                <p class="mb-0">Transform your text with various case options:</p>
+                <ul class="mt-2 mb-0">
+                    <li><strong>UPPERCASE:</strong> Convert all letters to capital letters</li>
+                    <li><strong>lowercase:</strong> Convert all letters to small letters</li>
+                    <li><strong>Title Case:</strong> Capitalize the first letter of each word</li>
+                    <li><strong>Sentence case:</strong> Capitalize the first letter of each sentence</li>
+                    <li><strong>aLtErNaTiNg:</strong> Alternate between lower and uppercase letters</li>
+                    <li><strong>InVeRsE cAsE:</strong> Invert the case of each letter</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const textInput = document.getElementById('textInput');
+            const clearBtn = document.getElementById('clearBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const caseButtons = document.querySelectorAll('.btn-case');
+
+            function toTitleCase(text) {
+                return text.replace(/\w\S*/g, (word) => {
+                    return word.charAt(0).toUpperCase() + word.substr(1).toLowerCase();
+                });
+            }
+
+            function toSentenceCase(text) {
+                return text.replace(/(^\w|\.\s+\w)/gm, letter => letter.toUpperCase());
+            }
+
+            function toAlternatingCase(text) {
+                return text.split('').map((char, i) => 
+                    i % 2 === 0 ? char.toLowerCase() : char.toUpperCase()
+                ).join('');
+            }
+
+            function toInverseCase(text) {
+                return text.split('').map(char => 
+                    char === char.toUpperCase() ? char.toLowerCase() : char.toUpperCase()
+                ).join('');
+            }
+
+            caseButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const text = textInput.value;
+                    switch(button.dataset.case) {
+                        case 'upper':
+                            textInput.value = text.toUpperCase();
+                            break;
+                        case 'lower':
+                            textInput.value = text.toLowerCase();
+                            break;
+                        case 'title':
+                            textInput.value = toTitleCase(text);
+                            break;
+                        case 'sentence':
+                            textInput.value = toSentenceCase(text);
+                            break;
+                        case 'alternating':
+                            textInput.value = toAlternatingCase(text);
+                            break;
+                        case 'inverse':
+                            textInput.value = toInverseCase(text);
+                            break;
+                    }
+                });
+            });
+
+            clearBtn.addEventListener('click', () => {
+                textInput.value = '';
+            });
+
+            copyBtn.addEventListener('click', () => {
+                textInput.select();
+                document.execCommand('copy');
+                copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy Text';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter - WebTools</title>
+    <meta name="description" content="Free online word counter tool - count words, characters, sentences and paragraphs in your text.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-font me-2"></i>Word Counter</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-group mb-3">
+                        <label for="text-input" class="form-label">Enter your text:</label>
+                        <textarea class="form-control" id="text-input" rows="10" placeholder="Type or paste your text here..."></textarea>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Text Statistics</h5>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Words
+                                    <span class="badge bg-primary rounded-pill" id="word-count">0</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Characters
+                                    <span class="badge bg-primary rounded-pill" id="char-count">0</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Characters (no spaces)
+                                    <span class="badge bg-primary rounded-pill" id="char-count-no-spaces">0</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Sentences
+                                    <span class="badge bg-primary rounded-pill" id="sentence-count">0</span>
+                                </li>
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    Paragraphs
+                                    <span class="badge bg-primary rounded-pill" id="paragraph-count">0</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Additional Features -->
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <h5 class="card-title">Reading Time</h5>
+                            <p class="card-text" id="reading-time">≈ 0 minutes</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tool Description -->
+            <div class="mt-4">
+                <h3>About Word Counter</h3>
+                <p>This free online word counter provides instant character count & word count statistics for a given text. The tool reports the number of words, characters, sentences, and paragraphs in your text, along with estimated reading time.</p>
+                
+                <h4>How to use:</h4>
+                <ol>
+                    <li>Simply paste your text into the text box above</li>
+                    <li>Your word count and other statistics will update automatically</li>
+                    <li>You can also type directly into the text box</li>
+                </ol>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const textInput = document.getElementById('text-input');
+            const wordCount = document.getElementById('word-count');
+            const charCount = document.getElementById('char-count');
+            const charCountNoSpaces = document.getElementById('char-count-no-spaces');
+            const sentenceCount = document.getElementById('sentence-count');
+            const paragraphCount = document.getElementById('paragraph-count');
+            const readingTime = document.getElementById('reading-time');
+
+            function updateCounts() {
+                const text = textInput.value;
+                
+                // Word count
+                const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+                wordCount.textContent = words.length;
+
+                // Character counts
+                charCount.textContent = text.length;
+                charCountNoSpaces.textContent = text.replace(/\s/g, '').length;
+
+                // Sentence count
+                const sentences = text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0);
+                sentenceCount.textContent = sentences.length;
+
+                // Paragraph count
+                const paragraphs = text.split(/\n\s*\n/).filter(para => para.trim().length > 0);
+                paragraphCount.textContent = paragraphs.length;
+
+                // Reading time (assuming average reading speed of 200 words per minute)
+                const minutes = Math.ceil(words.length / 200);
+                readingTime.textContent = `≈ ${minutes} minute${minutes !== 1 ? 's' : ''}`;
+            }
+
+            textInput.addEventListener('input', updateCounts);
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Cropper - WebTools</title>
+    <meta name="description" content="Free online tool to crop images. Interactive cropping with aspect ratio control. Supports all major image formats.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Cropper.js CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .drop-zone {
+            border: 2px dashed #ccc;
+            border-radius: 10px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+            cursor: pointer;
+        }
+        .drop-zone.dragover {
+            border-color: #007bff;
+            background: #e7f1ff;
+        }
+        #uploadIcon {
+            font-size: 3rem;
+            color: #6c757d;
+            margin-bottom: 1rem;
+        }
+        .img-container {
+            max-height: 500px;
+            margin-bottom: 1rem;
+        }
+        .cropper-container {
+            margin: 0 auto;
+        }
+        .aspect-ratio-buttons {
+            margin: 1rem 0;
+        }
+        .aspect-ratio-buttons .btn {
+            margin: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-crop me-2"></i>Image Cropper</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="row">
+                <div class="col-md-10 mx-auto">
+                    <div class="drop-zone" id="dropZone">
+                        <i class="fas fa-cloud-upload-alt" id="uploadIcon"></i>
+                        <p class="mb-2">Drag and drop your image here or click to select</p>
+                        <p class="text-muted small">Supports all major image formats (PNG, JPG, WebP, etc.)</p>
+                        <input type="file" id="fileInput" class="d-none" accept="image/*">
+                    </div>
+
+                    <div id="cropperContainer" class="d-none">
+                        <div class="img-container">
+                            <img id="image" class="img-fluid" alt="Source Image">
+                        </div>
+
+                        <!-- Cropping Controls -->
+                        <div class="text-center">
+                            <div class="aspect-ratio-buttons">
+                                <button class="btn btn-outline-secondary" data-ratio="NaN">
+                                    <i class="fas fa-unlock me-2"></i>Free
+                                </button>
+                                <button class="btn btn-outline-secondary" data-ratio="1">
+                                    <i class="fas fa-square me-2"></i>1:1
+                                </button>
+                                <button class="btn btn-outline-secondary" data-ratio="1.7778">
+                                    <i class="fas fa-rectangle-landscape me-2"></i>16:9
+                                </button>
+                                <button class="btn btn-outline-secondary" data-ratio="0.5625">
+                                    <i class="fas fa-rectangle-portrait me-2"></i>9:16
+                                </button>
+                                <button class="btn btn-outline-secondary" data-ratio="1.3333">
+                                    <i class="fas fa-rectangle-landscape me-2"></i>4:3
+                                </button>
+                            </div>
+
+                            <div class="btn-group mb-3">
+                                <button class="btn btn-outline-secondary" id="rotateLeftBtn">
+                                    <i class="fas fa-undo"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary" id="rotateRightBtn">
+                                    <i class="fas fa-redo"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary" id="flipHorizontalBtn">
+                                    <i class="fas fa-arrows-alt-h"></i>
+                                </button>
+                                <button class="btn btn-outline-secondary" id="flipVerticalBtn">
+                                    <i class="fas fa-arrows-alt-v"></i>
+                                </button>
+                            </div>
+
+                            <div>
+                                <button class="btn btn-primary" id="cropBtn">
+                                    <i class="fas fa-crop me-2"></i>Crop Image
+                                </button>
+                                <button class="btn btn-outline-secondary ms-2" id="newImageBtn">
+                                    <i class="fas fa-redo me-2"></i>Upload New Image
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-info mt-4">
+                        <h5><i class="fas fa-info-circle me-2"></i>About This Tool</h5>
+                        <p class="mb-0">This tool provides interactive image cropping with the following features:</p>
+                        <ul class="mt-2 mb-0">
+                            <li>Multiple aspect ratio presets</li>
+                            <li>Free-form cropping</li>
+                            <li>Rotate and flip controls</li>
+                            <li>High-quality output</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Cropper.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.12/cropper.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const cropperContainer = document.getElementById('cropperContainer');
+            const image = document.getElementById('image');
+            const cropBtn = document.getElementById('cropBtn');
+            const newImageBtn = document.getElementById('newImageBtn');
+            const rotateLeftBtn = document.getElementById('rotateLeftBtn');
+            const rotateRightBtn = document.getElementById('rotateRightBtn');
+            const flipHorizontalBtn = document.getElementById('flipHorizontalBtn');
+            const flipVerticalBtn = document.getElementById('flipVerticalBtn');
+            
+            let cropper = null;
+
+            // Handle drag and drop events
+            ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, preventDefaults, false);
+            });
+
+            function preventDefaults(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            }
+
+            ['dragenter', 'dragover'].forEach(eventName => {
+                dropZone.addEventListener(eventName, highlight, false);
+            });
+
+            ['dragleave', 'drop'].forEach(eventName => {
+                dropZone.addEventListener(eventName, unhighlight, false);
+            });
+
+            function highlight(e) {
+                dropZone.classList.add('dragover');
+            }
+
+            function unhighlight(e) {
+                dropZone.classList.remove('dragover');
+            }
+
+            // Handle file drop and selection
+            dropZone.addEventListener('drop', handleDrop, false);
+            dropZone.addEventListener('click', () => fileInput.click());
+            fileInput.addEventListener('change', handleFileSelect);
+
+            function handleDrop(e) {
+                const dt = e.dataTransfer;
+                const files = dt.files;
+                handleFiles(files);
+            }
+
+            function handleFileSelect(e) {
+                const files = e.target.files;
+                handleFiles(files);
+            }
+
+            function handleFiles(files) {
+                if (files.length > 0) {
+                    const file = files[0];
+                    if (file.type.startsWith('image/')) {
+                        const reader = new FileReader();
+                        reader.onload = (e) => {
+                            image.src = e.target.result;
+                            dropZone.classList.add('d-none');
+                            cropperContainer.classList.remove('d-none');
+                            initCropper();
+                        };
+                        reader.readAsDataURL(file);
+                    } else {
+                        alert('Please upload an image file.');
+                    }
+                }
+            }
+
+            // Initialize Cropper.js
+            function initCropper() {
+                if (cropper) {
+                    cropper.destroy();
+                }
+                cropper = new Cropper(image, {
+                    viewMode: 2,
+                    dragMode: 'move',
+                    autoCropArea: 1,
+                    restore: false,
+                    modal: true,
+                    guides: true,
+                    highlight: true,
+                    cropBoxMovable: true,
+                    cropBoxResizable: true,
+                    toggleDragModeOnDblclick: true,
+                });
+            }
+
+            // Handle aspect ratio buttons
+            document.querySelectorAll('.aspect-ratio-buttons button').forEach(button => {
+                button.addEventListener('click', () => {
+                    const ratio = parseFloat(button.dataset.ratio);
+                    cropper.setAspectRatio(ratio);
+                });
+            });
+
+            // Handle rotation and flip buttons
+            rotateLeftBtn.addEventListener('click', () => cropper.rotate(-90));
+            rotateRightBtn.addEventListener('click', () => cropper.rotate(90));
+            flipHorizontalBtn.addEventListener('click', () => cropper.scaleX(cropper.getData().scaleX * -1));
+            flipVerticalBtn.addEventListener('click', () => cropper.scaleY(cropper.getData().scaleY * -1));
+
+            // Crop and download image
+            cropBtn.addEventListener('click', () => {
+                const canvas = cropper.getCroppedCanvas();
+                const format = image.src.split(';')[0].split('/')[1];
+                
+                canvas.toBlob((blob) => {
+                    const url = URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `cropped-image.${format}`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    URL.revokeObjectURL(url);
+                }, `image/${format}`);
+            });
+
+            // Reset for new image
+            newImageBtn.addEventListener('click', () => {
+                if (cropper) {
+                    cropper.destroy();
+                    cropper = null;
+                }
+                dropZone.classList.remove('d-none');
+                cropperContainer.classList.add('d-none');
+                fileInput.value = '';
+            });
+        });
+    </script>
+</body>
+</html> 

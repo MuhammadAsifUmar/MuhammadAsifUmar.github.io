@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Formatter - Format and Validate JSON - WebTools</title>
+    <meta name="description" content="Free online JSON formatter and validator. Format, beautify, and validate JSON data. Features syntax highlighting and error detection.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-json.min.js"></script>
+    <style>
+        .formatter-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .options-bar {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .text-area {
+            min-height: 300px;
+            resize: vertical;
+            font-family: monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            tab-size: 4;
+        }
+        .output-container {
+            background: #272822;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+        .output-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            color: #f8f9fa;
+        }
+        pre {
+            margin: 0;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        code {
+            font-size: 0.9rem !important;
+            line-height: 1.6 !important;
+            tab-size: 4 !important;
+        }
+        .error-message {
+            color: #dc3545;
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            border-radius: 4px;
+            padding: 0.75rem;
+            margin-top: 1rem;
+            display: none;
+        }
+        .btn-space {
+            margin-right: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-code me-2"></i>JSON Formatter</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="formatter-container">
+                <!-- Options Bar -->
+                <div class="options-bar">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="indentSize" class="form-label">Indent Size</label>
+                            <select class="form-select" id="indentSize">
+                                <option value="2">2 spaces</option>
+                                <option value="4" selected>4 spaces</option>
+                                <option value="tab">Tab</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Options</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="sortKeys">
+                                <label class="form-check-label" for="sortKeys">
+                                    Sort object keys alphabetically
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Input Area -->
+                <div class="mb-3">
+                    <label for="jsonInput" class="form-label">JSON Input</label>
+                    <div class="input-group mb-2">
+                        <button class="btn btn-outline-secondary" id="clearBtn">
+                            <i class="fas fa-eraser"></i>
+                        </button>
+                        <button class="btn btn-outline-secondary" id="pasteBtn">
+                            <i class="fas fa-paste"></i>
+                        </button>
+                        <button class="btn btn-outline-secondary" id="sampleBtn">
+                            <i class="fas fa-lightbulb"></i>
+                        </button>
+                    </div>
+                    <textarea class="form-control text-area" id="jsonInput" 
+                        placeholder="Paste your JSON here..."></textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex flex-wrap gap-2">
+                    <button class="btn btn-primary btn-space" id="formatBtn">
+                        <i class="fas fa-magic me-2"></i>Format JSON
+                    </button>
+                    <button class="btn btn-outline-primary btn-space" id="minifyBtn">
+                        <i class="fas fa-compress-alt me-2"></i>Minify
+                    </button>
+                    <button class="btn btn-outline-primary btn-space" id="validateBtn">
+                        <i class="fas fa-check me-2"></i>Validate
+                    </button>
+                    <button class="btn btn-outline-primary" id="copyBtn">
+                        <i class="fas fa-copy me-2"></i>Copy
+                    </button>
+                </div>
+
+                <!-- Error Message -->
+                <div class="error-message" id="errorMessage"></div>
+
+                <!-- Output Area -->
+                <div class="output-container" id="outputContainer" style="display: none;">
+                    <div class="output-header">
+                        <span>Formatted JSON</span>
+                        <small class="text-muted">Line count: <span id="lineCount">0</span></small>
+                    </div>
+                    <pre><code class="language-json" id="jsonOutput"></code></pre>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About JSON Formatter</h5>
+                <p>Format, validate, and beautify your JSON data:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Format JSON with customizable indentation</li>
+                    <li>Validate JSON syntax and structure</li>
+                    <li>Minify JSON by removing whitespace</li>
+                    <li>Sort object keys alphabetically</li>
+                    <li>Syntax highlighting for better readability</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const jsonInput = document.getElementById('jsonInput');
+            const jsonOutput = document.getElementById('jsonOutput');
+            const outputContainer = document.getElementById('outputContainer');
+            const errorMessage = document.getElementById('errorMessage');
+            const lineCount = document.getElementById('lineCount');
+            const indentSize = document.getElementById('indentSize');
+            const sortKeys = document.getElementById('sortKeys');
+            const formatBtn = document.getElementById('formatBtn');
+            const minifyBtn = document.getElementById('minifyBtn');
+            const validateBtn = document.getElementById('validateBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const pasteBtn = document.getElementById('pasteBtn');
+            const sampleBtn = document.getElementById('sampleBtn');
+
+            function getIndent() {
+                const size = indentSize.value;
+                return size === 'tab' ? '\t' : ' '.repeat(parseInt(size));
+            }
+
+            function formatJSON(minify = false) {
+                try {
+                    let json = jsonInput.value.trim();
+                    if (!json) {
+                        throw new Error('Please enter JSON data');
+                    }
+
+                    // Parse JSON to validate it
+                    let obj = JSON.parse(json);
+
+                    // Sort keys if option is selected
+                    if (sortKeys.checked) {
+                        obj = sortObjectKeys(obj);
+                    }
+
+                    // Stringify with formatting
+                    const formatted = JSON.stringify(obj, null, minify ? 0 : getIndent());
+                    
+                    // Update output
+                    jsonOutput.textContent = formatted;
+                    Prism.highlightElement(jsonOutput);
+                    outputContainer.style.display = 'block';
+                    errorMessage.style.display = 'none';
+                    lineCount.textContent = formatted.split('\n').length;
+
+                    return true;
+                } catch (e) {
+                    showError(e.message);
+                    return false;
+                }
+            }
+
+            function sortObjectKeys(obj) {
+                if (obj === null || typeof obj !== 'object') {
+                    return obj;
+                }
+
+                if (Array.isArray(obj)) {
+                    return obj.map(sortObjectKeys);
+                }
+
+                return Object.keys(obj)
+                    .sort()
+                    .reduce((sorted, key) => {
+                        sorted[key] = sortObjectKeys(obj[key]);
+                        return sorted;
+                    }, {});
+            }
+
+            function validateJSON() {
+                try {
+                    JSON.parse(jsonInput.value);
+                    showError('JSON is valid!', false);
+                    return true;
+                } catch (e) {
+                    showError(e.message);
+                    return false;
+                }
+            }
+
+            function showError(message, isError = true) {
+                errorMessage.style.display = 'block';
+                errorMessage.style.backgroundColor = isError ? '#f8d7da' : '#d4edda';
+                errorMessage.style.borderColor = isError ? '#f5c6cb' : '#c3e6cb';
+                errorMessage.style.color = isError ? '#dc3545' : '#155724';
+                errorMessage.textContent = message;
+            }
+
+            // Event Listeners
+            formatBtn.addEventListener('click', () => formatJSON());
+            minifyBtn.addEventListener('click', () => formatJSON(true));
+            validateBtn.addEventListener('click', validateJSON);
+
+            copyBtn.addEventListener('click', () => {
+                const textToCopy = jsonOutput.textContent;
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy';
+                    }, 2000);
+                });
+            });
+
+            clearBtn.addEventListener('click', () => {
+                jsonInput.value = '';
+                outputContainer.style.display = 'none';
+                errorMessage.style.display = 'none';
+            });
+
+            pasteBtn.addEventListener('click', async () => {
+                try {
+                    jsonInput.value = await navigator.clipboard.readText();
+                } catch (err) {
+                    console.error('Failed to read clipboard:', err);
+                }
+            });
+
+            sampleBtn.addEventListener('click', () => {
+                jsonInput.value = `{
+  "name": "John Doe",
+  "age": 30,
+  "email": "john@example.com",
+  "isSubscribed": true,
+  "interests": ["programming", "reading", "music"],
+  "address": {
+    "street": "123 Main St",
+    "city": "New York",
+    "country": "USA"
+  },
+  "orders": [
+    {
+      "id": "ORD001",
+      "date": "2024-01-15",
+      "items": [
+        {
+          "product": "Laptop",
+          "price": 999.99,
+          "quantity": 1
+        }
+      ]
+    }
+  ]
+}`;
+                formatJSON();
+            });
+
+            [indentSize, sortKeys].forEach(el => {
+                el.addEventListener('change', () => {
+                    if (jsonOutput.textContent) {
+                        formatJSON();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

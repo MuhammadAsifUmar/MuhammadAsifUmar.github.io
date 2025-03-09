@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Base64 Converter - Encode/Decode Text & Files - WebTools</title>
+    <meta name="description" content="Free online Base64 encoder and decoder. Convert text and files to Base64 format and decode Base64 strings back to their original format.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .converter-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .mode-switch {
+            margin-bottom: 1.5rem;
+        }
+        .input-area {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .output-area {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .file-drop-zone {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        .file-drop-zone:hover {
+            border-color: #0d6efd;
+        }
+        .file-drop-zone.dragover {
+            border-color: #0d6efd;
+            background: #e7f1ff;
+        }
+        .file-info {
+            margin-top: 1rem;
+            display: none;
+        }
+        .result-actions {
+            margin-top: 1rem;
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+        .textarea-container {
+            position: relative;
+        }
+        .word-count {
+            position: absolute;
+            bottom: 0.5rem;
+            right: 0.5rem;
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-exchange-alt me-2"></i>Base64 Converter</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="converter-container">
+                <!-- Mode Switch -->
+                <div class="mode-switch">
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="mode" id="textMode" checked>
+                        <label class="btn btn-outline-primary" for="textMode">
+                            <i class="fas fa-font me-2"></i>Text Mode
+                        </label>
+                        
+                        <input type="radio" class="btn-check" name="mode" id="fileMode">
+                        <label class="btn btn-outline-primary" for="fileMode">
+                            <i class="fas fa-file me-2"></i>File Mode
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Text Mode -->
+                <div id="textModeContent">
+                    <!-- Input Area -->
+                    <div class="input-area">
+                        <h5 class="mb-3"><i class="fas fa-keyboard me-2"></i>Input</h5>
+                        <div class="textarea-container">
+                            <textarea 
+                                class="form-control" 
+                                id="inputText" 
+                                rows="6" 
+                                placeholder="Enter text to encode or Base64 string to decode..."
+                            ></textarea>
+                            <div class="word-count" id="inputCount">0 characters</div>
+                        </div>
+                        <div class="mt-3">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="textOperation" id="encode" checked>
+                                <label class="form-check-label" for="encode">Encode to Base64</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="textOperation" id="decode">
+                                <label class="form-check-label" for="decode">Decode from Base64</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Output Area -->
+                    <div class="output-area">
+                        <h5 class="mb-3"><i class="fas fa-code me-2"></i>Output</h5>
+                        <div class="textarea-container">
+                            <textarea 
+                                class="form-control" 
+                                id="outputText" 
+                                rows="6" 
+                                readonly
+                            ></textarea>
+                            <div class="word-count" id="outputCount">0 characters</div>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn btn-outline-primary" id="copyBtn">
+                                <i class="fas fa-copy me-2"></i>Copy
+                            </button>
+                            <button class="btn btn-outline-primary" id="downloadBtn">
+                                <i class="fas fa-download me-2"></i>Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Mode -->
+                <div id="fileModeContent" style="display: none;">
+                    <!-- File Drop Zone -->
+                    <div class="input-area">
+                        <h5 class="mb-3"><i class="fas fa-file-upload me-2"></i>Upload File</h5>
+                        <div class="file-drop-zone" id="dropZone">
+                            <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                            <p class="mb-1">Drag & drop a file here or click to select</p>
+                            <p class="text-muted small mb-0">Maximum file size: 5MB</p>
+                            <input type="file" id="fileInput" style="display: none;">
+                        </div>
+                        <div class="file-info alert alert-info mt-3" id="fileInfo">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <span></span>
+                        </div>
+                    </div>
+
+                    <!-- File Output -->
+                    <div class="output-area">
+                        <h5 class="mb-3"><i class="fas fa-file-code me-2"></i>Base64 Output</h5>
+                        <div class="textarea-container">
+                            <textarea 
+                                class="form-control" 
+                                id="fileOutput" 
+                                rows="6" 
+                                readonly
+                            ></textarea>
+                            <div class="word-count" id="fileOutputCount">0 characters</div>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn btn-outline-primary" id="copyFileBtn">
+                                <i class="fas fa-copy me-2"></i>Copy
+                            </button>
+                            <button class="btn btn-outline-primary" id="downloadFileBtn">
+                                <i class="fas fa-download me-2"></i>Download
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Base64 Converter</h5>
+                <p class="mb-0">This tool helps you encode and decode Base64 data:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Convert text to Base64 format and back</li>
+                    <li>Encode files (images, documents, etc.) to Base64</li>
+                    <li>Copy results to clipboard</li>
+                    <li>Download encoded/decoded content</li>
+                    <li>Supports drag and drop file upload</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Text Mode Elements
+            const textMode = document.getElementById('textMode');
+            const fileMode = document.getElementById('fileMode');
+            const textModeContent = document.getElementById('textModeContent');
+            const fileModeContent = document.getElementById('fileModeContent');
+            const inputText = document.getElementById('inputText');
+            const outputText = document.getElementById('outputText');
+            const encode = document.getElementById('encode');
+            const decode = document.getElementById('decode');
+            const copyBtn = document.getElementById('copyBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const inputCount = document.getElementById('inputCount');
+            const outputCount = document.getElementById('outputCount');
+
+            // File Mode Elements
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const fileInfo = document.getElementById('fileInfo');
+            const fileOutput = document.getElementById('fileOutput');
+            const copyFileBtn = document.getElementById('copyFileBtn');
+            const downloadFileBtn = document.getElementById('downloadFileBtn');
+            const fileOutputCount = document.getElementById('fileOutputCount');
+
+            // Mode switching
+            textMode.addEventListener('change', () => {
+                textModeContent.style.display = 'block';
+                fileModeContent.style.display = 'none';
+            });
+
+            fileMode.addEventListener('change', () => {
+                textModeContent.style.display = 'none';
+                fileModeContent.style.display = 'block';
+            });
+
+            // Text Mode Functions
+            function updateCharCount(input, display) {
+                const count = input.value.length;
+                display.textContent = `${count} characters`;
+            }
+
+            function processText() {
+                const text = inputText.value;
+                if (!text) {
+                    outputText.value = '';
+                    return;
+                }
+
+                try {
+                    if (encode.checked) {
+                        outputText.value = btoa(text);
+                    } else {
+                        outputText.value = atob(text);
+                    }
+                    updateCharCount(outputText, outputCount);
+                } catch (e) {
+                    outputText.value = 'Error: Invalid input for selected operation';
+                }
+            }
+
+            // Text Mode Event Listeners
+            inputText.addEventListener('input', () => {
+                updateCharCount(inputText, inputCount);
+                processText();
+            });
+
+            [encode, decode].forEach(radio => {
+                radio.addEventListener('change', processText);
+            });
+
+            copyBtn.addEventListener('click', () => {
+                outputText.select();
+                document.execCommand('copy');
+                copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy';
+                }, 2000);
+            });
+
+            downloadBtn.addEventListener('click', () => {
+                const text = outputText.value;
+                if (!text) return;
+
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = encode.checked ? 'encoded.txt' : 'decoded.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+
+            // File Mode Functions
+            function handleFile(file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    fileInfo.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>File too large (max 5MB)';
+                    fileInfo.style.display = 'block';
+                    return;
+                }
+
+                fileInfo.innerHTML = `<i class="fas fa-info-circle me-2"></i>Processing: ${file.name}`;
+                fileInfo.style.display = 'block';
+
+                const reader = new FileReader();
+                reader.onload = () => {
+                    const base64 = reader.result.split(',')[1];
+                    fileOutput.value = base64;
+                    updateCharCount(fileOutput, fileOutputCount);
+                    fileInfo.innerHTML = `<i class="fas fa-check-circle me-2"></i>File encoded: ${file.name}`;
+                };
+                reader.readAsDataURL(file);
+            }
+
+            // File Mode Event Listeners
+            dropZone.addEventListener('click', () => fileInput.click());
+            
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file) handleFile(file);
+            });
+
+            fileInput.addEventListener('change', () => {
+                const file = fileInput.files[0];
+                if (file) handleFile(file);
+            });
+
+            copyFileBtn.addEventListener('click', () => {
+                fileOutput.select();
+                document.execCommand('copy');
+                copyFileBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                setTimeout(() => {
+                    copyFileBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy';
+                }, 2000);
+            });
+
+            downloadFileBtn.addEventListener('click', () => {
+                const text = fileOutput.value;
+                if (!text) return;
+
+                const blob = new Blob([text], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'encoded_file.txt';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            });
+        });
+    </script>
+</body>
+</html> 

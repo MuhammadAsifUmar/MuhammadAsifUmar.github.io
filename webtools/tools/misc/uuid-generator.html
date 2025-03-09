@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UUID Generator - Generate Random UUIDs - WebTools</title>
+    <meta name="description" content="Free online UUID (Universally Unique Identifier) generator. Generate random version 4 UUIDs with options for bulk generation and formatting.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .generator-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .options-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .result-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .uuid-list {
+            font-family: monospace;
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+        }
+        .uuid-item {
+            padding: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .uuid-item:last-child {
+            border-bottom: none;
+        }
+        .uuid-text {
+            font-size: 1rem;
+            color: #0d6efd;
+        }
+        .copy-btn {
+            padding: 0.25rem 0.5rem;
+            font-size: 0.875rem;
+        }
+        .format-option {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-fingerprint me-2"></i>UUID Generator</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="generator-container">
+                <!-- Options Section -->
+                <div class="options-section">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Number of UUIDs</label>
+                            <select class="form-select" id="uuidCount">
+                                <option value="1" selected>1 UUID</option>
+                                <option value="5">5 UUIDs</option>
+                                <option value="10">10 UUIDs</option>
+                                <option value="20">20 UUIDs</option>
+                                <option value="50">50 UUIDs</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Format</label>
+                            <div class="format-option">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="format" id="formatStandard" checked>
+                                    <label class="form-check-label" for="formatStandard">
+                                        Standard (8-4-4-4-12)
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="format-option">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="format" id="formatCompact">
+                                    <label class="form-check-label" for="formatCompact">
+                                        Compact (no hyphens)
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="format-option">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="format" id="formatUppercase">
+                                    <label class="form-check-label" for="formatUppercase">
+                                        Uppercase
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <div class="d-grid gap-2 mb-3">
+                    <button class="btn btn-primary" id="generateBtn">
+                        <i class="fas fa-sync-alt me-2"></i>Generate UUID(s)
+                    </button>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section">
+                    <div class="uuid-list" id="uuidList"></div>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-outline-primary" id="copyAllBtn">
+                            <i class="fas fa-copy me-2"></i>Copy All
+                        </button>
+                        <button class="btn btn-outline-primary" id="downloadBtn">
+                            <i class="fas fa-download me-2"></i>Download
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About UUID Generator</h5>
+                <p>Generate version 4 UUIDs (Universally Unique Identifiers):</p>
+                <ul class="mt-2 mb-0">
+                    <li>Random version 4 UUIDs following RFC 4122</li>
+                    <li>Multiple format options (standard, compact, uppercase)</li>
+                    <li>Bulk generation up to 50 UUIDs at once</li>
+                    <li>Copy individual UUIDs or all at once</li>
+                    <li>Download generated UUIDs as a text file</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const uuidCount = document.getElementById('uuidCount');
+            const formatStandard = document.getElementById('formatStandard');
+            const formatCompact = document.getElementById('formatCompact');
+            const formatUppercase = document.getElementById('formatUppercase');
+            const generateBtn = document.getElementById('generateBtn');
+            const copyAllBtn = document.getElementById('copyAllBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const uuidList = document.getElementById('uuidList');
+
+            // Generate a random UUID v4
+            function generateUUID() {
+                return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                    const r = Math.random() * 16 | 0;
+                    const v = c === 'x' ? r : (r & 0x3 | 0x8);
+                    return v.toString(16);
+                });
+            }
+
+            // Format UUID based on selected options
+            function formatUUID(uuid) {
+                if (formatCompact.checked) {
+                    uuid = uuid.replace(/-/g, '');
+                }
+                if (formatUppercase.checked) {
+                    uuid = uuid.toUpperCase();
+                }
+                return uuid;
+            }
+
+            // Generate UUIDs
+            function generateUUIDs() {
+                const count = parseInt(uuidCount.value);
+                uuidList.innerHTML = '';
+
+                for (let i = 0; i < count; i++) {
+                    const uuid = formatUUID(generateUUID());
+                    const item = document.createElement('div');
+                    item.className = 'uuid-item';
+                    item.innerHTML = `
+                        <span class="uuid-text">${uuid}</span>
+                        <button class="btn btn-outline-secondary btn-sm copy-btn">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    `;
+
+                    // Copy button functionality
+                    const copyBtn = item.querySelector('.copy-btn');
+                    copyBtn.addEventListener('click', () => {
+                        navigator.clipboard.writeText(uuid);
+                        copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                        setTimeout(() => {
+                            copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+                        }, 2000);
+                    });
+
+                    uuidList.appendChild(item);
+                }
+            }
+
+            // Copy all UUIDs
+            function copyAllUUIDs() {
+                const uuids = Array.from(uuidList.querySelectorAll('.uuid-text'))
+                    .map(span => span.textContent)
+                    .join('\n');
+                
+                navigator.clipboard.writeText(uuids);
+                copyAllBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                setTimeout(() => {
+                    copyAllBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy All';
+                }, 2000);
+            }
+
+            // Download UUIDs
+            function downloadUUIDs() {
+                const uuids = Array.from(uuidList.querySelectorAll('.uuid-text'))
+                    .map(span => span.textContent)
+                    .join('\n');
+                
+                const blob = new Blob([uuids], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'uuids.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            }
+
+            // Event listeners
+            generateBtn.addEventListener('click', generateUUIDs);
+            copyAllBtn.addEventListener('click', copyAllUUIDs);
+            downloadBtn.addEventListener('click', downloadUUIDs);
+            [formatStandard, formatCompact, formatUppercase].forEach(radio => {
+                radio.addEventListener('change', generateUUIDs);
+            });
+
+            // Generate initial UUIDs
+            generateUUIDs();
+        });
+    </script>
+</body>
+</html> 

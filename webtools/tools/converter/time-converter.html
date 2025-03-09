@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Converter - Convert Between Time Units - WebTools</title>
+    <meta name="description" content="Free online time converter. Convert between seconds, minutes, hours, days, weeks, months, and years. Calculate time differences and durations.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .converter-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .options-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .result-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .result-display {
+            font-family: monospace;
+            font-size: 1.25rem;
+            color: #0d6efd;
+            margin-bottom: 0.5rem;
+        }
+        .conversion-table {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+        }
+        .table-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .table-row:last-child {
+            border-bottom: none;
+        }
+        .unit-value {
+            font-family: monospace;
+            color: #0d6efd;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-clock me-2"></i>Time Converter</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="converter-container">
+                <!-- Input Section -->
+                <div class="options-section">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Value</label>
+                            <input type="number" class="form-control" id="inputValue" value="1" min="0" step="any">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">From</label>
+                            <select class="form-select" id="fromUnit">
+                                <option value="seconds">Seconds</option>
+                                <option value="minutes">Minutes</option>
+                                <option value="hours">Hours</option>
+                                <option value="days">Days</option>
+                                <option value="weeks">Weeks</option>
+                                <option value="months">Months</option>
+                                <option value="years">Years</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">To</label>
+                            <select class="form-select" id="toUnit">
+                                <option value="seconds">Seconds</option>
+                                <option value="minutes">Minutes</option>
+                                <option value="hours" selected>Hours</option>
+                                <option value="days">Days</option>
+                                <option value="weeks">Weeks</option>
+                                <option value="months">Months</option>
+                                <option value="years">Years</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section">
+                    <h5>Conversion Result</h5>
+                    <div class="result-display" id="resultDisplay">0</div>
+                    <button class="btn btn-outline-primary" id="copyBtn">
+                        <i class="fas fa-copy me-2"></i>Copy Result
+                    </button>
+                </div>
+
+                <!-- Quick Conversion Table -->
+                <div class="conversion-table">
+                    <h5 class="mb-3">Common Conversions</h5>
+                    <div id="conversionTable"></div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Time Converter</h5>
+                <p>Convert between different time units:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Support for seconds, minutes, hours, days, weeks, months, and years</li>
+                    <li>Real-time conversion as you type</li>
+                    <li>Common conversion table for quick reference</li>
+                    <li>Copy results with one click</li>
+                    <li>Accurate calculations for all time units</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const inputValue = document.getElementById('inputValue');
+            const fromUnit = document.getElementById('fromUnit');
+            const toUnit = document.getElementById('toUnit');
+            const resultDisplay = document.getElementById('resultDisplay');
+            const copyBtn = document.getElementById('copyBtn');
+            const conversionTable = document.getElementById('conversionTable');
+
+            // Conversion factors (to seconds)
+            const toSeconds = {
+                seconds: 1,
+                minutes: 60,
+                hours: 3600,
+                days: 86400,
+                weeks: 604800,
+                months: 2592000, // 30 days
+                years: 31536000 // 365 days
+            };
+
+            // Convert time
+            function convertTime() {
+                const value = parseFloat(inputValue.value);
+                if (isNaN(value)) {
+                    resultDisplay.textContent = '0';
+                    return;
+                }
+
+                const fromSeconds = value * toSeconds[fromUnit.value];
+                const result = fromSeconds / toSeconds[toUnit.value];
+                resultDisplay.textContent = result.toLocaleString(undefined, {
+                    minimumFractionDigits: 0,
+                    maximumFractionDigits: 6
+                });
+
+                updateConversionTable(value);
+            }
+
+            // Update conversion table
+            function updateConversionTable(value) {
+                conversionTable.innerHTML = '';
+                const fromSeconds = value * toSeconds[fromUnit.value];
+
+                Object.keys(toSeconds).forEach(unit => {
+                    if (unit !== fromUnit.value) {
+                        const converted = fromSeconds / toSeconds[unit];
+                        const row = document.createElement('div');
+                        row.className = 'table-row';
+                        row.innerHTML = `
+                            <span>${value} ${fromUnit.value} =</span>
+                            <span class="unit-value">${converted.toLocaleString(undefined, {
+                                minimumFractionDigits: 0,
+                                maximumFractionDigits: 6
+                            })} ${unit}</span>
+                        `;
+                        conversionTable.appendChild(row);
+                    }
+                });
+            }
+
+            // Copy result
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(resultDisplay.textContent);
+                copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy Result';
+                }, 2000);
+            });
+
+            // Event listeners
+            inputValue.addEventListener('input', convertTime);
+            fromUnit.addEventListener('change', convertTime);
+            toUnit.addEventListener('change', convertTime);
+
+            // Initial conversion
+            convertTime();
+        });
+    </script>
+</body>
+</html> 

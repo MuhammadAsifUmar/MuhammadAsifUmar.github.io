@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Flexbox Generator - Visual Flexbox Layout Builder - WebTools</title>
+    <meta name="description" content="Free online CSS Flexbox generator. Create and visualize flexbox layouts with a live preview. Generate CSS code for your flexbox designs.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .generator-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .options-panel {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .preview-container {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            min-height: 300px;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .flex-container {
+            min-height: 250px;
+            border: 2px solid #0d6efd;
+            border-radius: 4px;
+            padding: 1rem;
+            position: relative;
+        }
+        .flex-item {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 4px;
+            padding: 1rem;
+            margin: 0.25rem;
+            min-width: 80px;
+            text-align: center;
+            cursor: move;
+        }
+        .flex-item.selected {
+            background: #0d6efd;
+            color: white;
+        }
+        .code-output {
+            background: #272822;
+            color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            font-family: monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            position: relative;
+        }
+        .copy-btn {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            z-index: 1;
+        }
+        .item-controls {
+            margin-top: 1rem;
+            display: none;
+        }
+        .item-controls.active {
+            display: block;
+        }
+        .axis-indicator {
+            position: absolute;
+            pointer-events: none;
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
+        .main-axis {
+            top: 0.25rem;
+            left: 0.25rem;
+        }
+        .cross-axis {
+            top: 0.25rem;
+            right: 0.25rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-th me-2"></i>CSS Flexbox Generator</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="generator-container">
+                <!-- Container Options -->
+                <div class="options-panel">
+                    <h5 class="mb-3">Container Properties</h5>
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">display</label>
+                            <select class="form-select" id="display">
+                                <option value="flex">flex</option>
+                                <option value="inline-flex">inline-flex</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">flex-direction</label>
+                            <select class="form-select" id="flexDirection">
+                                <option value="row">row</option>
+                                <option value="row-reverse">row-reverse</option>
+                                <option value="column">column</option>
+                                <option value="column-reverse">column-reverse</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">flex-wrap</label>
+                            <select class="form-select" id="flexWrap">
+                                <option value="nowrap">nowrap</option>
+                                <option value="wrap">wrap</option>
+                                <option value="wrap-reverse">wrap-reverse</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">justify-content</label>
+                            <select class="form-select" id="justifyContent">
+                                <option value="flex-start">flex-start</option>
+                                <option value="flex-end">flex-end</option>
+                                <option value="center">center</option>
+                                <option value="space-between">space-between</option>
+                                <option value="space-around">space-around</option>
+                                <option value="space-evenly">space-evenly</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">align-items</label>
+                            <select class="form-select" id="alignItems">
+                                <option value="stretch">stretch</option>
+                                <option value="flex-start">flex-start</option>
+                                <option value="flex-end">flex-end</option>
+                                <option value="center">center</option>
+                                <option value="baseline">baseline</option>
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">align-content</label>
+                            <select class="form-select" id="alignContent">
+                                <option value="stretch">stretch</option>
+                                <option value="flex-start">flex-start</option>
+                                <option value="flex-end">flex-end</option>
+                                <option value="center">center</option>
+                                <option value="space-between">space-between</option>
+                                <option value="space-around">space-around</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Preview Area -->
+                <div class="preview-container">
+                    <div class="flex-container" id="flexContainer">
+                        <span class="axis-indicator main-axis">Main Axis</span>
+                        <span class="axis-indicator cross-axis">Cross Axis</span>
+                        <div class="flex-item" draggable="true">1</div>
+                        <div class="flex-item" draggable="true">2</div>
+                        <div class="flex-item" draggable="true">3</div>
+                    </div>
+                </div>
+
+                <!-- Item Controls -->
+                <div class="item-controls" id="itemControls">
+                    <h5 class="mb-3">Item Properties</h5>
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label">order</label>
+                            <input type="number" class="form-control" id="itemOrder" value="0">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">flex-grow</label>
+                            <input type="number" class="form-control" id="itemFlexGrow" value="0" min="0">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">flex-shrink</label>
+                            <input type="number" class="form-control" id="itemFlexShrink" value="1" min="0">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">flex-basis</label>
+                            <input type="text" class="form-control" id="itemFlexBasis" value="auto">
+                        </div>
+                        <div class="col-md-3">
+                            <label class="form-label">align-self</label>
+                            <select class="form-select" id="itemAlignSelf">
+                                <option value="auto">auto</option>
+                                <option value="flex-start">flex-start</option>
+                                <option value="flex-end">flex-end</option>
+                                <option value="center">center</option>
+                                <option value="baseline">baseline</option>
+                                <option value="stretch">stretch</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="d-flex gap-2 mb-3">
+                    <button class="btn btn-primary" id="addItemBtn">
+                        <i class="fas fa-plus me-2"></i>Add Item
+                    </button>
+                    <button class="btn btn-danger" id="removeItemBtn">
+                        <i class="fas fa-trash-alt me-2"></i>Remove Selected
+                    </button>
+                </div>
+
+                <!-- Code Output -->
+                <div class="code-output">
+                    <button class="btn btn-sm btn-outline-light copy-btn" id="copyBtn">
+                        <i class="fas fa-copy"></i>
+                    </button>
+                    <pre id="codeOutput"></pre>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About CSS Flexbox Generator</h5>
+                <p>Create and visualize flexbox layouts with ease:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Interactive preview with draggable flex items</li>
+                    <li>Configure container and item properties</li>
+                    <li>Real-time CSS code generation</li>
+                    <li>Visual indicators for main and cross axes</li>
+                    <li>Perfect for learning and experimenting with flexbox</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const flexContainer = document.getElementById('flexContainer');
+            const itemControls = document.getElementById('itemControls');
+            const codeOutput = document.getElementById('codeOutput');
+            const copyBtn = document.getElementById('copyBtn');
+            const addItemBtn = document.getElementById('addItemBtn');
+            const removeItemBtn = document.getElementById('removeItemBtn');
+
+            let selectedItem = null;
+
+            // Container property controls
+            const containerControls = {
+                display: document.getElementById('display'),
+                flexDirection: document.getElementById('flexDirection'),
+                flexWrap: document.getElementById('flexWrap'),
+                justifyContent: document.getElementById('justifyContent'),
+                alignItems: document.getElementById('alignItems'),
+                alignContent: document.getElementById('alignContent')
+            };
+
+            // Item property controls
+            const itemControls = {
+                order: document.getElementById('itemOrder'),
+                flexGrow: document.getElementById('itemFlexGrow'),
+                flexShrink: document.getElementById('itemFlexShrink'),
+                flexBasis: document.getElementById('itemFlexBasis'),
+                alignSelf: document.getElementById('itemAlignSelf')
+            };
+
+            // Update container styles
+            function updateContainer() {
+                Object.entries(containerControls).forEach(([property, control]) => {
+                    flexContainer.style[property] = control.value;
+                });
+                updateCode();
+            }
+
+            // Update selected item styles
+            function updateItem() {
+                if (!selectedItem) return;
+
+                selectedItem.style.order = itemControls.order.value;
+                selectedItem.style.flexGrow = itemControls.flexGrow.value;
+                selectedItem.style.flexShrink = itemControls.flexShrink.value;
+                selectedItem.style.flexBasis = itemControls.flexBasis.value;
+                selectedItem.style.alignSelf = itemControls.alignSelf.value;
+                updateCode();
+            }
+
+            // Generate CSS code
+            function updateCode() {
+                let code = `.container {\n`;
+                Object.entries(containerControls).forEach(([property, control]) => {
+                    code += `    ${property}: ${control.value};\n`;
+                });
+                code += `}\n\n`;
+
+                if (selectedItem) {
+                    code += `.selected-item {\n`;
+                    Object.entries(itemControls).forEach(([property, control]) => {
+                        if (control.value !== '' && control.value !== 'auto') {
+                            code += `    ${property}: ${control.value};\n`;
+                        }
+                    });
+                    code += `}`;
+                }
+
+                codeOutput.textContent = code;
+            }
+
+            // Add new flex item
+            function addItem() {
+                const item = document.createElement('div');
+                item.className = 'flex-item';
+                item.draggable = true;
+                item.textContent = flexContainer.children.length;
+                
+                // Add drag events
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+                item.addEventListener('click', selectItem);
+                
+                flexContainer.appendChild(item);
+                updateCode();
+            }
+
+            // Remove selected item
+            function removeItem() {
+                if (selectedItem) {
+                    selectedItem.remove();
+                    selectedItem = null;
+                    document.getElementById('itemControls').classList.remove('active');
+                    updateCode();
+                }
+            }
+
+            // Select item
+            function selectItem(e) {
+                if (selectedItem) {
+                    selectedItem.classList.remove('selected');
+                }
+                selectedItem = e.target;
+                selectedItem.classList.add('selected');
+                document.getElementById('itemControls').classList.add('active');
+
+                // Update item controls with current values
+                itemControls.order.value = selectedItem.style.order || '0';
+                itemControls.flexGrow.value = selectedItem.style.flexGrow || '0';
+                itemControls.flexShrink.value = selectedItem.style.flexShrink || '1';
+                itemControls.flexBasis.value = selectedItem.style.flexBasis || 'auto';
+                itemControls.alignSelf.value = selectedItem.style.alignSelf || 'auto';
+            }
+
+            // Drag and drop functionality
+            let draggedItem = null;
+
+            function handleDragStart(e) {
+                draggedItem = e.target;
+                e.target.style.opacity = '0.4';
+            }
+
+            function handleDragEnd(e) {
+                e.target.style.opacity = '';
+                draggedItem = null;
+            }
+
+            flexContainer.addEventListener('dragover', (e) => {
+                e.preventDefault();
+            });
+
+            flexContainer.addEventListener('drop', (e) => {
+                e.preventDefault();
+                if (draggedItem) {
+                    const afterElement = getDragAfterElement(flexContainer, e.clientY);
+                    if (afterElement) {
+                        flexContainer.insertBefore(draggedItem, afterElement);
+                    } else {
+                        flexContainer.appendChild(draggedItem);
+                    }
+                }
+            });
+
+            function getDragAfterElement(container, y) {
+                const draggableElements = [...container.querySelectorAll('.flex-item:not(.dragging)')];
+                
+                return draggableElements.reduce((closest, child) => {
+                    const box = child.getBoundingClientRect();
+                    const offset = y - box.top - box.height / 2;
+                    
+                    if (offset < 0 && offset > closest.offset) {
+                        return { offset: offset, element: child };
+                    } else {
+                        return closest;
+                    }
+                }, { offset: Number.NEGATIVE_INFINITY }).element;
+            }
+
+            // Event listeners
+            Object.values(containerControls).forEach(control => {
+                control.addEventListener('change', updateContainer);
+            });
+
+            Object.values(itemControls).forEach(control => {
+                control.addEventListener('change', updateItem);
+            });
+
+            addItemBtn.addEventListener('click', addItem);
+            removeItemBtn.addEventListener('click', removeItem);
+
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(codeOutput.textContent).then(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-check"></i>';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy"></i>';
+                    }, 2000);
+                });
+            });
+
+            // Initialize
+            const items = document.querySelectorAll('.flex-item');
+            items.forEach(item => {
+                item.addEventListener('dragstart', handleDragStart);
+                item.addEventListener('dragend', handleDragEnd);
+                item.addEventListener('click', selectItem);
+            });
+
+            updateContainer();
+        });
+    </script>
+</body>
+</html> 

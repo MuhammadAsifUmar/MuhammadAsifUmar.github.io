@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XML Sitemap Generator - Create XML Sitemaps - WebTools</title>
+    <meta name="description" content="Free online XML sitemap generator. Create properly formatted XML sitemaps for better search engine indexing of your website.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet">
+    <style>
+        .generator-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .input-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .result-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .url-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .url-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .code-output {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .url-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .bulk-input {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-sitemap me-2"></i>XML Sitemap Generator</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="generator-container">
+                <!-- Input Section -->
+                <div class="input-section">
+                    <h5 class="mb-3">Configure Sitemap</h5>
+                    
+                    <!-- Input Mode Switch -->
+                    <div class="btn-group w-100 mb-4" role="group">
+                        <input type="radio" class="btn-check" name="inputMode" id="singleMode" checked>
+                        <label class="btn btn-outline-primary" for="singleMode">
+                            <i class="fas fa-list me-2"></i>Single URL Mode
+                        </label>
+                        
+                        <input type="radio" class="btn-check" name="inputMode" id="bulkMode">
+                        <label class="btn btn-outline-primary" for="bulkMode">
+                            <i class="fas fa-file-import me-2"></i>Bulk URL Mode
+                        </label>
+                    </div>
+
+                    <!-- Single URL Mode -->
+                    <div id="singleModeContent">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0">URLs</h6>
+                            <button class="btn btn-primary btn-sm" id="addUrlBtn">
+                                <i class="fas fa-plus me-2"></i>Add URL
+                            </button>
+                        </div>
+                        <div id="urlsContainer" class="url-list">
+                            <!-- URLs will be added here -->
+                        </div>
+                    </div>
+
+                    <!-- Bulk URL Mode -->
+                    <div id="bulkModeContent" class="bulk-input">
+                        <div class="mb-3">
+                            <label class="form-label">Enter URLs (one per line)</label>
+                            <textarea class="form-control" id="bulkUrls" rows="10" placeholder="https://example.com/&#10;https://example.com/page1&#10;https://example.com/page2"></textarea>
+                        </div>
+                        <button class="btn btn-primary" id="processBulkBtn">
+                            <i class="fas fa-check me-2"></i>Process URLs
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section">
+                    <h5 class="mb-3">Generated XML Sitemap</h5>
+                    <div class="code-output">
+                        <pre><code class="language-xml" id="codeOutput"></code></pre>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-outline-primary me-2" id="copyBtn">
+                            <i class="fas fa-copy me-2"></i>Copy XML
+                        </button>
+                        <button class="btn btn-outline-primary" id="downloadBtn">
+                            <i class="fas fa-download me-2"></i>Download sitemap.xml
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About XML Sitemap Generator</h5>
+                <p class="mb-0">XML sitemaps help search engines better index your website:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Create properly formatted XML sitemaps</li>
+                    <li>Add multiple URLs with custom priorities</li>
+                    <li>Set change frequency and last modified date</li>
+                    <li>Bulk URL processing</li>
+                    <li>Download ready-to-use sitemap.xml</li>
+                </ul>
+                <p class="mt-2 mb-0"><small>Note: Submit your sitemap to search engines through their webmaster tools for better indexing.</small></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- URL Template -->
+    <template id="urlTemplate">
+        <div class="url-card">
+            <div class="url-header">
+                <h6 class="mb-0">URL Entry</h6>
+                <button class="btn btn-outline-danger btn-sm delete-url">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">URL</label>
+                <input type="url" class="form-control url-input" placeholder="https://example.com/page">
+            </div>
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Last Modified</label>
+                    <input type="date" class="form-control lastmod-input">
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Change Frequency</label>
+                    <select class="form-select changefreq-input">
+                        <option value="always">Always</option>
+                        <option value="hourly">Hourly</option>
+                        <option value="daily" selected>Daily</option>
+                        <option value="weekly">Weekly</option>
+                        <option value="monthly">Monthly</option>
+                        <option value="yearly">Yearly</option>
+                        <option value="never">Never</option>
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Priority</label>
+                    <select class="form-select priority-input">
+                        <option value="1.0">1.0</option>
+                        <option value="0.9">0.9</option>
+                        <option value="0.8" selected>0.8</option>
+                        <option value="0.7">0.7</option>
+                        <option value="0.6">0.6</option>
+                        <option value="0.5">0.5</option>
+                        <option value="0.4">0.4</option>
+                        <option value="0.3">0.3</option>
+                        <option value="0.2">0.2</option>
+                        <option value="0.1">0.1</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/components/prism-xml.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Elements
+            const singleMode = document.getElementById('singleMode');
+            const bulkMode = document.getElementById('bulkMode');
+            const singleModeContent = document.getElementById('singleModeContent');
+            const bulkModeContent = document.getElementById('bulkModeContent');
+            const urlsContainer = document.getElementById('urlsContainer');
+            const addUrlBtn = document.getElementById('addUrlBtn');
+            const bulkUrls = document.getElementById('bulkUrls');
+            const processBulkBtn = document.getElementById('processBulkBtn');
+            const codeOutput = document.getElementById('codeOutput');
+            const copyBtn = document.getElementById('copyBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const urlTemplate = document.getElementById('urlTemplate');
+
+            // Mode switching
+            singleMode.addEventListener('change', () => {
+                singleModeContent.style.display = 'block';
+                bulkModeContent.style.display = 'none';
+            });
+
+            bulkMode.addEventListener('change', () => {
+                singleModeContent.style.display = 'none';
+                bulkModeContent.style.display = 'block';
+            });
+
+            // Add URL entry
+            function addUrl() {
+                const urlElement = urlTemplate.content.cloneNode(true);
+                const urlCard = urlElement.querySelector('.url-card');
+                
+                // Set today's date as default
+                urlCard.querySelector('.lastmod-input').value = new Date().toISOString().split('T')[0];
+
+                // Delete URL button
+                urlCard.querySelector('.delete-url').addEventListener('click', () => {
+                    urlCard.remove();
+                    generateSitemap();
+                });
+
+                // Input change events
+                ['url-input', 'lastmod-input', 'changefreq-input', 'priority-input'].forEach(className => {
+                    urlCard.querySelector(`.${className}`).addEventListener('change', generateSitemap);
+                });
+
+                urlsContainer.appendChild(urlElement);
+            }
+
+            // Process bulk URLs
+            function processBulkUrls() {
+                const urls = bulkUrls.value.split('\n').filter(url => url.trim());
+                urlsContainer.innerHTML = '';
+                
+                urls.forEach(url => {
+                    addUrl();
+                    const lastCard = urlsContainer.lastElementChild;
+                    lastCard.querySelector('.url-input').value = url.trim();
+                });
+
+                singleMode.checked = true;
+                singleModeContent.style.display = 'block';
+                bulkModeContent.style.display = 'none';
+                generateSitemap();
+            }
+
+            // Generate sitemap XML
+            function generateSitemap() {
+                let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
+                xml += '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n';
+
+                urlsContainer.querySelectorAll('.url-card').forEach(urlCard => {
+                    const url = urlCard.querySelector('.url-input').value;
+                    if (!url) return;
+
+                    const lastmod = urlCard.querySelector('.lastmod-input').value;
+                    const changefreq = urlCard.querySelector('.changefreq-input').value;
+                    const priority = urlCard.querySelector('.priority-input').value;
+
+                    xml += '    <url>\n';
+                    xml += `        <loc>${escapeXml(url)}</loc>\n`;
+                    if (lastmod) xml += `        <lastmod>${lastmod}</lastmod>\n`;
+                    xml += `        <changefreq>${changefreq}</changefreq>\n`;
+                    xml += `        <priority>${priority}</priority>\n`;
+                    xml += '    </url>\n';
+                });
+
+                xml += '</urlset>';
+
+                codeOutput.textContent = xml;
+                Prism.highlightElement(codeOutput);
+            }
+
+            // Escape XML special characters
+            function escapeXml(unsafe) {
+                return unsafe.replace(/[<>&'"]/g, c => {
+                    switch (c) {
+                        case '<': return '&lt;';
+                        case '>': return '&gt;';
+                        case '&': return '&amp;';
+                        case '\'': return '&apos;';
+                        case '"': return '&quot;';
+                    }
+                });
+            }
+
+            // Event listeners
+            addUrlBtn.addEventListener('click', () => {
+                addUrl();
+                generateSitemap();
+            });
+
+            processBulkBtn.addEventListener('click', processBulkUrls);
+
+            // Copy functionality
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(codeOutput.textContent).then(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy XML';
+                    }, 2000);
+                });
+            });
+
+            // Download functionality
+            downloadBtn.addEventListener('click', () => {
+                const blob = new Blob([codeOutput.textContent], { type: 'application/xml' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'sitemap.xml';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+
+            // Add initial URL entry
+            addUrl();
+        });
+    </script>
+</body>
+</html> 

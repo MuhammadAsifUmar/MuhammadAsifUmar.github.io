@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Word Counter - Count Words, Characters & Paragraphs - WebTools</title>
+    <meta name="description" content="Free online word counter tool. Count words, characters, sentences, and paragraphs in your text with real-time statistics.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .counter-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .stats-box {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            border-radius: 8px;
+            background: white;
+            border: 1px solid #dee2e6;
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #0d6efd;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            color: #6c757d;
+            font-size: 0.875rem;
+        }
+        .text-area {
+            min-height: 300px;
+            resize: vertical;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-font me-2"></i>Word Counter</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="counter-container">
+                <!-- Stats Section -->
+                <div class="stats-box">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <div class="stat-item">
+                                <div class="stat-value" id="wordCount">0</div>
+                                <div class="stat-label">Words</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-item">
+                                <div class="stat-value" id="charCount">0</div>
+                                <div class="stat-label">Characters</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-item">
+                                <div class="stat-value" id="sentenceCount">0</div>
+                                <div class="stat-label">Sentences</div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="stat-item">
+                                <div class="stat-value" id="paragraphCount">0</div>
+                                <div class="stat-label">Paragraphs</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Text Input -->
+                <div class="mb-3">
+                    <textarea class="form-control text-area" id="textInput" 
+                        placeholder="Type or paste your text here..."></textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="btn-group">
+                    <button class="btn btn-outline-primary" id="clearBtn">
+                        <i class="fas fa-eraser me-2"></i>Clear Text
+                    </button>
+                    <button class="btn btn-outline-primary" id="copyBtn">
+                        <i class="fas fa-copy me-2"></i>Copy Text
+                    </button>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Word Counter</h5>
+                <p class="mb-0">Count text statistics in real-time:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Word count (excluding spaces and punctuation)</li>
+                    <li>Character count (with and without spaces)</li>
+                    <li>Sentence count (based on punctuation)</li>
+                    <li>Paragraph count (based on line breaks)</li>
+                    <li>Real-time statistics update as you type</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const textInput = document.getElementById('textInput');
+            const wordCount = document.getElementById('wordCount');
+            const charCount = document.getElementById('charCount');
+            const sentenceCount = document.getElementById('sentenceCount');
+            const paragraphCount = document.getElementById('paragraphCount');
+            const clearBtn = document.getElementById('clearBtn');
+            const copyBtn = document.getElementById('copyBtn');
+
+            function updateCounts() {
+                const text = textInput.value;
+                
+                // Word count
+                const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+                wordCount.textContent = words.length;
+                
+                // Character count
+                charCount.textContent = text.length;
+                
+                // Sentence count
+                const sentences = text.split(/[.!?]+/).filter(sentence => sentence.trim().length > 0);
+                sentenceCount.textContent = sentences.length;
+                
+                // Paragraph count
+                const paragraphs = text.split(/\n\s*\n/).filter(para => para.trim().length > 0);
+                paragraphCount.textContent = paragraphs.length;
+            }
+
+            textInput.addEventListener('input', updateCounts);
+
+            clearBtn.addEventListener('click', () => {
+                textInput.value = '';
+                updateCounts();
+            });
+
+            copyBtn.addEventListener('click', () => {
+                textInput.select();
+                document.execCommand('copy');
+                copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy Text';
+                }, 2000);
+            });
+        });
+    </script>
+</body>
+</html> 

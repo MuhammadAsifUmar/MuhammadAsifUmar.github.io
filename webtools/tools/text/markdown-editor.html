@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Markdown Editor - Live Preview Markdown Editor - WebTools</title>
+    <meta name="description" content="Free online Markdown editor with live preview. Write and format Markdown text with instant preview. Supports common Markdown syntax and export options.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Marked.js for Markdown parsing -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        .editor-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .toolbar {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        .toolbar-btn {
+            padding: 0.375rem 0.75rem;
+            font-size: 0.875rem;
+        }
+        .editor-pane, .preview-pane {
+            height: 500px;
+            resize: none;
+            font-family: monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+        .preview-pane {
+            background: #f8f9fa;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+        .preview-pane img {
+            max-width: 100%;
+            height: auto;
+        }
+        .preview-pane table {
+            width: 100%;
+            margin-bottom: 1rem;
+            border-collapse: collapse;
+        }
+        .preview-pane th, .preview-pane td {
+            padding: 0.5rem;
+            border: 1px solid #dee2e6;
+        }
+        .preview-pane blockquote {
+            border-left: 4px solid #0d6efd;
+            padding-left: 1rem;
+            color: #6c757d;
+        }
+        .preview-pane code {
+            background: #f1f3f5;
+            padding: 0.2rem 0.4rem;
+            border-radius: 4px;
+        }
+        .preview-pane pre code {
+            display: block;
+            padding: 1rem;
+            overflow-x: auto;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fab fa-markdown me-2"></i>Markdown Editor</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="editor-container">
+                <!-- Toolbar -->
+                <div class="toolbar">
+                    <div class="btn-group me-2">
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="bold">
+                            <i class="fas fa-bold"></i>
+                        </button>
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="italic">
+                            <i class="fas fa-italic"></i>
+                        </button>
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="strike">
+                            <i class="fas fa-strikethrough"></i>
+                        </button>
+                    </div>
+                    <div class="btn-group me-2">
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="h1">H1</button>
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="h2">H2</button>
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="h3">H3</button>
+                    </div>
+                    <div class="btn-group me-2">
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="link">
+                            <i class="fas fa-link"></i>
+                        </button>
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="image">
+                            <i class="fas fa-image"></i>
+                        </button>
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="code">
+                            <i class="fas fa-code"></i>
+                        </button>
+                    </div>
+                    <div class="btn-group me-2">
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="ul">
+                            <i class="fas fa-list-ul"></i>
+                        </button>
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="ol">
+                            <i class="fas fa-list-ol"></i>
+                        </button>
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="quote">
+                            <i class="fas fa-quote-right"></i>
+                        </button>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="table">
+                            <i class="fas fa-table"></i>
+                        </button>
+                        <button class="btn btn-outline-secondary toolbar-btn" data-format="hr">
+                            <i class="fas fa-minus"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Editor Area -->
+                <div class="row g-4">
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="form-label mb-0">Markdown</label>
+                            <div class="btn-group">
+                                <button class="btn btn-outline-primary btn-sm" id="clearBtn">
+                                    <i class="fas fa-eraser me-2"></i>Clear
+                                </button>
+                                <button class="btn btn-outline-primary btn-sm" id="copyBtn">
+                                    <i class="fas fa-copy me-2"></i>Copy
+                                </button>
+                            </div>
+                        </div>
+                        <textarea class="form-control editor-pane" id="editor" 
+                            placeholder="Type your Markdown text here..."></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label class="form-label mb-0">Preview</label>
+                            <div class="btn-group">
+                                <button class="btn btn-outline-primary btn-sm" id="copyHtmlBtn">
+                                    <i class="fas fa-code me-2"></i>Copy HTML
+                                </button>
+                                <button class="btn btn-outline-primary btn-sm" id="downloadBtn">
+                                    <i class="fas fa-download me-2"></i>Download
+                                </button>
+                            </div>
+                        </div>
+                        <div class="preview-pane" id="preview"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Markdown Editor</h5>
+                <p>A simple yet powerful Markdown editor with live preview. Supports common Markdown syntax:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Basic formatting: <strong>bold</strong>, <em>italic</em>, ~~strikethrough~~</li>
+                    <li>Headers (H1-H6), lists (ordered and unordered)</li>
+                    <li>Links, images, and code blocks</li>
+                    <li>Tables, blockquotes, and horizontal rules</li>
+                    <li>Export options: copy as Markdown, HTML, or download as .md file</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const editor = document.getElementById('editor');
+            const preview = document.getElementById('preview');
+            const clearBtn = document.getElementById('clearBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const copyHtmlBtn = document.getElementById('copyHtmlBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const toolbarBtns = document.querySelectorAll('.toolbar-btn');
+
+            // Configure marked options
+            marked.setOptions({
+                breaks: true,
+                gfm: true
+            });
+
+            // Update preview
+            function updatePreview() {
+                const markdown = editor.value;
+                const html = marked(markdown);
+                preview.innerHTML = html;
+            }
+
+            // Format functions
+            const formatters = {
+                bold: {
+                    prefix: '**',
+                    suffix: '**',
+                    placeholder: 'bold text'
+                },
+                italic: {
+                    prefix: '_',
+                    suffix: '_',
+                    placeholder: 'italic text'
+                },
+                strike: {
+                    prefix: '~~',
+                    suffix: '~~',
+                    placeholder: 'strikethrough text'
+                },
+                h1: {
+                    prefix: '# ',
+                    suffix: '',
+                    placeholder: 'Heading 1'
+                },
+                h2: {
+                    prefix: '## ',
+                    suffix: '',
+                    placeholder: 'Heading 2'
+                },
+                h3: {
+                    prefix: '### ',
+                    suffix: '',
+                    placeholder: 'Heading 3'
+                },
+                link: {
+                    prefix: '[',
+                    suffix: '](url)',
+                    placeholder: 'link text'
+                },
+                image: {
+                    prefix: '![',
+                    suffix: '](image-url)',
+                    placeholder: 'image alt text'
+                },
+                code: {
+                    prefix: '```\n',
+                    suffix: '\n```',
+                    placeholder: 'code block'
+                },
+                ul: {
+                    prefix: '- ',
+                    suffix: '',
+                    placeholder: 'list item'
+                },
+                ol: {
+                    prefix: '1. ',
+                    suffix: '',
+                    placeholder: 'list item'
+                },
+                quote: {
+                    prefix: '> ',
+                    suffix: '',
+                    placeholder: 'blockquote'
+                },
+                table: {
+                    prefix: '| Header 1 | Header 2 |\n| -------- | -------- |\n| Cell 1   | Cell 2   |',
+                    suffix: '',
+                    placeholder: ''
+                },
+                hr: {
+                    prefix: '---\n',
+                    suffix: '',
+                    placeholder: ''
+                }
+            };
+
+            // Apply formatting
+            function applyFormat(format) {
+                const { prefix, suffix, placeholder } = formatters[format];
+                const start = editor.selectionStart;
+                const end = editor.selectionEnd;
+                const selectedText = editor.value.substring(start, end);
+                const beforeText = editor.value.substring(0, start);
+                const afterText = editor.value.substring(end);
+
+                const newText = selectedText || placeholder;
+                editor.value = beforeText + prefix + newText + suffix + afterText;
+                
+                const newCursorPos = start + prefix.length + newText.length;
+                editor.focus();
+                editor.setSelectionRange(newCursorPos, newCursorPos);
+                
+                updatePreview();
+            }
+
+            // Event listeners
+            editor.addEventListener('input', updatePreview);
+
+            toolbarBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    applyFormat(btn.dataset.format);
+                });
+            });
+
+            clearBtn.addEventListener('click', () => {
+                editor.value = '';
+                updatePreview();
+            });
+
+            copyBtn.addEventListener('click', () => {
+                editor.select();
+                document.execCommand('copy');
+                copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy';
+                }, 2000);
+            });
+
+            copyHtmlBtn.addEventListener('click', () => {
+                const tempInput = document.createElement('textarea');
+                tempInput.value = preview.innerHTML;
+                document.body.appendChild(tempInput);
+                tempInput.select();
+                document.execCommand('copy');
+                document.body.removeChild(tempInput);
+                copyHtmlBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                setTimeout(() => {
+                    copyHtmlBtn.innerHTML = '<i class="fas fa-code me-2"></i>Copy HTML';
+                }, 2000);
+            });
+
+            downloadBtn.addEventListener('click', () => {
+                const blob = new Blob([editor.value], { type: 'text/markdown' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'document.md';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+
+            // Initialize with sample text
+            editor.value = `# Welcome to the Markdown Editor
+
+This is a **live preview** editor. Start typing in _Markdown format_ and see the results instantly!
+
+## Features
+
+- Real-time preview
+- Common formatting options
+- Export to HTML or Markdown
+- Support for tables and code blocks
+
+### Example Code Block
+
+\`\`\`javascript
+function hello() {
+    console.log("Hello, World!");
+}
+\`\`\`
+
+> Try out different formatting options using the toolbar above.
+`;
+            updatePreview();
+        });
+    </script>
+</body>
+</html> 

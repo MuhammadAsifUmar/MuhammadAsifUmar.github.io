@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Robots.txt Generator - Create Robots.txt File - WebTools</title>
+    <meta name="description" content="Free online robots.txt generator. Create properly formatted robots.txt files to control search engine crawling of your website.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- Prism.js for syntax highlighting -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism.min.css" rel="stylesheet">
+    <style>
+        .generator-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .input-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .result-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .rule-card {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .rule-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .code-output {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        .path-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .path-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem;
+            border-bottom: 1px solid #dee2e6;
+        }
+        .path-item:last-child {
+            border-bottom: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-robot me-2"></i>Robots.txt Generator</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="generator-container">
+                <!-- Input Section -->
+                <div class="input-section">
+                    <h5 class="mb-3">Configure Robots.txt</h5>
+                    
+                    <!-- Sitemap URL -->
+                    <div class="mb-4">
+                        <label class="form-label">Sitemap URL (optional)</label>
+                        <input type="url" class="form-control" id="sitemapUrl" placeholder="https://example.com/sitemap.xml">
+                    </div>
+
+                    <!-- User-agent Rules -->
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <h6 class="mb-0">User-agent Rules</h6>
+                            <button class="btn btn-primary btn-sm" id="addRuleBtn">
+                                <i class="fas fa-plus me-2"></i>Add Rule
+                            </button>
+                        </div>
+                        <div id="rulesContainer">
+                            <!-- Rules will be added here -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section">
+                    <h5 class="mb-3">Generated Robots.txt</h5>
+                    <div class="code-output">
+                        <pre><code class="language-text" id="codeOutput"></code></pre>
+                    </div>
+                    <div class="mt-3">
+                        <button class="btn btn-outline-primary me-2" id="copyBtn">
+                            <i class="fas fa-copy me-2"></i>Copy Content
+                        </button>
+                        <button class="btn btn-outline-primary" id="downloadBtn">
+                            <i class="fas fa-download me-2"></i>Download robots.txt
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Robots.txt Generator</h5>
+                <p class="mb-0">A robots.txt file tells search engines which pages they can and cannot crawl on your website:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Control search engine access to your website</li>
+                    <li>Block specific directories or files</li>
+                    <li>Specify sitemap location</li>
+                    <li>Create rules for different user agents</li>
+                    <li>Prevent duplicate content issues</li>
+                </ul>
+                <p class="mt-2 mb-0"><small>Note: While robots.txt can guide search engines, it's not a security measure. Use proper authentication for sensitive content.</small></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Rule Template -->
+    <template id="ruleTemplate">
+        <div class="rule-card">
+            <div class="rule-header">
+                <h6 class="mb-0">Rule</h6>
+                <button class="btn btn-outline-danger btn-sm delete-rule">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">User-agent</label>
+                <select class="form-select user-agent">
+                    <option value="*">All robots (*)</option>
+                    <option value="Googlebot">Googlebot</option>
+                    <option value="Bingbot">Bingbot</option>
+                    <option value="Yandex">Yandex</option>
+                    <option value="DuckDuckBot">DuckDuckBot</option>
+                    <option value="custom">Custom</option>
+                </select>
+                <input type="text" class="form-control mt-2 custom-agent" style="display: none;" placeholder="Enter custom user-agent">
+            </div>
+            <div class="mb-3">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label mb-0">Paths</label>
+                    <button class="btn btn-outline-primary btn-sm add-path">
+                        <i class="fas fa-plus me-2"></i>Add Path
+                    </button>
+                </div>
+                <div class="path-list">
+                    <!-- Paths will be added here -->
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <!-- Path Template -->
+    <template id="pathTemplate">
+        <div class="path-item">
+            <div class="d-flex align-items-center flex-grow-1 me-2">
+                <select class="form-select me-2 path-type">
+                    <option value="allow">Allow</option>
+                    <option value="disallow">Disallow</option>
+                </select>
+                <input type="text" class="form-control path-value" placeholder="Enter path (e.g., /admin/)">
+            </div>
+            <button class="btn btn-outline-danger btn-sm delete-path">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </template>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Prism.js for syntax highlighting -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Elements
+            const sitemapUrl = document.getElementById('sitemapUrl');
+            const rulesContainer = document.getElementById('rulesContainer');
+            const addRuleBtn = document.getElementById('addRuleBtn');
+            const codeOutput = document.getElementById('codeOutput');
+            const copyBtn = document.getElementById('copyBtn');
+            const downloadBtn = document.getElementById('downloadBtn');
+            const ruleTemplate = document.getElementById('ruleTemplate');
+            const pathTemplate = document.getElementById('pathTemplate');
+
+            // Add rule
+            function addRule() {
+                const ruleElement = ruleTemplate.content.cloneNode(true);
+                const ruleCard = ruleElement.querySelector('.rule-card');
+                
+                // Delete rule button
+                ruleCard.querySelector('.delete-rule').addEventListener('click', () => {
+                    ruleCard.remove();
+                    generateRobotsTxt();
+                });
+
+                // User-agent select
+                const userAgentSelect = ruleCard.querySelector('.user-agent');
+                const customAgentInput = ruleCard.querySelector('.custom-agent');
+                userAgentSelect.addEventListener('change', () => {
+                    customAgentInput.style.display = userAgentSelect.value === 'custom' ? 'block' : 'none';
+                    generateRobotsTxt();
+                });
+                customAgentInput.addEventListener('input', generateRobotsTxt);
+
+                // Add path button
+                ruleCard.querySelector('.add-path').addEventListener('click', () => addPath(ruleCard));
+
+                rulesContainer.appendChild(ruleElement);
+                addPath(ruleCard); // Add initial path
+            }
+
+            // Add path
+            function addPath(ruleCard) {
+                const pathElement = pathTemplate.content.cloneNode(true);
+                const pathItem = pathElement.querySelector('.path-item');
+                
+                // Delete path button
+                pathItem.querySelector('.delete-path').addEventListener('click', () => {
+                    pathItem.remove();
+                    generateRobotsTxt();
+                });
+
+                // Path type and value changes
+                pathItem.querySelector('.path-type').addEventListener('change', generateRobotsTxt);
+                pathItem.querySelector('.path-value').addEventListener('input', generateRobotsTxt);
+
+                ruleCard.querySelector('.path-list').appendChild(pathElement);
+            }
+
+            // Generate robots.txt content
+            function generateRobotsTxt() {
+                let content = '';
+
+                // Add sitemap if provided
+                if (sitemapUrl.value) {
+                    content += `Sitemap: ${sitemapUrl.value}\n\n`;
+                }
+
+                // Process each rule
+                rulesContainer.querySelectorAll('.rule-card').forEach(ruleCard => {
+                    const userAgentSelect = ruleCard.querySelector('.user-agent');
+                    const customAgentInput = ruleCard.querySelector('.custom-agent');
+                    const userAgent = userAgentSelect.value === 'custom' ? customAgentInput.value : userAgentSelect.value;
+
+                    if (userAgent) {
+                        content += `User-agent: ${userAgent}\n`;
+                        
+                        // Add paths
+                        ruleCard.querySelectorAll('.path-item').forEach(pathItem => {
+                            const type = pathItem.querySelector('.path-type').value;
+                            const path = pathItem.querySelector('.path-value').value;
+                            if (path) {
+                                content += `${type === 'allow' ? 'Allow' : 'Disallow'}: ${path}\n`;
+                            }
+                        });
+
+                        content += '\n';
+                    }
+                });
+
+                codeOutput.textContent = content.trim();
+                Prism.highlightElement(codeOutput);
+            }
+
+            // Event listeners
+            addRuleBtn.addEventListener('click', () => {
+                addRule();
+                generateRobotsTxt();
+            });
+
+            sitemapUrl.addEventListener('input', generateRobotsTxt);
+
+            // Copy functionality
+            copyBtn.addEventListener('click', () => {
+                navigator.clipboard.writeText(codeOutput.textContent).then(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy Content';
+                    }, 2000);
+                });
+            });
+
+            // Download functionality
+            downloadBtn.addEventListener('click', () => {
+                const blob = new Blob([codeOutput.textContent], { type: 'text/plain' });
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'robots.txt';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            });
+
+            // Add initial rule
+            addRule();
+        });
+    </script>
+</body>
+</html> 

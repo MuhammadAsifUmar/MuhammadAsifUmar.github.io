@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lorem Ipsum Generator - Generate Placeholder Text - WebTools</title>
+    <meta name="description" content="Free online Lorem Ipsum generator. Generate placeholder text in various formats including paragraphs, words, and sentences. Perfect for design mockups and layouts.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .generator-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .options-container {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+        .result-area {
+            min-height: 300px;
+            resize: vertical;
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+        .format-options {
+            gap: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-align-left me-2"></i>Lorem Ipsum Generator</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="generator-container">
+                <!-- Options Section -->
+                <div class="options-container mb-4">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Format</label>
+                            <div class="btn-group format-options">
+                                <input type="radio" class="btn-check" name="format" id="paragraphs" value="paragraphs" checked>
+                                <label class="btn btn-outline-primary" for="paragraphs">Paragraphs</label>
+
+                                <input type="radio" class="btn-check" name="format" id="sentences" value="sentences">
+                                <label class="btn btn-outline-primary" for="sentences">Sentences</label>
+
+                                <input type="radio" class="btn-check" name="format" id="words" value="words">
+                                <label class="btn btn-outline-primary" for="words">Words</label>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="amount" class="form-label">Amount</label>
+                            <input type="number" class="form-control" id="amount" value="3" min="1" max="100">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Options</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="startWithLorem" checked>
+                                <label class="form-check-label" for="startWithLorem">
+                                    Start with "Lorem ipsum"
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generated Text -->
+                <div class="mb-3">
+                    <label for="result" class="form-label">Generated Text</label>
+                    <textarea class="form-control result-area" id="result" readonly></textarea>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="btn-group">
+                    <button class="btn btn-primary" id="generateBtn">
+                        <i class="fas fa-sync-alt me-2"></i>Generate New
+                    </button>
+                    <button class="btn btn-outline-primary" id="copyBtn">
+                        <i class="fas fa-copy me-2"></i>Copy Text
+                    </button>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Lorem Ipsum</h5>
+                <p>Lorem Ipsum is dummy text used in laying out print, graphic or web designs. The passage is attributed to an unknown typesetter in the 15th century.</p>
+                <p class="mb-0">Features of this generator:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Generate paragraphs, sentences, or specific word counts</li>
+                    <li>Option to start with the traditional "Lorem ipsum" text</li>
+                    <li>Clean, readable formatting for easy copy and paste</li>
+                    <li>Perfect for mockups, templates, and design layouts</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const result = document.getElementById('result');
+            const generateBtn = document.getElementById('generateBtn');
+            const copyBtn = document.getElementById('copyBtn');
+            const amount = document.getElementById('amount');
+            const startWithLorem = document.getElementById('startWithLorem');
+            const formatInputs = document.getElementsByName('format');
+
+            const words = [
+                'lorem', 'ipsum', 'dolor', 'sit', 'amet', 'consectetur', 'adipiscing', 'elit',
+                'sed', 'do', 'eiusmod', 'tempor', 'incididunt', 'ut', 'labore', 'et', 'dolore',
+                'magna', 'aliqua', 'enim', 'ad', 'minim', 'veniam', 'quis', 'nostrud',
+                'exercitation', 'ullamco', 'laboris', 'nisi', 'aliquip', 'ex', 'ea', 'commodo',
+                'consequat', 'duis', 'aute', 'irure', 'in', 'reprehenderit', 'voluptate',
+                'velit', 'esse', 'cillum', 'dolore', 'eu', 'fugiat', 'nulla', 'pariatur',
+                'excepteur', 'sint', 'occaecat', 'cupidatat', 'non', 'proident', 'sunt', 'culpa',
+                'qui', 'officia', 'deserunt', 'mollit', 'anim', 'id', 'est', 'laborum'
+            ];
+
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            function generateWord() {
+                return words[Math.floor(Math.random() * words.length)];
+            }
+
+            function generateSentence() {
+                const length = getRandomInt(8, 15);
+                let sentence = [];
+                for (let i = 0; i < length; i++) {
+                    sentence.push(generateWord());
+                }
+                return sentence[0].charAt(0).toUpperCase() + sentence[0].slice(1) + 
+                       ' ' + sentence.slice(1).join(' ') + '.';
+            }
+
+            function generateParagraph() {
+                const length = getRandomInt(4, 8);
+                let sentences = [];
+                for (let i = 0; i < length; i++) {
+                    sentences.push(generateSentence());
+                }
+                return sentences.join(' ');
+            }
+
+            function getSelectedFormat() {
+                for (const input of formatInputs) {
+                    if (input.checked) return input.value;
+                }
+                return 'paragraphs';
+            }
+
+            function generateText() {
+                const format = getSelectedFormat();
+                const count = parseInt(amount.value) || 1;
+                const useLoremStart = startWithLorem.checked;
+                let text = [];
+
+                switch (format) {
+                    case 'words':
+                        for (let i = 0; i < count; i++) {
+                            text.push(generateWord());
+                        }
+                        if (useLoremStart) {
+                            text[0] = 'Lorem';
+                            text[1] = 'ipsum';
+                        }
+                        text = text.join(' ');
+                        break;
+
+                    case 'sentences':
+                        for (let i = 0; i < count; i++) {
+                            text.push(generateSentence());
+                        }
+                        if (useLoremStart) {
+                            text[0] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+                        }
+                        text = text.join(' ');
+                        break;
+
+                    default: // paragraphs
+                        for (let i = 0; i < count; i++) {
+                            text.push(generateParagraph());
+                        }
+                        if (useLoremStart) {
+                            text[0] = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. ' + 
+                                    'Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. ' +
+                                    'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris ' +
+                                    'nisi ut aliquip ex ea commodo consequat.';
+                        }
+                        text = text.join('\n\n');
+                }
+
+                result.value = text;
+            }
+
+            generateBtn.addEventListener('click', generateText);
+
+            copyBtn.addEventListener('click', () => {
+                result.select();
+                document.execCommand('copy');
+                copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                setTimeout(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy Text';
+                }, 2000);
+            });
+
+            // Generate initial text
+            generateText();
+        });
+    </script>
+</body>
+</html> 

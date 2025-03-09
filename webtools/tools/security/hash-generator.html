@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hash Generator - Generate MD5, SHA-1, SHA-256 Hashes - WebTools</title>
+    <meta name="description" content="Free online hash generator. Generate MD5, SHA-1, SHA-256, and other hash values for text or files. Perfect for data integrity verification.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <!-- CryptoJS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+    <style>
+        .generator-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .input-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .result-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .hash-result {
+            font-family: monospace;
+            font-size: 1.1rem;
+            background: white;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            word-break: break-all;
+        }
+        .file-drop-zone {
+            border: 2px dashed #dee2e6;
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: border-color 0.3s ease;
+        }
+        .file-drop-zone:hover {
+            border-color: #0d6efd;
+        }
+        .file-drop-zone.dragover {
+            border-color: #0d6efd;
+            background: #e7f1ff;
+        }
+        .file-info {
+            margin-top: 1rem;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-lock me-2"></i>Hash Generator</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="generator-container">
+                <!-- Mode Switch -->
+                <div class="mode-switch mb-4">
+                    <div class="btn-group w-100" role="group">
+                        <input type="radio" class="btn-check" name="mode" id="textMode" checked>
+                        <label class="btn btn-outline-primary" for="textMode">
+                            <i class="fas fa-font me-2"></i>Text Mode
+                        </label>
+                        
+                        <input type="radio" class="btn-check" name="mode" id="fileMode">
+                        <label class="btn btn-outline-primary" for="fileMode">
+                            <i class="fas fa-file me-2"></i>File Mode
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Text Mode -->
+                <div id="textModeContent">
+                    <div class="input-section">
+                        <h5 class="mb-3">Enter Text</h5>
+                        <textarea class="form-control mb-3" id="inputText" rows="4" placeholder="Enter text to hash..."></textarea>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="checkbox" id="liveUpdate" checked>
+                            <label class="form-check-label" for="liveUpdate">
+                                Live Update
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- File Mode -->
+                <div id="fileModeContent" style="display: none;">
+                    <div class="input-section">
+                        <h5 class="mb-3">Upload File</h5>
+                        <div class="file-drop-zone" id="dropZone">
+                            <i class="fas fa-cloud-upload-alt fa-3x mb-3"></i>
+                            <p class="mb-1">Drag & drop a file here or click to select</p>
+                            <p class="text-muted small mb-0">Maximum file size: 5MB</p>
+                            <input type="file" id="fileInput" style="display: none;">
+                        </div>
+                        <div class="file-info alert alert-info mt-3" id="fileInfo">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Result Section -->
+                <div class="result-section">
+                    <h5 class="mb-3">Hash Results</h5>
+                    
+                    <!-- MD5 -->
+                    <div class="mb-3">
+                        <label class="form-label">MD5</label>
+                        <div class="hash-result" id="md5Result">-</div>
+                        <button class="btn btn-outline-primary btn-sm copy-btn" data-target="md5Result">
+                            <i class="fas fa-copy me-2"></i>Copy
+                        </button>
+                    </div>
+
+                    <!-- SHA-1 -->
+                    <div class="mb-3">
+                        <label class="form-label">SHA-1</label>
+                        <div class="hash-result" id="sha1Result">-</div>
+                        <button class="btn btn-outline-primary btn-sm copy-btn" data-target="sha1Result">
+                            <i class="fas fa-copy me-2"></i>Copy
+                        </button>
+                    </div>
+
+                    <!-- SHA-256 -->
+                    <div class="mb-3">
+                        <label class="form-label">SHA-256</label>
+                        <div class="hash-result" id="sha256Result">-</div>
+                        <button class="btn btn-outline-primary btn-sm copy-btn" data-target="sha256Result">
+                            <i class="fas fa-copy me-2"></i>Copy
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Hash Generator</h5>
+                <p class="mb-0">This tool generates cryptographic hash values:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Supports MD5, SHA-1, and SHA-256 algorithms</li>
+                    <li>Text and file input modes</li>
+                    <li>Live hash generation for text input</li>
+                    <li>Drag & drop file support</li>
+                    <li>One-click copy functionality</li>
+                </ul>
+                <p class="mt-2 mb-0"><small>Note: All processing is done locally in your browser. No data is transmitted to servers.</small></p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mode elements
+            const textMode = document.getElementById('textMode');
+            const fileMode = document.getElementById('fileMode');
+            const textModeContent = document.getElementById('textModeContent');
+            const fileModeContent = document.getElementById('fileModeContent');
+
+            // Text mode elements
+            const inputText = document.getElementById('inputText');
+            const liveUpdate = document.getElementById('liveUpdate');
+
+            // File mode elements
+            const dropZone = document.getElementById('dropZone');
+            const fileInput = document.getElementById('fileInput');
+            const fileInfo = document.getElementById('fileInfo');
+
+            // Result elements
+            const md5Result = document.getElementById('md5Result');
+            const sha1Result = document.getElementById('sha1Result');
+            const sha256Result = document.getElementById('sha256Result');
+
+            // Mode switching
+            textMode.addEventListener('change', () => {
+                textModeContent.style.display = 'block';
+                fileModeContent.style.display = 'none';
+            });
+
+            fileMode.addEventListener('change', () => {
+                textModeContent.style.display = 'none';
+                fileModeContent.style.display = 'block';
+            });
+
+            // Text mode hash generation
+            function generateTextHashes() {
+                const text = inputText.value;
+                if (!text) {
+                    resetResults();
+                    return;
+                }
+
+                md5Result.textContent = CryptoJS.MD5(text).toString();
+                sha1Result.textContent = CryptoJS.SHA1(text).toString();
+                sha256Result.textContent = CryptoJS.SHA256(text).toString();
+            }
+
+            // File mode hash generation
+            function generateFileHashes(file) {
+                if (file.size > 5 * 1024 * 1024) {
+                    fileInfo.innerHTML = '<i class="fas fa-exclamation-circle me-2"></i>File too large (max 5MB)';
+                    fileInfo.style.display = 'block';
+                    return;
+                }
+
+                fileInfo.innerHTML = `<i class="fas fa-info-circle me-2"></i>Processing: ${file.name}`;
+                fileInfo.style.display = 'block';
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const wordArray = CryptoJS.lib.WordArray.create(e.target.result);
+                    md5Result.textContent = CryptoJS.MD5(wordArray).toString();
+                    sha1Result.textContent = CryptoJS.SHA1(wordArray).toString();
+                    sha256Result.textContent = CryptoJS.SHA256(wordArray).toString();
+                    fileInfo.innerHTML = `<i class="fas fa-check-circle me-2"></i>Processed: ${file.name}`;
+                };
+                reader.readAsArrayBuffer(file);
+            }
+
+            // Reset results
+            function resetResults() {
+                md5Result.textContent = '-';
+                sha1Result.textContent = '-';
+                sha256Result.textContent = '-';
+            }
+
+            // Text mode event listeners
+            inputText.addEventListener('input', () => {
+                if (liveUpdate.checked) {
+                    generateTextHashes();
+                }
+            });
+
+            liveUpdate.addEventListener('change', () => {
+                if (liveUpdate.checked && inputText.value) {
+                    generateTextHashes();
+                }
+            });
+
+            // File mode event listeners
+            dropZone.addEventListener('click', () => fileInput.click());
+            
+            dropZone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                dropZone.classList.add('dragover');
+            });
+
+            dropZone.addEventListener('dragleave', () => {
+                dropZone.classList.remove('dragover');
+            });
+
+            dropZone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                dropZone.classList.remove('dragover');
+                const file = e.dataTransfer.files[0];
+                if (file) generateFileHashes(file);
+            });
+
+            fileInput.addEventListener('change', () => {
+                const file = fileInput.files[0];
+                if (file) generateFileHashes(file);
+            });
+
+            // Copy functionality
+            document.querySelectorAll('.copy-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const target = document.getElementById(btn.dataset.target);
+                    if (target.textContent === '-') return;
+
+                    navigator.clipboard.writeText(target.textContent).then(() => {
+                        btn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                        setTimeout(() => {
+                            btn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy';
+                        }, 2000);
+                    });
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

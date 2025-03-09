@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Social Media Post Generator - Create Engaging Posts - WebTools</title>
+    <meta name="description" content="Free online social media post generator. Create engaging posts for Facebook, Instagram, Twitter, and LinkedIn with character limits and hashtag suggestions.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .generator-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .input-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .preview-section {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1.5rem;
+        }
+        .platform-select {
+            margin-bottom: 1rem;
+        }
+        .platform-select .btn-check:checked + .btn-outline-primary {
+            background-color: #0d6efd !important;
+            color: white !important;
+        }
+        .preview-box {
+            background: white;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        .preview-box .preview-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+        .preview-box .preview-platform-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 0.5rem;
+        }
+        .preview-box .preview-content {
+            font-size: 0.9rem;
+            line-height: 1.5;
+            margin-bottom: 0.5rem;
+        }
+        .preview-box .preview-hashtags {
+            color: #0d6efd;
+            font-size: 0.9rem;
+        }
+        .character-count {
+            font-size: 0.875rem;
+            color: #6c757d;
+            margin-top: 0.25rem;
+        }
+        .character-count.warning {
+            color: #ffc107;
+        }
+        .character-count.danger {
+            color: #dc3545;
+        }
+        .hashtag-suggestions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .hashtag-chip {
+            background: #e9ecef;
+            border-radius: 16px;
+            padding: 0.25rem 0.75rem;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .hashtag-chip:hover {
+            background: #dee2e6;
+        }
+        .hashtag-chip.selected {
+            background: #0d6efd;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-pencil-alt me-2"></i>Social Media Post Generator</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="generator-container">
+                <!-- Input Section -->
+                <div class="input-section">
+                    <h5 class="mb-3">Create Post</h5>
+                    
+                    <!-- Platform Selection -->
+                    <div class="platform-select">
+                        <div class="btn-group w-100" role="group">
+                            <input type="radio" class="btn-check" name="platform" id="facebook" checked>
+                            <label class="btn btn-outline-primary" for="facebook">
+                                <i class="fab fa-facebook me-2"></i>Facebook
+                            </label>
+                            
+                            <input type="radio" class="btn-check" name="platform" id="instagram">
+                            <label class="btn btn-outline-primary" for="instagram">
+                                <i class="fab fa-instagram me-2"></i>Instagram
+                            </label>
+                            
+                            <input type="radio" class="btn-check" name="platform" id="twitter">
+                            <label class="btn btn-outline-primary" for="twitter">
+                                <i class="fab fa-twitter me-2"></i>Twitter
+                            </label>
+                            
+                            <input type="radio" class="btn-check" name="platform" id="linkedin">
+                            <label class="btn btn-outline-primary" for="linkedin">
+                                <i class="fab fa-linkedin me-2"></i>LinkedIn
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Post Content -->
+                    <div class="mb-3">
+                        <label class="form-label">Post Content</label>
+                        <textarea class="form-control" id="postContent" rows="4" placeholder="Write your post content here..."></textarea>
+                        <div class="character-count" id="characterCount">0/2200 characters</div>
+                    </div>
+
+                    <!-- Hashtags -->
+                    <div class="mb-3">
+                        <label class="form-label">Hashtags</label>
+                        <input type="text" class="form-control" id="hashtagInput" placeholder="Add hashtags (separated by spaces)">
+                        <div class="hashtag-suggestions" id="hashtagSuggestions">
+                            <!-- Hashtag suggestions will be added here -->
+                        </div>
+                    </div>
+
+                    <!-- URL -->
+                    <div class="mb-3">
+                        <label class="form-label">URL (optional)</label>
+                        <input type="url" class="form-control" id="urlInput" placeholder="https://example.com">
+                    </div>
+                </div>
+
+                <!-- Preview Section -->
+                <div class="preview-section">
+                    <h5 class="mb-3">Post Preview</h5>
+                    
+                    <!-- Preview Box -->
+                    <div class="preview-box">
+                        <div class="preview-header">
+                            <i class="fab fa-facebook preview-platform-icon"></i>
+                            <span class="preview-platform-name">Facebook Post</span>
+                        </div>
+                        <div class="preview-content" id="previewContent">
+                            <!-- Post content will be added here -->
+                        </div>
+                        <div class="preview-hashtags" id="previewHashtags">
+                            <!-- Hashtags will be added here -->
+                        </div>
+                    </div>
+
+                    <!-- Copy Button -->
+                    <button class="btn btn-outline-primary" id="copyBtn">
+                        <i class="fas fa-copy me-2"></i>Copy to Clipboard
+                    </button>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Social Media Post Generator</h5>
+                <p class="mb-0">Create optimized posts for social media platforms:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Platform-specific character limits and formatting</li>
+                    <li>Hashtag suggestions based on content</li>
+                    <li>Live preview of how your post will look</li>
+                    <li>URL shortening and formatting</li>
+                    <li>Easy copy to clipboard</li>
+                </ul>
+                <p class="mt-2 mb-0">
+                    <small>Character limits: Twitter (280), Instagram (2200), Facebook (63206), LinkedIn (3000)</small>
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Elements
+            const platformButtons = document.querySelectorAll('input[name="platform"]');
+            const postContent = document.getElementById('postContent');
+            const hashtagInput = document.getElementById('hashtagInput');
+            const urlInput = document.getElementById('urlInput');
+            const characterCount = document.getElementById('characterCount');
+            const previewContent = document.getElementById('previewContent');
+            const previewHashtags = document.getElementById('previewHashtags');
+            const hashtagSuggestions = document.getElementById('hashtagSuggestions');
+            const copyBtn = document.getElementById('copyBtn');
+            const previewBox = document.querySelector('.preview-box');
+            const previewPlatformIcon = document.querySelector('.preview-platform-icon');
+            const previewPlatformName = document.querySelector('.preview-platform-name');
+
+            // Platform configurations
+            const platforms = {
+                facebook: {
+                    name: 'Facebook Post',
+                    icon: 'fab fa-facebook',
+                    limit: 63206,
+                    warningThreshold: 60000
+                },
+                instagram: {
+                    name: 'Instagram Post',
+                    icon: 'fab fa-instagram',
+                    limit: 2200,
+                    warningThreshold: 2000
+                },
+                twitter: {
+                    name: 'Twitter Post',
+                    icon: 'fab fa-twitter',
+                    limit: 280,
+                    warningThreshold: 260
+                },
+                linkedin: {
+                    name: 'LinkedIn Post',
+                    icon: 'fab fa-linkedin',
+                    limit: 3000,
+                    warningThreshold: 2800
+                }
+            };
+
+            // Common hashtag suggestions by category
+            const hashtagSuggestionsByCategory = {
+                business: ['#business', '#entrepreneur', '#success', '#marketing', '#smallbusiness'],
+                technology: ['#tech', '#innovation', '#digital', '#software', '#programming'],
+                lifestyle: ['#lifestyle', '#life', '#motivation', '#inspiration', '#mindfulness'],
+                social: ['#socialmedia', '#digital', '#marketing', '#content', '#strategy']
+            };
+
+            let currentPlatform = 'facebook';
+            let selectedHashtags = new Set();
+
+            // Update platform
+            function updatePlatform(platformId) {
+                currentPlatform = platformId;
+                const platform = platforms[platformId];
+                
+                // Update preview box
+                previewPlatformIcon.className = `${platform.icon} preview-platform-icon`;
+                previewPlatformName.textContent = platform.name;
+                
+                // Update character count
+                updateCharacterCount();
+                
+                // Update preview
+                updatePreview();
+            }
+
+            // Update character count
+            function updateCharacterCount() {
+                const platform = platforms[currentPlatform];
+                const length = postContent.value.length;
+                characterCount.textContent = `${length}/${platform.limit} characters`;
+                characterCount.className = 'character-count';
+                
+                if (length > platform.limit) {
+                    characterCount.classList.add('danger');
+                } else if (length > platform.warningThreshold) {
+                    characterCount.classList.add('warning');
+                }
+            }
+
+            // Update preview
+            function updatePreview() {
+                // Update content
+                previewContent.textContent = postContent.value;
+                
+                // Update hashtags
+                const hashtags = Array.from(selectedHashtags).join(' ');
+                previewHashtags.textContent = hashtags;
+                
+                // Add URL if present
+                if (urlInput.value) {
+                    previewContent.textContent += '\n\n' + urlInput.value;
+                }
+            }
+
+            // Add hashtag suggestions
+            function addHashtagSuggestions() {
+                hashtagSuggestions.innerHTML = '';
+                
+                // Add suggestions based on content
+                const content = postContent.value.toLowerCase();
+                for (const [category, tags] of Object.entries(hashtagSuggestionsByCategory)) {
+                    if (content.includes(category.toLowerCase())) {
+                        tags.forEach(tag => {
+                            const chip = document.createElement('span');
+                            chip.className = `hashtag-chip${selectedHashtags.has(tag) ? ' selected' : ''}`;
+                            chip.textContent = tag;
+                            chip.addEventListener('click', () => toggleHashtag(tag, chip));
+                            hashtagSuggestions.appendChild(chip);
+                        });
+                    }
+                }
+            }
+
+            // Toggle hashtag selection
+            function toggleHashtag(tag, chip) {
+                if (selectedHashtags.has(tag)) {
+                    selectedHashtags.delete(tag);
+                    chip.classList.remove('selected');
+                } else {
+                    selectedHashtags.add(tag);
+                    chip.classList.add('selected');
+                }
+                updatePreview();
+            }
+
+            // Event listeners
+            platformButtons.forEach(button => {
+                button.addEventListener('change', () => updatePlatform(button.id));
+            });
+
+            postContent.addEventListener('input', () => {
+                updateCharacterCount();
+                updatePreview();
+                addHashtagSuggestions();
+            });
+
+            hashtagInput.addEventListener('input', (e) => {
+                const hashtags = e.target.value.split(' ').filter(tag => tag.startsWith('#'));
+                hashtags.forEach(tag => selectedHashtags.add(tag));
+                updatePreview();
+                e.target.value = '';
+            });
+
+            urlInput.addEventListener('input', updatePreview);
+
+            copyBtn.addEventListener('click', () => {
+                const fullPost = `${postContent.value}\n\n${Array.from(selectedHashtags).join(' ')}\n${urlInput.value}`;
+                navigator.clipboard.writeText(fullPost).then(() => {
+                    copyBtn.innerHTML = '<i class="fas fa-check me-2"></i>Copied!';
+                    setTimeout(() => {
+                        copyBtn.innerHTML = '<i class="fas fa-copy me-2"></i>Copy to Clipboard';
+                    }, 2000);
+                });
+            });
+
+            // Initialize
+            updatePlatform('facebook');
+        });
+    </script>
+</body>
+</html> 

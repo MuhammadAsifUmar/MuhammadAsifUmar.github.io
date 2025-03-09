@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unit Converter - Convert Length, Weight, Temperature - WebTools</title>
+    <meta name="description" content="Free online unit converter. Convert between different units of measurement including length, weight, temperature, area, volume, and more.">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="../../css/style.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .converter-container {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+        .unit-group {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        .unit-input {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .unit-input:last-child {
+            margin-bottom: 0;
+        }
+        .unit-select {
+            min-width: 150px;
+        }
+        .swap-btn {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 1rem auto;
+        }
+        .category-tabs {
+            margin-bottom: 1.5rem;
+        }
+        .category-tabs .nav-link {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1rem;
+        }
+        .result-box {
+            background: #e7f1ff;
+            border: 1px solid #0d6efd;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            text-align: center;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header will be loaded dynamically -->
+    <div id="header-placeholder"></div>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+        <div class="tool-container">
+            <h2><i class="fas fa-exchange-alt me-2"></i>Unit Converter</h2>
+            
+            <!-- Ad Space -->
+            <div class="ad-space mb-4">
+                <!-- Ad placeholder -->
+            </div>
+
+            <!-- Tool Content -->
+            <div class="converter-container">
+                <!-- Category Tabs -->
+                <ul class="nav nav-pills category-tabs" id="unitCategories" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#length" type="button">
+                            <i class="fas fa-ruler"></i> Length
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#weight" type="button">
+                            <i class="fas fa-weight"></i> Weight
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#temperature" type="button">
+                            <i class="fas fa-thermometer-half"></i> Temperature
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#area" type="button">
+                            <i class="fas fa-vector-square"></i> Area
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" data-bs-toggle="pill" data-bs-target="#volume" type="button">
+                            <i class="fas fa-cube"></i> Volume
+                        </button>
+                    </li>
+                </ul>
+
+                <!-- Tab Content -->
+                <div class="tab-content">
+                    <!-- Length Converter -->
+                    <div class="tab-pane fade show active" id="length">
+                        <div class="unit-group">
+                            <div class="unit-input">
+                                <input type="number" class="form-control" id="lengthFrom" placeholder="Enter value">
+                                <select class="form-select unit-select" id="lengthFromUnit">
+                                    <option value="m">Meters (m)</option>
+                                    <option value="km">Kilometers (km)</option>
+                                    <option value="cm">Centimeters (cm)</option>
+                                    <option value="mm">Millimeters (mm)</option>
+                                    <option value="in">Inches (in)</option>
+                                    <option value="ft">Feet (ft)</option>
+                                    <option value="yd">Yards (yd)</option>
+                                    <option value="mi">Miles (mi)</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-outline-primary swap-btn" id="lengthSwap">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                            <div class="unit-input">
+                                <input type="number" class="form-control" id="lengthTo" readonly>
+                                <select class="form-select unit-select" id="lengthToUnit">
+                                    <option value="cm">Centimeters (cm)</option>
+                                    <option value="m">Meters (m)</option>
+                                    <option value="km">Kilometers (km)</option>
+                                    <option value="mm">Millimeters (mm)</option>
+                                    <option value="in">Inches (in)</option>
+                                    <option value="ft">Feet (ft)</option>
+                                    <option value="yd">Yards (yd)</option>
+                                    <option value="mi">Miles (mi)</option>
+                                </select>
+                            </div>
+                            <div class="result-box" id="lengthResult">
+                                Result will appear here
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Weight Converter -->
+                    <div class="tab-pane fade" id="weight">
+                        <div class="unit-group">
+                            <div class="unit-input">
+                                <input type="number" class="form-control" id="weightFrom" placeholder="Enter value">
+                                <select class="form-select unit-select" id="weightFromUnit">
+                                    <option value="kg">Kilograms (kg)</option>
+                                    <option value="g">Grams (g)</option>
+                                    <option value="mg">Milligrams (mg)</option>
+                                    <option value="lb">Pounds (lb)</option>
+                                    <option value="oz">Ounces (oz)</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-outline-primary swap-btn" id="weightSwap">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                            <div class="unit-input">
+                                <input type="number" class="form-control" id="weightTo" readonly>
+                                <select class="form-select unit-select" id="weightToUnit">
+                                    <option value="g">Grams (g)</option>
+                                    <option value="kg">Kilograms (kg)</option>
+                                    <option value="mg">Milligrams (mg)</option>
+                                    <option value="lb">Pounds (lb)</option>
+                                    <option value="oz">Ounces (oz)</option>
+                                </select>
+                            </div>
+                            <div class="result-box" id="weightResult">
+                                Result will appear here
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Temperature Converter -->
+                    <div class="tab-pane fade" id="temperature">
+                        <div class="unit-group">
+                            <div class="unit-input">
+                                <input type="number" class="form-control" id="tempFrom" placeholder="Enter value">
+                                <select class="form-select unit-select" id="tempFromUnit">
+                                    <option value="c">Celsius (°C)</option>
+                                    <option value="f">Fahrenheit (°F)</option>
+                                    <option value="k">Kelvin (K)</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-outline-primary swap-btn" id="tempSwap">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                            <div class="unit-input">
+                                <input type="number" class="form-control" id="tempTo" readonly>
+                                <select class="form-select unit-select" id="tempToUnit">
+                                    <option value="f">Fahrenheit (°F)</option>
+                                    <option value="c">Celsius (°C)</option>
+                                    <option value="k">Kelvin (K)</option>
+                                </select>
+                            </div>
+                            <div class="result-box" id="tempResult">
+                                Result will appear here
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Area Converter -->
+                    <div class="tab-pane fade" id="area">
+                        <div class="unit-group">
+                            <div class="unit-input">
+                                <input type="number" class="form-control" id="areaFrom" placeholder="Enter value">
+                                <select class="form-select unit-select" id="areaFromUnit">
+                                    <option value="m2">Square Meters (m²)</option>
+                                    <option value="km2">Square Kilometers (km²)</option>
+                                    <option value="cm2">Square Centimeters (cm²)</option>
+                                    <option value="mm2">Square Millimeters (mm²)</option>
+                                    <option value="ha">Hectares (ha)</option>
+                                    <option value="ac">Acres (ac)</option>
+                                    <option value="ft2">Square Feet (ft²)</option>
+                                    <option value="in2">Square Inches (in²)</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-outline-primary swap-btn" id="areaSwap">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                            <div class="unit-input">
+                                <input type="number" class="form-control" id="areaTo" readonly>
+                                <select class="form-select unit-select" id="areaToUnit">
+                                    <option value="m2">Square Meters (m²)</option>
+                                    <option value="km2">Square Kilometers (km²)</option>
+                                    <option value="cm2">Square Centimeters (cm²)</option>
+                                    <option value="mm2">Square Millimeters (mm²)</option>
+                                    <option value="ha">Hectares (ha)</option>
+                                    <option value="ac">Acres (ac)</option>
+                                    <option value="ft2">Square Feet (ft²)</option>
+                                    <option value="in2">Square Inches (in²)</option>
+                                </select>
+                            </div>
+                            <div class="result-box" id="areaResult">
+                                Result will appear here
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Volume Converter -->
+                    <div class="tab-pane fade" id="volume">
+                        <div class="unit-group">
+                            <div class="unit-input">
+                                <input type="number" class="form-control" id="volumeFrom" placeholder="Enter value">
+                                <select class="form-select unit-select" id="volumeFromUnit">
+                                    <option value="m3">Cubic Meters (m³)</option>
+                                    <option value="l">Liters (L)</option>
+                                    <option value="ml">Milliliters (mL)</option>
+                                    <option value="gal">Gallons (gal)</option>
+                                    <option value="qt">Quarts (qt)</option>
+                                    <option value="pt">Pints (pt)</option>
+                                    <option value="cup">Cups</option>
+                                    <option value="fl_oz">Fluid Ounces (fl oz)</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-outline-primary swap-btn" id="volumeSwap">
+                                <i class="fas fa-exchange-alt"></i>
+                            </button>
+                            <div class="unit-input">
+                                <input type="number" class="form-control" id="volumeTo" readonly>
+                                <select class="form-select unit-select" id="volumeToUnit">
+                                    <option value="l">Liters (L)</option>
+                                    <option value="m3">Cubic Meters (m³)</option>
+                                    <option value="ml">Milliliters (mL)</option>
+                                    <option value="gal">Gallons (gal)</option>
+                                    <option value="qt">Quarts (qt)</option>
+                                    <option value="pt">Pints (pt)</option>
+                                    <option value="cup">Cups</option>
+                                    <option value="fl_oz">Fluid Ounces (fl oz)</option>
+                                </select>
+                            </div>
+                            <div class="result-box" id="volumeResult">
+                                Result will appear here
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Information Section -->
+            <div class="alert alert-info mt-4">
+                <h5><i class="fas fa-info-circle me-2"></i>About Unit Converter</h5>
+                <p class="mb-0">This tool helps you convert between different units of measurement:</p>
+                <ul class="mt-2 mb-0">
+                    <li>Length: meters, kilometers, centimeters, inches, feet, yards, miles</li>
+                    <li>Weight: kilograms, grams, milligrams, pounds, ounces</li>
+                    <li>Temperature: Celsius, Fahrenheit, Kelvin</li>
+                    <li>Area: square meters, square kilometers, hectares, acres, square feet</li>
+                    <li>Volume: cubic meters, liters, milliliters, gallons, quarts, pints</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer will be loaded dynamically -->
+    <div id="footer-placeholder"></div>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JavaScript -->
+    <script src="../../js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Conversion factors and functions
+            const conversions = {
+                // Length conversions (to meters)
+                length: {
+                    m: 1,
+                    km: 1000,
+                    cm: 0.01,
+                    mm: 0.001,
+                    in: 0.0254,
+                    ft: 0.3048,
+                    yd: 0.9144,
+                    mi: 1609.344
+                },
+                // Weight conversions (to kilograms)
+                weight: {
+                    kg: 1,
+                    g: 0.001,
+                    mg: 0.000001,
+                    lb: 0.45359237,
+                    oz: 0.028349523125
+                },
+                // Area conversions (to square meters)
+                area: {
+                    m2: 1,
+                    km2: 1000000,
+                    cm2: 0.0001,
+                    mm2: 0.000001,
+                    ha: 10000,
+                    ac: 4046.8564224,
+                    ft2: 0.09290304,
+                    in2: 0.00064516
+                },
+                // Volume conversions (to cubic meters)
+                volume: {
+                    m3: 1,
+                    l: 0.001,
+                    ml: 0.000001,
+                    gal: 0.003785411784,
+                    qt: 0.000946352946,
+                    pt: 0.000473176473,
+                    cup: 0.0002365882365,
+                    fl_oz: 0.0000295735295625
+                }
+            };
+
+            // Temperature conversion functions
+            function convertTemperature(value, from, to) {
+                // Convert to Celsius first
+                let celsius;
+                switch(from) {
+                    case 'c': celsius = value; break;
+                    case 'f': celsius = (value - 32) * 5/9; break;
+                    case 'k': celsius = value - 273.15; break;
+                }
+
+                // Convert from Celsius to target unit
+                switch(to) {
+                    case 'c': return celsius;
+                    case 'f': return (celsius * 9/5) + 32;
+                    case 'k': return celsius + 273.15;
+                }
+            }
+
+            // Generic conversion function
+            function convert(value, fromUnit, toUnit, type) {
+                if (type === 'temperature') {
+                    return convertTemperature(value, fromUnit, toUnit);
+                }
+
+                const conversionFactors = conversions[type];
+                if (!conversionFactors) return null;
+
+                // Convert to base unit first, then to target unit
+                const baseValue = value * conversionFactors[fromUnit];
+                return baseValue / conversionFactors[toUnit];
+            }
+
+            // Setup converters
+            function setupConverter(type) {
+                const fromInput = document.getElementById(`${type}From`);
+                const toInput = document.getElementById(`${type}To`);
+                const fromUnit = document.getElementById(`${type}FromUnit`);
+                const toUnit = document.getElementById(`${type}ToUnit`);
+                const result = document.getElementById(`${type}Result`);
+                const swapBtn = document.getElementById(`${type}Swap`);
+
+                function updateResult() {
+                    const value = parseFloat(fromInput.value);
+                    if (isNaN(value)) {
+                        toInput.value = '';
+                        result.textContent = 'Please enter a valid number';
+                        return;
+                    }
+
+                    const converted = convert(
+                        value,
+                        fromUnit.value,
+                        toUnit.value,
+                        type === 'temp' ? 'temperature' : type
+                    );
+
+                    toInput.value = converted.toFixed(6);
+                    result.textContent = `${value} ${fromUnit.options[fromUnit.selectedIndex].text} = ${converted.toFixed(6)} ${toUnit.options[toUnit.selectedIndex].text}`;
+                }
+
+                // Event listeners
+                fromInput.addEventListener('input', updateResult);
+                fromUnit.addEventListener('change', updateResult);
+                toUnit.addEventListener('change', updateResult);
+
+                // Swap button
+                swapBtn.addEventListener('click', () => {
+                    const tempValue = fromInput.value;
+                    const tempUnit = fromUnit.value;
+                    
+                    fromInput.value = toInput.value;
+                    fromUnit.value = toUnit.value;
+                    toInput.value = tempValue;
+                    toUnit.value = tempUnit;
+                    
+                    updateResult();
+                });
+            }
+
+            // Initialize all converters
+            ['length', 'weight', 'temp', 'area', 'volume'].forEach(setupConverter);
+        });
+    </script>
+</body>
+</html> 
