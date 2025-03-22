@@ -30,7 +30,7 @@ body {
 }
 
 /* Watermark Logo */
-body::before {
+/*body::before {
     content: 'AsifUmar';
     position: fixed;
     top: 50%;
@@ -43,7 +43,21 @@ body::before {
     pointer-events: none;
     white-space: nowrap;
     font-family: 'Arial Black', sans-serif;
+}*/
+
+body::before {
+    content: "Asif Umar";
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 100px;
+    color: rgba(0, 0, 0, 0.05);
+    z-index: -1;
+    white-space: nowrap;
+    pointer-events: none;
 }
+
 
 /* Navigation */
 nav {
