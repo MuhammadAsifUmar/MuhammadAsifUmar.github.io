@@ -65,10 +65,12 @@ if (contactForm) {
     contactForm.addEventListener('submit', (e) => {
         e.preventDefault();
         // Add your form submission logic here
-        alert('Thank you for your message! I will get back to you soon.');
-        contactForm.reset();
+        // to submit a form by another person and that form should  send to my email
     });
 }
+
+
+
 
 // Typing animation for hero section
 const heroTitle = document.querySelector('.hero-content h1');

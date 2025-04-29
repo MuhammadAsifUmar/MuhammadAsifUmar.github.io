@@ -4,18 +4,20 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    scroll-behavior: smooth;
+
 }
 
 :root {
-    --primary-color: #3498db;
-    --secondary-color: #2c3e50;
-    --accent-color: #e74c3c;
+    --primary-color: #243bd5;
+    --secondary-color: #418787;
+    --accent-color: #209dd2;
     --text-color: #333;
     --light-bg: #f9f9f9;
-    --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    --gradient-1: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-    --gradient-2: linear-gradient(135deg, #a8e6cf, #3498db);
-    --gradient-text: linear-gradient(45deg, #3498db, #2ecc71);
+    --card-shadow: 0 4px 6px rgba(120, 229, 19, 0.364);
+    --gradient-1: linear-gradient(45deg, #e07575, #9ad5d1);
+    --gradient-2: linear-gradient(135deg, #28dd9b, #eca9ef);
+    --gradient-text: linear-gradient(45deg, #b5d1e3, #56b17c);
 }
 
 html {
@@ -46,16 +48,22 @@ body {
 }*/
 
 body::before {
-    content: "Asif Umar";
+    content: "Muhammad Asif Umar";
     position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    font-size: 100px;
+    font-size: 85px;
     color: rgba(0, 0, 0, 0.05);
     z-index: -1;
     white-space: nowrap;
     pointer-events: none;
+    font-family: 'Algerian', sans-serif;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 10px;
+    text-shadow: 0 0 10px rgba(121, 244, 20, 0.209);
+    
 }
 
 
@@ -67,6 +75,7 @@ nav {
     box-shadow: var(--card-shadow);
     z-index: 1000;
     transition: all 0.3s ease;
+
 }
 
 .nav-content {
@@ -159,6 +168,18 @@ nav {
 .profile-container {
     margin-bottom: 2.5rem;
     position: relative;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    box-shadow: var(--card-shadow);
+    backdrop-filter: blur(10px);
+    transition: all 0.3s ease;
 }
 
 .profile-pic {
@@ -167,7 +188,7 @@ nav {
     margin: 0 auto;
     border-radius: 50%;
     overflow: hidden;
-    border: 4px solid white;
+    border: 4px solid rgb(24, 210, 31);
     box-shadow: var(--card-shadow);
     position: relative;
     z-index: 1;
@@ -201,6 +222,8 @@ nav {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    transition: transform 0.3s;
+
 }
 
 .hero-content h1 {
@@ -404,6 +427,7 @@ nav {
 .projects {
     padding: 5rem 2rem;
     background-color: var(--light-bg);
+
 }
 
 .project-grid {
@@ -420,6 +444,7 @@ nav {
     overflow: hidden;
     box-shadow: var(--card-shadow);
     transition: transform 0.3s;
+
 }
 
 .project-card:hover {
@@ -626,7 +651,7 @@ nav {
 }
 
 .submit-btn:hover {
-    background-color: #2980b9;
+    background-color: #b2d4eb;
     transform: translateY(-2px);
 }
 
