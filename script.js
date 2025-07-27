@@ -14,17 +14,56 @@ const menuBtn = document.querySelector('.menu-btn');
 const navLinks = document.querySelector('.nav-links');
 
 menuBtn.addEventListener('click', () => {
-    navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+    menuBtn.classList.toggle('active');
+    navLinks.classList.toggle('active');
 });
 
-// Smooth scrolling for navigation links
+// Smooth scrolling for navigation links with active state management
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
         e.preventDefault();
-        navLinks.style.display = 'none'; // Close mobile menu when clicking a link
-        document.querySelector(this.getAttribute('href')).scrollIntoView({
-            behavior: 'smooth'
+        
+        // Remove active class from all navigation links
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.classList.remove('active');
         });
+        
+        // Add active class to clicked link
+        this.classList.add('active');
+        
+        // Close mobile menu when clicking a link
+        navLinks.classList.remove('active');
+        
+        // Smooth scroll to target section
+        const targetId = this.getAttribute('href');
+        const targetSection = document.querySelector(targetId);
+        if (targetSection) {
+            targetSection.scrollIntoView({
+                behavior: 'smooth'
+            });
+        }
+    });
+});
+
+// Update active navigation based on scroll position
+window.addEventListener('scroll', () => {
+    const sections = document.querySelectorAll('section[id]');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    
+    let current = '';
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.clientHeight;
+        if (window.scrollY >= (sectionTop - 200)) {
+            current = section.getAttribute('id');
+        }
+    });
+    
+    navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('href') === `#${current}`) {
+            link.classList.add('active');
+        }
     });
 });
 
@@ -32,11 +71,13 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 window.addEventListener('scroll', function() {
     const nav = document.querySelector('nav');
     if (window.scrollY > 50) {
-        nav.style.background = 'rgba(255, 255, 255, 0.95)';
-        nav.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+        nav.style.background = 'linear-gradient(135deg, rgba(0, 0, 0, 0.98) 0%, rgba(10, 10, 10, 0.99) 100%)';
+        nav.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.4)';
+        nav.style.borderBottom = '1px solid rgba(255, 255, 255, 0.2)';
     } else {
-        nav.style.background = 'rgba(255, 255, 255, 0.95)';
-        nav.style.boxShadow = 'none';
+        nav.style.background = 'linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(20, 20, 20, 0.98) 100%)';
+        nav.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3)';
+        nav.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
     }
 });
 
@@ -108,4 +149,10 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     images.forEach(img => imageObserver.observe(img));
+    
+    // Set default active state for Home link
+    const homeLink = document.querySelector('.nav-links a[href="#home"]');
+    if (homeLink && window.scrollY < 200) {
+        homeLink.classList.add('active');
+    }
 });
