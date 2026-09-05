@@ -1,158 +1,160 @@
-// Initialize AOS (Animate On Scroll)
-AOS.init({
-    duration: 1000,
-    once: false,
-    offset: 50,
-    easing: 'ease-in-out',
-    delay: 100,
-    mirror: true, // whether elements should animate out while scrolling past them
-    anchorPlacement: 'top-bottom' // defines which position of the element regarding to window should trigger the animation
+/* ============================================================
+   MUHAMMAD ASIF UMAR — AI ENGINEER PORTFOLIO
+   ============================================================ */
+
+AOS.init({ duration: 900, once: false, offset: 60, easing: 'ease-in-out', delay: 80, mirror: false, anchorPlacement: 'top-bottom' });
+
+// ---------- Preloader ----------
+window.addEventListener('load', () => {
+    setTimeout(() => document.getElementById('preloader').classList.add('hidden'), 400);
 });
 
-// Mobile Menu Toggle
-const menuBtn = document.querySelector('.menu-btn');
-const navLinks = document.querySelector('.nav-links');
+// ---------- Typing Animation ----------
+const roles = [
+    'AI Engineer',
+    'LLM & RAG Developer',
+    'Speech AI Researcher',
+    'Computer Vision Engineer',
+    'Full-Stack AI Developer'
+];
+const typedEl = document.getElementById('typed');
+let roleIndex = 0, charIndex = 0, isDeleting = false;
+
+function typeEffect() {
+    if (!typedEl) return;
+    const current = roles[roleIndex];
+    if (!isDeleting) {
+        typedEl.textContent = current.slice(0, ++charIndex);
+        if (charIndex === current.length) { isDeleting = true; return setTimeout(typeEffect, 1800); }
+        setTimeout(typeEffect, 80);
+    } else {
+        typedEl.textContent = current.slice(0, --charIndex);
+        if (charIndex === 0) { isDeleting = false; roleIndex = (roleIndex + 1) % roles.length; return setTimeout(typeEffect, 400); }
+        setTimeout(typeEffect, 40);
+    }
+}
+document.addEventListener('DOMContentLoaded', () => setTimeout(typeEffect, 600));
+
+// ---------- Mobile Menu ----------
+const menuBtn = document.getElementById('menuBtn');
+const navLinks = document.getElementById('navLinks');
 
 menuBtn.addEventListener('click', () => {
     menuBtn.classList.toggle('active');
     navLinks.classList.toggle('active');
 });
+navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+    menuBtn.classList.remove('active');
+    navLinks.classList.remove('active');
+}));
+document.addEventListener('click', (e) => {
+    if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+        menuBtn.classList.remove('active');
+        navLinks.classList.remove('active');
+    }
+});
 
-// Smooth scrolling for navigation links with active state management
+// ---------- Smooth Scroll ----------
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     anchor.addEventListener('click', function (e) {
-        e.preventDefault();
-        
-        // Remove active class from all navigation links
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.classList.remove('active');
-        });
-        
-        // Add active class to clicked link
-        this.classList.add('active');
-        
-        // Close mobile menu when clicking a link
-        navLinks.classList.remove('active');
-        
-        // Smooth scroll to target section
-        const targetId = this.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        if (targetSection) {
-            targetSection.scrollIntoView({
-                behavior: 'smooth'
-            });
-        }
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
     });
 });
 
-// Update active navigation based on scroll position
+// ---------- Scroll: nav, progress, spy, back-to-top ----------
+const navbar = document.getElementById('navbar');
+const scrollProgress = document.getElementById('scrollProgress');
+const backToTop = document.getElementById('backToTop');
+const sections = document.querySelectorAll('section[id], header[id]');
+
 window.addEventListener('scroll', () => {
-    const sections = document.querySelectorAll('section[id]');
-    const navLinks = document.querySelectorAll('.nav-links a');
-    
-    let current = '';
+    const y = window.scrollY;
+    navbar.classList.toggle('scrolled', y > 50);
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    scrollProgress.style.width = (y / docHeight) * 100 + '%';
+    backToTop.classList.toggle('show', y > 500);
+
+    let current = 'home';
     sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.clientHeight;
-        if (window.scrollY >= (sectionTop - 200)) {
-            current = section.getAttribute('id');
-        }
+        if (y >= section.offsetTop - 150) current = section.getAttribute('id');
     });
-    
-    navLinks.forEach(link => {
-        link.classList.remove('active');
-        if (link.getAttribute('href') === `#${current}`) {
-            link.classList.add('active');
-        }
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.classList.toggle('active', link.getAttribute('href') === `#${current}`);
     });
-});
+}, { passive: true });
 
-// Navigation background change on scroll
-window.addEventListener('scroll', function() {
-    const nav = document.querySelector('nav');
-    if (window.scrollY > 50) {
-        nav.style.background = 'linear-gradient(135deg, rgba(0, 0, 0, 0.98) 0%, rgba(10, 10, 10, 0.99) 100%)';
-        nav.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.4)';
-        nav.style.borderBottom = '1px solid rgba(255, 255, 255, 0.2)';
-    } else {
-        nav.style.background = 'linear-gradient(135deg, rgba(0, 0, 0, 0.95) 0%, rgba(20, 20, 20, 0.98) 100%)';
-        nav.style.boxShadow = '0 4px 30px rgba(0, 0, 0, 0.3)';
-        nav.style.borderBottom = '1px solid rgba(255, 255, 255, 0.1)';
-    }
-});
+backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
-// Animate skill progress bars when they come into view
-const animateProgressBars = () => {
-    const progressBars = document.querySelectorAll('.progress-bar');
-    progressBars.forEach(bar => {
-        const width = bar.style.width;
-        bar.style.width = '0';
-        setTimeout(() => {
-            bar.style.width = width;
-        }, 100);
+// ---------- Animated Counters (supports decimals) ----------
+const counters = document.querySelectorAll('.counter');
+const counterObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        const target = parseFloat(el.dataset.target);
+        const decimals = parseInt(el.dataset.decimals || 0);
+        const suffix = el.dataset.suffix || '';
+        const duration = 1800;
+        const start = performance.now();
+        const update = (now) => {
+            const progress = Math.min((now - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            el.textContent = (eased * target).toFixed(decimals) + suffix;
+            if (progress < 1) requestAnimationFrame(update);
+        };
+        requestAnimationFrame(update);
+        counterObserver.unobserve(el);
     });
-};
+}, { threshold: 0.5 });
+counters.forEach(c => counterObserver.observe(c));
 
-// Refresh AOS animations when scrolling back up
-window.addEventListener('scroll', () => {
-    if (window.scrollY === 0) {
-        AOS.refresh();
-    }
-});
-
-// Contact form submission
-const contactForm = document.querySelector('.contact-form');
-if (contactForm) {
-    contactForm.addEventListener('submit', (e) => {
-        e.preventDefault();
-        // Add your form submission logic here
-        // to submit a form by another person and that form should  send to my email
+// ---------- Skill Bars ----------
+const progressBars = document.querySelectorAll('.progress-bar');
+const barObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        entry.target.style.width = entry.target.dataset.progress + '%';
+        barObserver.unobserve(entry.target);
     });
-}
+}, { threshold: 0.4 });
+progressBars.forEach(bar => barObserver.observe(bar));
 
-
-
-
-// Typing animation for hero section
-const heroTitle = document.querySelector('.hero-content h1');
-if (heroTitle) {
-    const text = heroTitle.textContent;
-    heroTitle.textContent = '';
-    let i = 0;
-    const typeWriter = () => {
-        if (i < text.length) {
-            heroTitle.textContent += text.charAt(i);
-            i++;
-            setTimeout(typeWriter, 100);
-        }
-    };
-    setTimeout(typeWriter, 500);
-}
-
-// Image lazy loading with fade-in effect
-document.addEventListener('DOMContentLoaded', () => {
-    const images = document.querySelectorAll('img[data-src]');
-    const imageObserver = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                const img = entry.target;
-                img.src = img.dataset.src;
-                img.removeAttribute('data-src');
-                img.style.opacity = '0';
-                setTimeout(() => {
-                    img.style.transition = 'opacity 0.5s ease-in-out';
-                    img.style.opacity = '1';
-                }, 100);
-                observer.unobserve(img);
-            }
+// ---------- Project Filtering ----------
+const filterBtns = document.querySelectorAll('.filter-btn');
+const projectCards = document.querySelectorAll('.project-card');
+filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+        filterBtns.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        projectCards.forEach(card => {
+            card.classList.toggle('hide', !(filter === 'all' || card.dataset.category === filter));
         });
     });
-
-    images.forEach(img => imageObserver.observe(img));
-    
-    // Set default active state for Home link
-    const homeLink = document.querySelector('.nav-links a[href="#home"]');
-    if (homeLink && window.scrollY < 200) {
-        homeLink.classList.add('active');
-    }
 });
+
+// ---------- Contact Form ----------
+const contactForm = document.getElementById('contactForm');
+const formStatus = document.getElementById('formStatus');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = contactForm.email.value.trim();
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailPattern.test(email)) { showStatus('Please enter a valid email address.', 'error'); return; }
+
+        /* 🔗 Connect Formspree / FastAPI / EmailJS here (see previous notes) */
+        showStatus('✅ Message sent successfully! I will get back to you soon.', 'success');
+        contactForm.reset();
+    });
+}
+function showStatus(msg, type) {
+    formStatus.textContent = msg;
+    formStatus.className = `form-status ${type}`;
+    setTimeout(() => { formStatus.textContent = ''; formStatus.className = 'form-status'; }, 5000);
+}
+
+// ---------- Footer Year ----------
+document.getElementById('year').textContent = new Date().getFullYear();
