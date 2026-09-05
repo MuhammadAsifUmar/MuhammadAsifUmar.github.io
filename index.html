@@ -3,381 +3,624 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="description" content="Portfolio of Asif Umar - AI Developer, ML Engineer, and Final Year AI Student.">
-	<meta name="keywords" content="Asif, Asif Umar, Muhammad Asif Umar, Asif Khan, Asif AI, Asif ML, Asif Developer, asifumar, Asif Portfolio, AI Developer, Machine Learning Engineer, Deep Learning, NLP, Python Developer, AI Student, UET Mardan, AI Projects, Data Scientist, AI Engineer, ML Projects, Deep Learning Projects, Pakistan AI Developer">
-	<meta name="author" content="Asif Umar">
+    <title>Muhammad Asif Umar | AI Engineer — LLMs, RAG, Speech AI & FastAPI</title>
 
+    <meta name="description" content="Muhammad Asif Umar — AI Engineer specializing in LLMs, RAG, Speech AI for low-resource languages (Pashto), Computer Vision, IoT emergency-response systems and FastAPI backends. BSCS (AI) UET Mardan, CGPA 3.45.">
+    <meta name="keywords" content="AI Engineer, Machine Learning, LLM, RAG, LangChain, FastAPI, Pashto Speech Processing, YOLOv8, Computer Vision, IoT, ESP32, Arduino, PyTorch, Muhammad Asif Umar">
+    <meta name="author" content="Muhammad Asif Umar">
+    <meta name="robots" content="index, follow">
 
-	<!-- Structured Data for SEO (Google Rich Results) -->
+    <meta property="og:title" content="Muhammad Asif Umar | AI Engineer">
+    <meta property="og:description" content="AI for social impact — emergency response systems, Pashto speech AI, RAG assistants, computer vision & full-stack platforms.">
+    <meta property="og:type" content="website">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/aos@2.3.4/dist/aos.css">
+    <link rel="stylesheet" href="style.css">
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Person",
       "name": "Muhammad Asif Umar",
-      "alternateName": ["Asif Umar", "Asif Khan", "Asif", "asifumar"],
-      "jobTitle": "AI Developer & Machine Learning Engineer",
-      "url": "http://asifumar.me/",
-      "sameAs": [
-        "https://github.com/MuhammadAsifUmar",
-        "https://linkedin.com/in/MuhammadAsifUmar",
-        "https://wa.me/923035828683"
-      ]
+      "jobTitle": "AI Engineer",
+      "email": "mailto:asifumar.ai@gmail.com",
+      "telephone": "+92-319-9255568",
+      "alumniOf": "University of Engineering & Technology (UET) Mardan",
+      "knowsAbout": ["Artificial Intelligence","Machine Learning","LLMs","RAG","Speech Processing","Pashto NLP","Computer Vision","YOLOv8","FastAPI","IoT","PyTorch","TensorFlow"],
+      "sameAs": ["https://github.com/muhammadasifumar","https://www.linkedin.com/in/muhammad-asif-umar-237448356/"]
     }
     </script>
-
-	
-    <title>Asif Umar Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-content">
-            <div class="logo">
-                <a href="#home">Portfolio</a>
-            </div>
-           <ul class="nav-links">
-                <li><a href="#home">Home</a></li>
+
+    <!-- Preloader -->
+    <div class="preloader" id="preloader">
+        <div class="loader-ring"></div>
+        <p>Loading<span class="dots">...</span></p>
+    </div>
+
+    <div class="scroll-progress" id="scrollProgress"></div>
+
+    <!-- ================= NAVBAR ================= -->
+    <nav id="navbar">
+        <div class="nav-content container">
+            <div class="logo"><a href="#home">Asif<span class="gradient-text">.AI</span></a></div>
+
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#home" class="active">Home</a></li>
                 <li><a href="#about">About</a></li>
                 <li><a href="#skills">Skills</a></li>
+                <li><a href="#experience">Experience</a></li>
                 <li><a href="#projects">Projects</a></li>
-                <li><a href="#resume">Resume</a></li>
+                <li><a href="#education">Education</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
-            <div class="menu-btn">
-                <i class="fas fa-bars"></i>
-            </div>
+
+            <button class="menu-btn" id="menuBtn" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
         </div>
     </nav>
 
-    <!-- Hero Section -->
-    <section id="home" class="hero">
-        <div class="hero-content">
-            <div class="profile-container" data-aos="zoom-in" data-aos-duration="1200">
+    <!-- ================= HERO ================= -->
+    <header id="home" class="hero">
+        <div class="hero-bg" aria-hidden="true">
+            <span class="orb orb-1"></span>
+            <span class="orb orb-2"></span>
+            <span class="orb orb-3"></span>
+            <div class="grid-overlay"></div>
+        </div>
+
+        <div class="container hero-inner">
+            <div class="hero-text" data-aos="fade-right">
+                <p class="hero-greeting"><span class="wave">👋</span> Hello, I'm</p>
+                <h1>Muhammad <span class="gradient-text">Asif Umar</span></h1>
+                <h2 class="typed-wrap"><span id="typed"></span><span class="type-cursor">|</span></h2>
+                <p class="hero-tagline">
+                    I build <strong>AI for real-world impact</strong> — emergency-response systems,
+                    <strong>speech AI for low-resource languages</strong> like Pashto, <strong>LLM & RAG
+                    applications</strong>, computer vision and <strong>production FastAPI backends</strong>
+                    that support sustainable development goals.
+                </p>
+
+                <div class="cta-buttons">
+                    <a href="#projects" class="btn btn-primary">View My Work <i class="fas fa-arrow-right"></i></a>
+                    <a href="assets/Muhammad_Asif_Umar_Resume.pdf" download class="btn btn-outline">
+                        <i class="fas fa-download"></i> Download Resume
+                    </a>
+                </div>
+
+                <div class="hero-socials">
+                    <!-- TODO: replace with your real GitHub/LinkedIn URLs -->
+                    <a href="https://github.com/muhammadasifumar" target="_blank" aria-label="GitHub"><i class="fab fa-github"></i></a>
+                    <a href="https://www.linkedin.com/in/muhammad-asif-umar-237448356/" target="_blank" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    <a href="https://wa.me/923199255568" target="_blank" aria-label="WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <a href="mailto:asifumar.ai@gmail.com" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                </div>
+            </div>
+
+            <div class="hero-visual" data-aos="fade-left">
                 <div class="profile-pic">
-                    <img src="assets/lakeview pic asif.jpg" alt="Your Profile Picture">
+                    <!-- Replace src with "assets/profile.jpg" when you have your photo -->
+                    <img src="assets/lakeview pic asif.jpg" alt="Muhammad Asif Umar — AI Engineer">
                 </div>
-            </div>
-            <h1 data-aos="fade-up" data-aos-duration="1000">Welcome to My Portfolio</h1>
-            <h2 data-aos="fade-up" data-aos-delay="200" data-aos-duration="1000">AI Student & Developer</h2>
-            <p data-aos="fade-up" data-aos-delay="400" data-aos-duration="1000">Exploring the frontiers of Artificial Intelligence</p>
-            <div class="cta-buttons" data-aos="fade-up" data-aos-delay="600" data-aos-duration="1000">
-                <a href="#contact" class="cta-button">Get in Touch</a>
-                <a href="#resume" class="cta-button secondary">View Resume</a>
+                <div class="floating-badge badge-1"><i class="fas fa-brain"></i> LLMs &amp; RAG</div>
+                <div class="floating-badge badge-2"><i class="fas fa-wave-square"></i> Pashto Speech AI</div>
+                <div class="floating-badge badge-3"><i class="fas fa-satellite-dish"></i> IoT Systems</div>
             </div>
         </div>
-    </section>
 
-    <!-- About Section -->
-    <section id="about" class="about">
-        <h2 data-aos="fade-down" data-aos-duration="800">About Me</h2>
-        <div class="about-content">
-            <div class="about-text" data-aos="fade-right" data-aos-duration="1000">
-                <p>I am a passionate student of Artificial Intelligence, dedicated to exploring and implementing cutting-edge AI technologies. My journey in AI has equipped me with strong problem-solving skills and a deep understanding of machine learning concepts.</p>
-                <p>Currently focusing on :</p>
-                <ul class="focus-areas">
-                    <li data-aos="fade-right" data-aos-delay="200"><i class="fas fa-check"></i> Machine Learning</li>
-                    <li data-aos="fade-right" data-aos-delay="300"><i class="fas fa-check"></i> Deep Learning</li>
-                    <li data-aos="fade-right" data-aos-delay="400"><i class="fas fa-check"></i> Natural Language Processing</li>
-                   <li data-aos="fade-right" data-aos-delay="500"><i class="fas fa-check"></i> Chatbot</li>  
-                </ul>
-            </div>
-            <div class="about-stats">
-                <div class="stat-item" data-aos="zoom-in" data-aos-delay="200">
-                    <span class="stat-number">3+</span>
-                    <span class="stat-label">Years Learning AI</span>
-                </div>
-                <div class="stat-item" data-aos="zoom-in" data-aos-delay="400">
-                    <span class="stat-number">4+</span>
-                    <span class="stat-label">Projects Completed</span>
-                </div>
-                <div class="stat-item" data-aos="zoom-in" data-aos-delay="600">
-                    <span class="stat-number">7+</span>
-                    <span class="stat-label">Research Papers Read</span>
-                </div>
-            </div>
-        </div>
-    </section>
+        <a href="#about" class="scroll-indicator" aria-label="Scroll down"><i class="fas fa-chevron-down"></i></a>
+    </header>
 
-    <!-- Skills Section -->
-    <section id="skills" class="skills">
-        <h2 data-aos="fade-down" data-aos-duration="800">Technical Skills</h2>
-        <div class="skills-grid">
-            <div class="skill-card" data-aos="flip-left" data-aos-duration="1000">
-                <i class="fas fa-brain"></i>
-                <h3>Machine Learning</h3>
-                <p>TensorFlow, PyTorch, Scikit-learn</p>
-                <p>And Different Models training </p>
-                <div class="skill-progress">
-                    <div class="progress-bar" style="width: 90%"></div>
+    <main>
+        <!-- ================= ABOUT ================= -->
+        <section id="about" class="section">
+            <div class="container">
+                <div class="section-head" data-aos="fade-up">
+                    <span class="section-label">Who I Am</span>
+                    <h2>About <span class="gradient-text">Me</span></h2>
                 </div>
-            </div>
-            <div class="skill-card" data-aos="flip-left" data-aos-delay="200" data-aos-duration="1000">
-                <i class="fas fa-code"></i>
-                <h3>Programming</h3>
-                <p>Python,C,C++,SQL</p>
-                <div class="skill-progress">
-                    <div class="progress-bar" style="width: 85%"></div>
-                </div>
-            </div>
-            <div class="skill-card" data-aos="flip-left" data-aos-delay="400" data-aos-duration="1000">
-                <i class="fas fa-chart-bar"></i>
-                <h3>Data Analysis</h3>
-                <p>Pandas, NumPy, Matplotlib,SeaBorn</p>
-                <div class="skill-progress">
-                    <div class="progress-bar" style="width: 80%"></div>
-                </div>
-            </div>
-            <div class="skill-card" data-aos="flip-left" data-aos-delay="600" data-aos-duration="1000">
-                <i class="fas fa-robot"></i>
-                <h3>Deep Learning</h3>
-                <p>Neural Networks, CNN, RNN</p>
-                <div class="skill-progress">
-                    <div class="progress-bar" style="width: 75%"></div>
-                </div>
-            </div>
-        </div>
-    </section>
 
-    <!-- Projects Section -->
-    <section id="projects" class="projects">
-        <h2 data-aos="fade-down" data-aos-duration="800">Projects</h2>
-        <div class="project-grid">
-            <div class="project-card" data-aos="fade-up-right" data-aos-duration="1000">
-                <div class="project-image" data-aos="zoom-in" data-aos-delay="200">
-                    <img src="assets/images.jpeg" alt="Project 1">
-                </div>
-                <h3>Image Classification Model</h3>
-                <p>Deep learning model for image classification using CNN architecture.</p>
-                <div class="project-tags">
-                    <span>Python</span>
-                    <span>TensorFlow</span>
-                    <span>CNN</span>
-                </div>
-                <a href="https://wa.me/923035828683" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
-            </div>
-            <div class="project-card" data-aos="fade-up-left" data-aos-duration="1000" data-aos-delay="200">
-                <div class="project-image" data-aos="zoom-in" data-aos-delay="400">
-                    <img src="assets/project2-placeholder.jpg" alt="Project 2">
-                </div>
-                <h3>NLP Text Analysis</h3>
-                <p>Natural language processing project for sentiment analysis.</p>
-                <div class="project-tags">
-                    <span>Python</span>
-                    <span>NLTK</span>
-                    <span>NLP</span>
-                </div>
-                <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
-            </div>
+                <div class="about-content">
+                    <div class="about-text" data-aos="fade-up">
+                        <p>
+                            AI Engineer specializing in <strong>machine learning, NLP and data analytics</strong>,
+                            with a strong focus on leveraging technology for <strong>social impact and public
+                            infrastructure</strong>. Recent Computer Science graduate (AI Specialization) from
+                            <strong>UET Mardan</strong> with a CGPA of <strong>3.45/4.00</strong>.
+                        </p>
+                        <p>
+                            I've developed an <strong>AI-driven emergency response system (Rescue 1122)</strong>,
+                            educational technology at <strong>Sukrat.ai</strong>, and renewable-energy digital
+                            products — combining <strong>AI innovation, systems transformation and full-stack
+                            development</strong> to support sustainable development goals.
+                        </p>
 
-            <div class="project-card" data-aos="fade-up-left" data-aos-duration="1000" data-aos-delay="400">
-                <div class="project-image" data-aos="zoom-in" data-aos-delay="600">
-                    <img src="assets/tkinter.jpg" alt="Project 3">
-                </div>
-                <h3>Friend Gallary APP</h3>
-                <p>Using python Tkinter Library </p>
-                <div class="project-tags">
-                    <span>Python</span>
-                    <span>Tkinter</span>
-                    <span>DataBase</span>
-					
-					
-                </div>
-                <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
-            </div>
+                        <h3><i class="fas fa-bullseye"></i> Focus Areas</h3>
+                        <ul class="focus-areas">
+                            <li><i class="fas fa-circle-check"></i> LLM Applications — RAG pipelines, Agents, Prompt Engineering</li>
+                            <li><i class="fas fa-circle-check"></i> Speech AI — acoustic deep learning for low-resource languages (Pashto)</li>
+                            <li><i class="fas fa-circle-check"></i> Computer Vision — YOLOv8 detection, facial recognition, edge deployment</li>
+                            <li><i class="fas fa-circle-check"></i> Full-Stack & IoT — FastAPI/Flask/Laravel backends, Arduino & ESP32 telemetry</li>
+                        </ul>
+                    </div>
 
-            <div class="project-card" data-aos="fade-up-right" data-aos-duration="1000" data-aos-delay="600">
-                <div class="project-image" data-aos="zoom-in" data-aos-delay="800">
-                    <img src="assets/mfa-project2.jpg" alt="MFA Project Project 4">
+                    <div class="about-stats" data-aos="fade-up">
+                        <div class="stat-item">
+                            <span class="stat-number counter" data-target="10" data-suffix="+">0</span>
+                            <span class="stat-label">AI & Full-Stack Projects</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number counter" data-target="82" data-suffix="%">0</span>
+                            <span class="stat-label">FYP Detection Accuracy</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number counter" data-target="3.45" data-decimals="2">0</span>
+                            <span class="stat-label">CGPA / 4.00</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-number counter" data-target="3" data-suffix="×">0</span>
+                            <span class="stat-label">Merit Scholarships</span>
+                        </div>
+                    </div>
                 </div>
-                <h3>Multi-Factor Authentication (MFA)</h3>
-                <p>Python-based GUI application for secure login using OTP via email. Includes password hashing, email delivery, and OTP expiration logic.</p>
-                <div class="project-tags">
-                    <span>Python</span>
-                    <span>OTP</span>
-                    <span>GUI (Tkinter)</span>
-                    <span>Email API</span>
-					
-					
-					
-                </div>
-                <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
             </div>
-			
-			<div class="project-card" data-aos="fade-up-left" data-aos-duration="1000" data-aos-delay="800">
-                <div class="project-image" data-aos="zoom-in" data-aos-delay="1000">
-                    <img src="assets/diabeties.jpg" alt="Project 5">
-                </div>
-                <h3>Diabeties Prediction</h3>
-                <p>Trained on small dataset with 90% Accuracy using ML Model.
-				Python-based GUI application for Diabeties Prediction.
-				It is usefull for Medical persons. and we will improve in future.
-				</p>
-                <div class="project-tags">
-                    <span>Python</span>
-                    <span>ML</span>
-                    <span>Tkinter(For Design)</span>
-					<span>Tkinter(For Design)</span>
-					
-					
-                </div>
-                <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
-            </div>
+        </section>
 
-            <div class="project-card" data-aos="fade-up-left" data-aos-duration="1000" data-aos-delay="1000">
-                <div class="project-image" data-aos="zoom-in" data-aos-delay="1200">
-                    <img src="assets/park.JPG" alt="Project 6">
+        <!-- ================= SKILLS ================= -->
+        <section id="skills" class="section section-alt">
+            <div class="container">
+                <div class="section-head" data-aos="fade-up">
+                    <span class="section-label">My Toolbox</span>
+                    <h2>Skills &amp; <span class="gradient-text">Expertise</span></h2>
                 </div>
-                <h3>Parking Security App(Web Base)</h3>
-                <p>Developed a web-based parking security application for UET Mardan using HTML, CSS, and JavaScript. The app allows users to log vehicle and student details, capture photos, generate parking tokens, and track entry/exit times.
-				Designed for enhanced campus security and efficient vehicle management.
-				</p>
-                <div class="project-tags">
-                    <span>Python</span>
-                    <span>HTML</span>
-                    <span>CSS</span>
-					<span>js</span>
-                </div>
-                <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
-            </div>
-			
-			
-			            <div class="project-card" data-aos="fade-up-left" data-aos-duration="1000" data-aos-delay="1200">
-                <div class="project-image" data-aos="zoom-in" data-aos-delay="1400">
-                    <img src="assets/tkinter.jpg" alt="Project 7">
-                </div>
-                <h3>Emotion Detection</h3>
-                <p>Built a hybrid (ML,DL,NLP) model to detect human emotions from text data. 
-				The system combines traditional NLP techniques with neural networks to classify emotions 
-				such as happiness, anger, sadness, and surprise with high accuracy. 
-				Trained and evaluated on labeled datasets for sentiment and emotion analysis.</p>
-                <div class="project-tags">
-                    <span>Python</span>
-                    <span>ML</span>
-                    <span>DL</span>
-					<span>NLP</span>
-					
-                </div>
-                <a href="#" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
-            </div>
 
-            <div class="project-card" data-aos="fade-up-right" data-aos-duration="1000" data-aos-delay="1400">
-                <div class="project-image" data-aos="zoom-in" data-aos-delay="1600">
-                    <img src="assets/solarco-login.jpg" alt="SolarCo PHP Website">
+                <div class="skills-grid">
+                    <div class="skill-card" data-aos="fade-up" data-aos-delay="100">
+                        <i class="fas fa-robot"></i>
+                        <h3>LLMs &amp; NLP</h3>
+                        <div class="chips">
+                            <span>OpenAI GPT-4</span><span>LangChain</span><span>RAG</span>
+                            <span>Hugging Face</span><span>Prompt Engineering</span><span>NLP</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-card" data-aos="fade-up" data-aos-delay="200">
+                        <i class="fas fa-wave-square"></i>
+                        <h3>Speech &amp; Audio AI</h3>
+                        <div class="chips">
+                            <span>Acoustic Processing</span><span>ASR</span><span>Low-Resource Languages</span>
+                            <span>Pashto</span><span>Fake Call Detection</span><span>Deep Learning</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-card" data-aos="fade-up" data-aos-delay="300">
+                        <i class="fas fa-microchip"></i>
+                        <h3>Machine Learning</h3>
+                        <div class="chips">
+                            <span>PyTorch</span><span>TensorFlow</span><span>scikit-learn</span>
+                            <span>CNNs</span><span>Data Analytics</span><span>Data Governance</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-card" data-aos="fade-up" data-aos-delay="100">
+                        <i class="fas fa-eye"></i>
+                        <h3>Computer Vision</h3>
+                        <div class="chips">
+                            <span>YOLOv8</span><span>OpenCV</span><span>Object Detection</span>
+                            <span>Facial Recognition</span><span>Edge AI</span><span>Roboflow</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-card" data-aos="fade-up" data-aos-delay="200">
+                        <i class="fas fa-server"></i>
+                        <h3>Full-Stack &amp; Backend</h3>
+                        <div class="chips">
+                            <span>Python</span><span>FastAPI</span><span>Flask</span>
+                            <span>PHP (Laravel)</span><span>JavaScript (React)</span><span>REST APIs</span>
+                        </div>
+                    </div>
+
+                    <div class="skill-card" data-aos="fade-up" data-aos-delay="300">
+                        <i class="fas fa-satellite-dish"></i>
+                        <h3>IoT &amp; Systems</h3>
+                        <div class="chips">
+                            <span>Arduino</span><span>ESP32</span><span>GSM/GPS Telemetry</span>
+                            <span>Biometric Systems</span><span>Docker</span><span>Linux</span>
+                        </div>
+                    </div>
                 </div>
-                <h3>SolarCo - Full Stack PHP Website</h3>
-                <p>Developed a comprehensive e-commerce platform for solar energy products with admin dashboard, 
-                user management, order processing, and payment integration. Features include product catalog, 
-                blog system, delivery tracking, and real-time inventory management.</p>
-                <div class="project-tags">
-                    <span>PHP</span>
-                    <span>MySQL</span>
-                    <span>HTML/CSS</span>
-                    <span>JavaScript</span>
-                    <span>E-commerce</span>
+
+                <div class="proficiency" data-aos="fade-up">
+                    <h3 class="prof-title">Core Proficiency</h3>
+                    <div class="bars-grid">
+                        <div class="bar-item">
+                            <div class="bar-head"><span>Python</span><span>95%</span></div>
+                            <div class="skill-progress"><div class="progress-bar" data-progress="95"></div></div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-head"><span>Machine Learning / Deep Learning</span><span>90%</span></div>
+                            <div class="skill-progress"><div class="progress-bar" data-progress="90"></div></div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-head"><span>FastAPI / Flask / Backend</span><span>88%</span></div>
+                            <div class="skill-progress"><div class="progress-bar" data-progress="88"></div></div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-head"><span>LLMs / RAG / NLP</span><span>85%</span></div>
+                            <div class="skill-progress"><div class="progress-bar" data-progress="85"></div></div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-head"><span>Speech &amp; Acoustic AI</span><span>85%</span></div>
+                            <div class="skill-progress"><div class="progress-bar" data-progress="85"></div></div>
+                        </div>
+                        <div class="bar-item">
+                            <div class="bar-head"><span>Computer Vision (YOLO / OpenCV)</span><span>82%</span></div>
+                            <div class="skill-progress"><div class="progress-bar" data-progress="82"></div></div>
+                        </div>
+                    </div>
                 </div>
-                <a href="https://solar.smseva.com" target="_blank" class="project-link">View Project <i class="fas fa-arrow-right"></i></a>
             </div>
+        </section>
 
-            
-            
-        </div>
+        <!-- ================= EXPERIENCE ================= -->
+        <section id="experience" class="section">
+            <div class="container">
+                <div class="section-head" data-aos="fade-up">
+                    <span class="section-label">Career Path</span>
+                    <h2>Work <span class="gradient-text">Experience</span></h2>
+                </div>
 
-    </section>
-
-    <!-- Resume Section -->
-    <section id="resume" class="resume">
-        <h2 data-aos="fade-down" data-aos-duration="800">Resume</h2>
-        <div class="resume-content">
-            <div class="resume-download" data-aos="fade-right" data-aos-duration="1000">
-                <i class="fas fa-file-pdf"></i>
-                <h3>Download My Resume</h3>
-                <p>Get a detailed look at my experience and qualifications</p>
-				<a href="assets/resume.pdf" target="_blank" class="view-button">View Online</a>
-                <a href="assets/resume.pdf" class="download-button" download>
-                    <i class="fas fa-download"></i> Download PDF
-                </a>
-            </div>
-            <div class="resume-preview">
                 <div class="timeline">
-                    <div class="timeline-item" data-aos="fade-left" data-aos-duration="1000">
+                    <div class="timeline-item" data-aos="fade-up">
                         <div class="timeline-dot"></div>
                         <div class="timeline-content">
-                            <h3>Education</h3>
-                            <h4>Bachelor's in Computer Science(Specialization in AI)</h4>
-                            <p>UET Mardan,2022-2026</p>
-                            <p>CGPA=3.55 out of 4</p>
+                            <span class="timeline-date"><i class="far fa-calendar"></i> Jan 2026 — Jul 2026</span>
+                            <h3>Product Development &amp; AI Engineering Intern</h3>
+                            <h4>Sukrat.ai</h4>
+                            <ul>
+                                <li>Contributed to AI-driven EdTech product development, optimizing LLM feature integrations and FastAPI backends for educational platforms.</li>
+                                <li>Assisted in integrating machine-learning pipelines and maintained robust, state-managed architectures for digital product features.</li>
+                                <li>Collaborated with cross-functional teams to test, refine and deploy AI solutions that enhanced end-user digital literacy and engagement.</li>
+                            </ul>
                         </div>
                     </div>
 
-                    <div class="timeline-item" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="200">
+                    <div class="timeline-item" data-aos="fade-up">
                         <div class="timeline-dot"></div>
                         <div class="timeline-content">
-                            <h3>College</h3>
-                            <h4> FSc(Pre-Engineering)</h4>
-                            <p>Govt College Peshawar,2020-2022</p>
-                            <p>929/1100</p>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item" data-aos="fade-left" data-aos-duration="1000" data-aos-delay="400">
-                        <div class="timeline-dot"></div>
-                        <div class="timeline-content">
-                            <h3>Certifications</h3>
-                            <h4>Machine Learning</h4>
-                            <h4>SpecializationDeep Learning</h4> 
-                            <h4>ML and NLP Basics</h4>
-                            <h4>AI For Every One</h4>
-                            <p>Coursera</p>
+                            <span class="timeline-date"><i class="far fa-calendar"></i> 2025 — Present</span>
+                            <h3>AI &amp; Full-Stack Developer</h3>
+                            <h4>Freelance — Fiverr (International Clients)</h4>
+                            <ul>
+                                <li>Delivered end-to-end machine-learning pipelines, custom automation scripts and REST API integrations for international clients.</li>
+                                <li>Owned projects from requirements gathering through deployment across AI, backend and hosting workflows.</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Contact Section -->
-<section id="contact" class="contact">
-    <h2 data-aos="fade-down" data-aos-duration="800">Get in Touch</h2>
-    <div class="contact-content">
-        <div class="contact-info" data-aos="fade-right" data-aos-duration="1000">
-            <div class="contact-item" data-aos="fade-right" data-aos-delay="200">
-                <i class="fas fa-envelope"></i>
-                <p><a href="mailto:asifumar.ai@gmail.com">asifumar.ai@gmail.com</a></p>
-            </div>
-            <div class="contact-item" data-aos="fade-right" data-aos-delay="400">
-                <i class="fab fa-github"></i>
-                <p><a href="https://github.com/MuhammadAsifUmar" target="_blank">github.com/MuhammadAsifUmar</a></p>
-            </div>
-            <div class="contact-item" data-aos="fade-right" data-aos-delay="600">
-                <i class="fab fa-linkedin"></i>
-                <p><a href="https://linkedin.com/in/MuhammadAsifUmar" target="_blank">linkedin.com/in/MuhammadAsifUmar</a></p>
-            </div>
-            <div class="contact-item" data-aos="fade-right" data-aos-delay="800">
-                <i class="fab fa-whatsapp"></i>
-                <p><a href="https://wa.me/923035828683" target="_blank">+92 303 5828683</a></p>
-            </div>
-        </div>
-        <form class="contact-form" data-aos="fade-left" data-aos-duration="1000">
-            <input type="text" placeholder="Your Name" required data-aos="fade-left" data-aos-delay="200">
-            <input type="email" placeholder="Your Email" required data-aos="fade-left" data-aos-delay="400">
-            <textarea placeholder="Your Message" required data-aos="fade-left" data-aos-delay="600"></textarea>
-            <button type="submit" class="submit-btn" data-aos="zoom-in" data-aos-delay="800">Send Message</button>
-        </form>
+        <!-- ================= PROJECTS ================= -->
+        <section id="projects" class="section section-alt">
+            <div class="container">
+                <div class="section-head" data-aos="fade-up">
+                    <span class="section-label">Portfolio</span>
+                    <h2>Featured <span class="gradient-text">Projects</span></h2>
+                </div>
 
-		
-    </div>
-</section>
+                <div class="project-filters" data-aos="fade-up">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="llm">LLM &amp; RAG</button>
+                    <button class="filter-btn" data-filter="speech">Speech &amp; IoT</button>
+                    <button class="filter-btn" data-filter="cv">Computer Vision</button>
+                    <button class="filter-btn" data-filter="fullstack">Full-Stack</button>
+                    <button class="filter-btn" data-filter="backend">Backend</button>
+                </div>
 
+                <div class="project-grid">
 
-    <!-- Footer -->
+                    <!-- 1. FYP: Rescue 1122 -->
+                    <article class="project-card" data-category="speech" data-aos="fade-up">
+                        <div class="project-top">
+                            <div class="mock-map"></div>
+                            <span class="rescue-route"></span>
+                            <span class="rescue-pin"></span>
+                            <div class="rescue-unit"><i class="fas fa-truck-medical"></i> UNIT-07 · ETA 4 min</div>
+                            <span class="fyp-ribbon"><i class="fas fa-star"></i> FYP</span>
+                            <span class="project-badge">IoT + Speech AI</span>
+                        </div>
+                        <div class="project-body">
+                            <h3>AI Emergency Response &amp; Telemetry System (Rescue 1122)</h3>
+                            <p>Co-developed an emergency-response platform integrating IoT tracking hardware
+                            (Arduino, ESP32, GPS/GSM) to optimize dispatch logistics — plus an acoustic
+                            deep-learning pipeline for low-resource Pashto audio enabling real-time
+                            fake-call detection at <strong>82% test accuracy</strong>.</p>
+                            <div class="project-tags">
+                                <span>Arduino</span><span>ESP32</span><span>GPS/GSM</span>
+                                <span>Pashto ASR</span><span>Deep Learning</span><span>Telemetry</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" target="_blank"><i class="fab fa-github"></i> Code</a>
+                                <a href="#" target="_blank"><i class="fas fa-up-right-from-square"></i> Demo</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 2. RAG Assistant -->
+                    <article class="project-card" data-category="llm" data-aos="fade-up" data-aos-delay="100">
+                        <div class="project-top">
+                            <div class="mock-chat">
+                                <div class="bubble user">"Summarize the refund policy from section 4.2"</div>
+                                <div class="bubble ai">Refunds are processed within 14 days of a verified request...<span class="cite">📄 policy.pdf · p.12</span></div>
+                            </div>
+                            <span class="project-badge">LLM · RAG</span>
+                        </div>
+                        <div class="project-body">
+                            <h3>RAG Knowledge Assistant</h3>
+                            <p>Retrieval-Augmented Generation system that ingests PDFs &amp; documents into a
+                            vector store and answers questions with cited sources — served through a
+                            FastAPI backend with streaming responses.</p>
+                            <div class="project-tags">
+                                <span>LangChain</span><span>GPT-4</span><span>Pinecone</span><span>FastAPI</span><span>Python</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" target="_blank"><i class="fab fa-github"></i> Code</a>
+                                <a href="#" target="_blank"><i class="fas fa-up-right-from-square"></i> Demo</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 3. AI Voice Agent -->
+                    <article class="project-card" data-category="llm" data-aos="fade-up" data-aos-delay="200">
+                        <div class="project-top">
+                            <div class="mock-voice">
+                                <div class="mic-btn"><i class="fas fa-microphone"></i></div>
+                                <div class="mock-wave">
+                                    <span style="--d:0s"></span><span style="--d:.1s"></span><span style="--d:.2s"></span>
+                                    <span style="--d:.3s"></span><span style="--d:.15s"></span><span style="--d:.05s"></span>
+                                    <span style="--d:.25s"></span><span style="--d:.35s"></span><span style="--d:.1s"></span>
+                                    <span style="--d:.2s"></span><span style="--d:0s"></span><span style="--d:.3s"></span>
+                                </div>
+                                <span class="voice-chip">STT → LLM → TTS · Live</span>
+                            </div>
+                            <span class="project-badge">AI Voice</span>
+                        </div>
+                        <div class="project-body">
+                            <h3>AI Voice Agent</h3>
+                            <p>Real-time conversational voice agent — Whisper STT → GPT-4 reasoning with
+                            function calling → neural TTS. Sub-second latency, interruption handling and
+                            multi-turn memory.</p>
+                            <div class="project-tags">
+                                <span>Whisper</span><span>GPT-4</span><span>Neural TTS</span><span>WebSockets</span><span>FastAPI</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" target="_blank"><i class="fab fa-github"></i> Code</a>
+                                <a href="#" target="_blank"><i class="fas fa-up-right-from-square"></i> Demo</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 4. Weed Detection -->
+                    <article class="project-card" data-category="cv" data-aos="fade-up">
+                        <div class="project-top">
+                            <div class="mock-field"></div>
+                            <div class="bbox" style="top:26%; left:14%; width:26%; height:36%"><span>Crop 0.97</span></div>
+                            <div class="bbox weed" style="top:34%; left:58%; width:22%; height:32%"><span>Weed 0.94</span></div>
+                            <span class="project-badge">YOLOv8</span>
+                        </div>
+                        <div class="project-body">
+                            <h3>Weed Detection Model</h3>
+                            <p>Precision-agriculture detector fine-tuned on field imagery to separate weeds
+                            from crops in real time — optimized for edge deployment on low-power devices.</p>
+                            <div class="project-tags">
+                                <span>YOLOv8</span><span>PyTorch</span><span>OpenCV</span><span>Roboflow</span><span>Edge AI</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" target="_blank"><i class="fab fa-github"></i> Code</a>
+                                <a href="#" target="_blank"><i class="fas fa-up-right-from-square"></i> Demo</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 5. Biometric Campus Security -->
+                    <article class="project-card" data-category="cv" data-aos="fade-up" data-aos-delay="100">
+                        <div class="project-top">
+                            <div class="mock-bio">
+                                <div class="scan-frame">
+                                    <span class="corner c-tl"></span><span class="corner c-tr"></span>
+                                    <span class="corner c-bl"></span><span class="corner c-br"></span>
+                                    <i class="fas fa-user face"></i>
+                                    <span class="scan-line"></span>
+                                </div>
+                                <div class="finger"><i class="fas fa-fingerprint"></i></div>
+                            </div>
+                            <span class="grant-chip">✓ ACCESS GRANTED</span>
+                            <span class="project-badge">Security</span>
+                        </div>
+                        <div class="project-body">
+                            <h3>Dual-Factor Biometric Campus Security</h3>
+                            <p>Strict access-control and web-based parking security management application
+                            using real-time facial recognition combined with fingerprint authentication.</p>
+                            <div class="project-tags">
+                                <span>OpenCV</span><span>Facial Recognition</span><span>Fingerprint</span><span>Flask</span><span>Real-Time</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" target="_blank"><i class="fab fa-github"></i> Code</a>
+                                <a href="#" target="_blank"><i class="fas fa-up-right-from-square"></i> Demo</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 6. SolarCo -->
+                    <article class="project-card" data-category="fullstack" data-aos="fade-up" data-aos-delay="200">
+                        <div class="project-top">
+                            <div class="mock-shop">
+                                <div class="shop-item"><div class="thumb">☀️</div><h5>Solar Panel</h5><span class="price">PKR 12k</span></div>
+                                <div class="shop-item"><div class="thumb">🔋</div><h5>Battery</h5><span class="price">PKR 30k</span></div>
+                                <div class="shop-item"><div class="thumb">💡</div><h5>Inverter</h5><span class="price">PKR 18k</span></div>
+                            </div>
+                            <span class="project-badge">E-commerce</span>
+                        </div>
+                        <div class="project-body">
+                            <h3>SolarCo — Renewable Energy Platform</h3>
+                            <p>Full-stack e-commerce web platform for renewable-energy products featuring
+                            comprehensive inventory management, order processing and an admin dashboard.</p>
+                            <div class="project-tags">
+                                <span>PHP (Laravel)</span><span>React</span><span>MySQL</span><span>Inventory System</span><span>Orders</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" target="_blank"><i class="fab fa-github"></i> Code</a>
+                                <a href="#" target="_blank"><i class="fas fa-up-right-from-square"></i> Demo</a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- 7. FastAPI Suite -->
+                    <article class="project-card" data-category="backend" data-aos="fade-up">
+                        <div class="project-top">
+                            <div class="mock-code">
+                                <div><span class="kw">@app.post</span>(<span class="str">"/api/v1/predict"</span>)</div>
+                                <div><span class="kw">async def</span> <span class="fn">predict</span>(payload: <span class="kw">Schema</span>):</div>
+                                <div>&nbsp;&nbsp;&nbsp;<span class="kw">return</span> model.<span class="fn">infer</span>(payload)</div>
+                                <div><span class="ok">200 OK</span> · 12 ms · JWT ✓ · rate-limited</div>
+                            </div>
+                            <span class="project-badge">Backend</span>
+                        </div>
+                        <div class="project-body">
+                            <h3>FastAPI Microservices Suite</h3>
+                            <p>Production-grade async REST APIs with JWT auth, rate limiting, background
+                            jobs, auto Swagger docs and Dockerized CI/CD deployment.</p>
+                            <div class="project-tags">
+                                <span>FastAPI</span><span>Docker</span><span>JWT</span><span>Celery</span><span>PostgreSQL</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="#" target="_blank"><i class="fab fa-github"></i> Code</a>
+                                <a href="#" target="_blank"><i class="fas fa-up-right-from-square"></i> Demo</a>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= EDUCATION / RESEARCH / AWARDS ================= -->
+        <section id="education" class="section">
+            <div class="container">
+                <div class="section-head" data-aos="fade-up">
+                    <span class="section-label">Background</span>
+                    <h2>Education, Research &amp; <span class="gradient-text">Awards</span></h2>
+                </div>
+
+                <div class="edu-grid edu-grid-3">
+                    <div class="edu-col" data-aos="fade-up">
+                        <h3 class="col-title"><i class="fas fa-graduation-cap"></i> Education</h3>
+                        <div class="edu-card">
+                            <h4>BS Computer Science — AI Specialization</h4>
+                            <p class="edu-place">UET Mardan</p>
+                            <span class="timeline-date">Sep 2022 — Jun 2026</span>
+                            <p>CGPA: <strong>3.45 / 4.00</strong> · Dean's List for Academic Excellence</p>
+                        </div>
+                    </div>
+
+                    <div class="edu-col" data-aos="fade-up" data-aos-delay="100">
+                        <h3 class="col-title"><i class="fas fa-certificate"></i> Certifications &amp; Languages</h3>
+                        <ul class="cert-list">
+                            <li><i class="fas fa-award"></i> 144-Hour Training Program in AI &amp; Machine Learning (Jul 2026)</li>
+                            <li><i class="fas fa-language"></i> English — Professional</li>
+                            <li><i class="fas fa-language"></i> Pashto — Native · Urdu — Fluent</li>
+                            <li><i class="fas fa-language"></i> German — Beginner</li>
+                        </ul>
+                    </div>
+
+                    <div class="edu-col" data-aos="fade-up" data-aos-delay="200">
+                        <h3 class="col-title"><i class="fas fa-flask"></i> Research &amp; Awards</h3>
+                        <ul class="cert-list">
+                            <li><i class="fas fa-file-lines"></i> Co-authored manuscripts on acoustic deep learning for Pashto speech processing &amp; fake emergency-call detection (submitted Jun 2026)</li>
+                            <li><i class="fas fa-users"></i> Poster Presenter — 51st Int'l Nathiagali Summer College, National Center for Physics (Jul 2026)</li>
+                            <li><i class="fas fa-trophy"></i> PM's Laptop Scheme Awardee · Dean's List · 3× Merit Scholarship Winner</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ================= CONTACT ================= -->
+        <section id="contact" class="section section-alt">
+            <div class="container">
+                <div class="section-head" data-aos="fade-up">
+                    <span class="section-label">Get In Touch</span>
+                    <h2>Contact <span class="gradient-text">Me</span></h2>
+                </div>
+
+                <div class="contact-content">
+                    <div class="contact-info" data-aos="fade-right">
+                        <div class="availability"><span class="pulse-dot"></span> Available Globally · Remote-Ready</div>
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div><h4>Email</h4><a href="mailto:asifumar.ai@gmail.com">asifumar.ai@gmail.com</a></div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fas fa-phone"></i>
+                            <div><h4>Phone / WhatsApp</h4><a href="tel:+923199255568">+92 319 9255568</a></div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-linkedin"></i>
+                            <div><h4>LinkedIn</h4><a href="https://www.linkedin.com/in/YOUR-LINKEDIN" target="_blank">linkedin.com/in/YOUR-LINKEDIN</a></div>
+                        </div>
+                        <div class="contact-item">
+                            <i class="fab fa-github"></i>
+                            <div><h4>GitHub</h4><a href="https://github.com/YOUR-GITHUB" target="_blank">github.com/YOUR-GITHUB</a></div>
+                        </div>
+                    </div>
+
+                    <form class="contact-form" id="contactForm" data-aos="fade-left">
+                        <div class="form-row">
+                            <input type="text" name="name" placeholder="Your Name" required>
+                            <input type="email" name="email" placeholder="Your Email" required>
+                        </div>
+                        <input type="text" name="subject" placeholder="Subject" required>
+                        <textarea name="message" placeholder="Tell me about your project or opportunity..." required></textarea>
+                        <button type="submit" class="btn btn-primary submit-btn">
+                            <i class="fas fa-paper-plane"></i> Send Message
+                        </button>
+                        <p class="form-status" id="formStatus"></p>
+                    </form>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
     <footer>
-        <p>&copy; 2025 AI Student Portfolio. All rights reserved.</p>
+        <div class="container footer-content">
+            <div class="footer-brand">
+                <a href="#home" class="logo">Asif<span class="gradient-text">.AI</span></a>
+                <p>Building AI for social impact — one model at a time.</p>
+            </div>
+            <ul class="footer-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <div class="footer-socials">
+                <a href="https://github.com/muhammadasifumar" target="_blank"><i class="fab fa-github"></i></a>
+                <a href="https://www.linkedin.com/in/muhammad-asif-umar-237448356/" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://wa.me/923199255568" target="_blank"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+        <p class="footer-copy">© <span id="year"></span> Muhammad Asif Umar — AI Engineer. All rights reserved.</p>
     </footer>
 
-    <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+    <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fas fa-arrow-up"></i></button>
+
+    <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
